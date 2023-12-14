@@ -9,6 +9,7 @@ const fs =require('fs')
 
 const loadLogin = async (req, res) => {
     try {
+        console.log('hadf')
         // await Product.updateMany({},{$set:{catStatus:true}})
         res.render('login', { message: '' })
     } catch (error) {
