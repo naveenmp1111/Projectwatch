@@ -1,0 +1,268 @@
+// // <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+// // if(mesaage){
+// //     <script>
+// //         swal
+// //     </script>
+// // } -->
+// // const random4DigitNumber = Math.floor(1000 + Math.random() * 9000);
+// // console.log(random4DigitNumber)
+
+
+// //------------------------------------------------------------------->>>>>
+
+
+// let otpIsVerified=true;
+// const sendOtp = async (req, res) => {
+//     try {
+//         const randomotp = Math.floor(1000 + Math.random() * 9000);
+//         console.log(randomotp)
+//         const transporter = nodemailer.createTransport({
+//             service: 'Gmail',
+//             auth: {
+//                 user: 'naveenapk048@gmail.com',
+//                 pass: 'ujdt ygiw aozy lgsv'
+//             }
+//         });
+
+
+//         const mailOptions = {
+//             from: 'naveenapk048@gmail.com',
+//             to: 'apkcity369@gmail.com',
+//             subject: 'Hello, Nodemailer!',
+//             text: `Your verification OTP is ${randomotp}`
+//         };
+
+//         transporter.sendMail(mailOptions, (error, info) => {
+//             if (error) {
+//                 console.log('Error sending email: ' + error);
+//             } else {
+//                 console.log('Email sent: ' + info.response);
+//             }
+//         });
+       
+//         req.session.otp=randomotp
+//         console.log(req.session.otp)
+        
+//         setTimeout(() => {
+//             // req.session.otp=null
+//             otpIsVerified=false
+//             console.log('time out')
+//           }, 10000);
+
+//         // console.log(req.session.data)
+
+//         // const name = req.query.name
+//         // const email = req.query.email
+//         // const mobile = req.query.mobile
+//         // const password = req.query.password
+
+//         // res.render('otpverification', { name, email, mobile, password, randomotp, message: '' })
+       
+        
+
+//         res.render('otpverification', {  message: '' })
+//         // res.render('otpverification', { message: '' })
+
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
+
+// const verifyOtp = async (req, res) => {
+   
+//     try {
+//          const enteredOTP= req.session.otp;
+        
+//         if(otpIsVerified){
+//         // const otp = req.session.otp
+//         const randomotp = req.body.otp
+       
+//         const {name,email,mobile,password} = req.session.data
+        
+
+//         if (randomotp == OTP) {
+
+//             const user = new User({
+//                 name: name,
+//                 email: email,
+//                 mobile: mobile,
+//                 password: password,
+//                 is_admin: 0
+//             })
+//             await user.save()
+//             res.redirect('/')
+//         } else {
+//             res.render('otpverification', { message: 'Invalid Otp', randomotp})
+//         }
+//     }else{
+//         res.render('otpverification', { message: 'OTP time out'})
+//     }
+
+//     } catch (error) {
+//         console.log(error.message)
+//     }
+// }
+
+
+<!-- <%for(i=user.cart.length-1;i>=0;i--){%>
+    <tr>
+        <td class="image product-thumbnail"><img src="<%=userCart.cart[i].productId.image[0]%>" alt="#"></td>
+        <td class="product-des product-name">
+            <h5 class="product-name"><a href="shop-product-right.html"><%=userCart.cart[i].productId.title%></a></h5>
+            <p class="font-xs"><%=userCart.cart[i].productId.description%><br>
+            </p>
+        </td>
+        <td class="price" data-title="Price"><span><%=userCart.cart[i].productId.salePrice%></span></td>
+        <td class="text-center" data-title="Stock">
+            <div class="detail-qty border radius  m-auto">
+                <a href="#" class="qty-down" onclick="increaseQuantity()"><i class="fi-rs-angle-small-down"></i></a>
+                <span class="qty-val" ><%= userCart.cart[i].quantity || 1 %></span>
+                <a href="#" class="qty-up" onclick="decreaseQuantity()><i class="fi-rs-angle-small-up"></i></a>
+            </div>
+        </td> 
+        <td class="text-right" data-title="Cart">
+            <span ><%=(userCart.cart[i].productId.salePrice)*(userCart.cart[i].quantity)%></span>
+        </td>
+        <td class="action" data-title="Remove"><a href="/deleteFromCart?id=<%=userCart.cart[i].productId._id%>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
+    </tr> -->
+
+    <%}%>
+</tbody>
+</table>
+</div>
+
+<div class="col-lg-6 col-md-12">
+<div class="border p-md-4 p-30 border-radius cart-totals">
+    <div class="heading_s1 mb-3">
+        <h4>Cart Totals</h4>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td class="cart_total_label">Cart Subtotal</td>
+                    <td class="cart_total_amount"><span class="font-lg fw-900 text-brand">$240.00</span></td>
+                </tr>
+                <tr>
+                    <td class="cart_total_label">Shipping</td>
+                    <td class="cart_total_amount"> <i class="ti-gift mr-5"></i> Free Shipping</td>
+                </tr>
+                <tr>
+                    <td class="cart_total_label">Total</td>
+                    <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand">$240.00</span></strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <a href="#" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+                                                         <%if(orders.length){%>
+                                                                                      
+                                                            <%for(i=0;i<orders.length;i++){%>
+                                                            <tr>
+                                                                <td><%=orders[i]._id%></td>
+                                                                <td><%=orders[i].date%></td>
+                                                                <td><%=orders[i].orderStatus%></td>
+                                                                <td><%=orders[i].price%> for <%=orders[i].quantity%> item</td>
+                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                            </tr>
+                                                            <%}%>
+
+                                                            <%}%> 
+
+
+                                                            <h1>User Account</h1>
+                                                            <p>User: <%= user.username %></p>
+                                                            
+                                                            <h2>Orders</h2>
+                                                            <% orders.forEach(order => { %>
+                                                              <h3>Order <%= order._id %></h3>
+                                                              <ul>
+                                                                <% order.products.forEach(product => { %>
+                                                                  <li>
+                                                                    Product: <%= product.productId.name %>
+                                                                    Quantity: <%= product.quantity %>
+                                                                  </li>
+                                                                <% }); %>
+                                                              </ul>
+                                                            <% }); %>
+
+
+
+                                                            //fhfkjhsdfhsdkj
+
+
+                                                            <br>Order Status:<%if(orders.orderStatus == 'Cancelled' || orders.orderStatus == 'Returned'){%>
+                                                                <span class="text-danger"><%=orders.paymentStatus%></span>
+                                                                <%}else{%>
+                                                                    <span class="text-success"><%=orders.paymentStatus%></span>
+
+
+                                                                    ooooooooooooooooooooooooo
+
+
+                                                                    <form method="post" name="enq">
+                                                                        <div class="row">
+                                                                            <div class="form-group col-md-12">
+                                                                                <label>First Name <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="name" type="text">
+                                                                            </div>
+                                                                            <div class="form-group col-md-6">
+                                                                                <label>Last Name <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="phone">
+                                                                            </div>
+                                                                            <div class="form-group col-md-12">
+                                                                                <label>Display Name <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="dname" type="text">
+                                                                            </div>
+                                                                            <div class="form-group col-md-12">
+                                                                                <label>Email Address <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="email" type="email">
+                                                                            </div>
+                                                                            <div class="form-group col-md-12">
+                                                                                <label>Current Password <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="password" type="password">
+                                                                            </div>
+                                                                            <div class="form-group col-md-12">
+                                                                                <label>New Password <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="npassword" type="password">
+                                                                            </div>
+                                                                            <div class="form-group col-md-12">
+                                                                                <label>Confirm Password <span class="required">*</span></label>
+                                                                                <input required="" class="form-control square" name="cpassword" type="password">
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+
+                                                                    //--------------------------------------------------------------------bisher
+
+                                                                    <%console.log(user.cart[i].productId)%>
+                                        <%console.log(wishlist.products[i].productId._id)%>
+
+                                        <% let flag = 0 %>
+
+                                        <% for (let j = 0; j < user.cart.length; j++) {
+                                            
+                                            if (user.cart[i].productId.toString() == wishlist.products[i].productId._id.toString()) {
+                                                flag = 1;
+                                                break;
+                                            }
+                                        } %>
+
+                                        <% if (flag == 1) { %>
+                                            <% console.log('Product already exists') %>
+                                        <% } else { %>
+                                            <% console.log('Product does not exist') %>
+                                        <% } %>
