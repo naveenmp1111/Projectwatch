@@ -5,10 +5,13 @@ const Order = require('../models/orderModel')
 const Category=require('../models/categoryModel')
 const Brand =require('../models/brandModel')
 const Coupon=require('../models/couponModel')
+const RandomString=require('randomstring')
 const Wishlist=require('../models/wishlistModel')
 const userAuth = require('../middlewares/userAuth')
 const { ConversationListInstance } = require('twilio/lib/rest/conversations/v1/conversation')
 const { json } = require('express')
+const cron = require('node-cron');
+
 
 
 const loadHome = async (req, res) => {
@@ -38,11 +41,8 @@ const loadHome = async (req, res) => {
         // const res=productData.sort({salePrice:-1})
         // console.log(res)
          if (userData) {
-            if (userData.is_active == false) {
-                res.render('login', { message: 'User is blocked' })
-            } else {
                 res.render('home', { products: productData, user: userData,categories:categoryData,brands:brandData })
-            }
+            
         } else {
             res.render('home', { products: productData, user: userData ,categories:categoryData,brands:brandData})
         }
@@ -54,7 +54,12 @@ const loadHome = async (req, res) => {
 
 const loginLoad = async (req, res) => {
     try {
-        res.render('login', { message: '' })
+
+        if(req.query.message==='blocked'){
+            res.render('login', { message: 'User is Blocked' })
+        }else{
+            res.render('login', { message: '' })
+        }
     } catch (error) {
         console.log(error.message)
     }
@@ -75,7 +80,8 @@ const insertUser = async (req, res) => {
             name: req.body.name,
             email: req.body.email,
             mobile: req.body.mobile,
-            password: req.body.password
+            password: req.body.password,
+            referralCode:req.body.referralCode
         }
 
         req.session.data = obj
@@ -86,6 +92,25 @@ const insertUser = async (req, res) => {
         }
     }
 
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const checkReferral =async(req,res)=>{
+    try {
+        const code=req.query.code
+        const userData=await User.findOne({referralCode:code})
+        if(userData){
+            req.session.referralCode=code
+            res.status(200).json({
+                message:'Valid Coupon'
+            })
+        }else{
+            res.status(200).json({
+                message:'Invalid Coupon'
+            })
+        }
     } catch (error) {
         console.log(error.message)
     }
@@ -160,42 +185,28 @@ const verifyOtp = async (req, res) => {
         if(timelimit - req.session.otpTime > 30000){
             res.render('otpverification', { message: 'OTP timeout' })
         }else{
-            const { name, email, mobile, password } = req.session.data
+            const { name, email, mobile, password ,referralCode} = req.session.data
+           
             console.log(req.session.otpIsVerified);
             // if (req.session.otpIsVerified) {
                 if (randomotp == otp) {
     
 
-                    async function generateReferralCode() {
-                        const length = 8;
-                        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                      
-                        let referralCode;
-                        let isUnique = false;
-                      
-                        while (!isUnique) {
-                          referralCode = '';
-                      
-                          for (let i = 0; i < length; i++) {
-                            const randomIndex = Math.floor(Math.random() * characters.length);
-                            referralCode += characters.charAt(randomIndex);
-                          }
-                      
-                          const userData = await User.findOne({ referralCode: referralCode });
-                      
-                          if (!userData) {
-                            isUnique = true;
-                          }
-                        }
-                      
-                        return referralCode;
-                      }
-                      
-                      
-                      const myReferralCode = generateReferralCode();
-                      
-                      
+                    const myReferralCode = await generateReferralCode();
 
+                    async function generateReferralCode() {
+                        const randomString = RandomString.generate(5);
+                        const randomNumber = Math.floor(100 + Math.random() * 900).toString();
+                        const RandomReferralCode = randomString + randomNumber;
+                    
+                        const userData = await User.findOne({ RandomReferralCode });
+                    
+                        if (userData) {
+                            return await generateReferralCode();
+                        } else {
+                            return RandomReferralCode;
+                        }
+                    }
 
                     const user = new User({
                         name: name,
@@ -204,8 +215,15 @@ const verifyOtp = async (req, res) => {
                         password: password,
                         is_admin: 0,
                         referralCode:myReferralCode
+                        
                     })
                     await user.save()
+
+                    if(referralCode){
+                        await User.findOneAndUpdate({referralCode:referralCode},{$inc:{wallet:+200}})
+                        await User.findOneAndUpdate({email:email},{$set:{wallet:100}})
+                    }
+
                     res.redirect('/login')
                 } else {
                     res.render('otpverification', { message: 'Invalid Otp' })
@@ -231,7 +249,6 @@ const verifyLogin = async (req, res) => {
         // console.log(productData)
         // console.log(userData.address[0].fname);
         if (userData) {
-            if (userData.is_active) {
                 if (userData.password === password) {
                     req.session.email = email
                     res.redirect('/')
@@ -239,9 +256,6 @@ const verifyLogin = async (req, res) => {
                 } else {
                     res.render('login', { message: 'invalid password' })
                 }
-            } else {
-                res.render('login', { message: 'User is Blocked' })
-            }
 
         } else {
             res.render('login', { message: 'User not found' })
@@ -427,9 +441,7 @@ const addToCart = async (req, res) => {
         }
         if (flag == 0) {
             if (userData) {
-                if (userData.is_active == false) {
-                    res.render('login', { message: 'User is blocked' })
-                } else {
+               
                     await User.findOneAndUpdate(
                         { email: email },
                         { $push: { cart: cartItem } },
@@ -438,7 +450,7 @@ const addToCart = async (req, res) => {
                     res.redirect('/cart')
                     //     res.write('1111')
                     //    res.end()
-                }
+                
 
             } else {
                 res.redirect('/login')
@@ -461,15 +473,15 @@ const addToCart = async (req, res) => {
 const userAccount = async (req, res) => {
     try {
         // const id = req.query.id
+        const categories=await Category.find({is_active:true})
+        const brands=await Brand.find({is_active:true})
         const email = req.session.email;
         const user = await User.findOne({ email: email });
         const orders = await Order.find({ userId: user._id }).populate('products.productId').sort({ orderDate: -1 });
-        if (user.is_active == false) {
-            res.render('login', { message: 'User is blocked' })
-        } else {
+
             // console.log(orders);
-            res.render('userAccount', { user: user, orders })
-        }
+            res.render('userAccount', { user: user, orders ,categories,brands})
+        
 
     } catch (error) {
         console.log(error.message)
@@ -478,9 +490,13 @@ const userAccount = async (req, res) => {
 
 const addressForm = async (req, res) => {
     try {
+        const categories=await Category.find({is_active:true})
+        const brands=await Brand.find({is_active:true})
+        const email = req.session.email;
+        const user = await User.findOne({ email: email });
         const checkout = req.query.checkout
         console.log(checkout)
-        res.render('addressForm',{checkout})
+        res.render('addressForm',{checkout,user,categories,brands})
     } catch (error) {
         console.log(error.message)
     }
@@ -532,16 +548,16 @@ const showCart = async (req, res) => {
     try {
         const email = req.session.email
         const userData = await User.findOne({ email: email })
+        const categories=await Category.find({is_active:true})
+        const brands=await Brand.find({is_active:true})
         // console.log(userData)
         if (userData) {
-            if (userData.is_active == false) {
-                res.render('login', { message: 'User is blocked' })
-            } else {
+            
                 const fullUserData = await User.findOne({ email: email }).populate('cart.productId')
                 // console.log(fullUserData.cart)
                 // console.log(fullUserData.cart[1].quantity)
-                res.render('cart', { user: userData, userCart: fullUserData })
-            }
+                res.render('cart', { user: userData, userCart: fullUserData,brands,categories })
+            
 
         } else {
             res.redirect('/login')
@@ -596,8 +612,9 @@ const applyCoupon=async(req,res)=>{
         console.log(couponCode)
         try {
             const couponData = await Coupon.findOne({ couponCode: couponCode });
-        
+            
             if (!couponData) {
+               
                 return res.status(200).json({
                     message: 'Invalid Coupon',
                     finalPrice: totalAmount
@@ -647,12 +664,13 @@ const applyCoupon=async(req,res)=>{
 const editAddressForm = async (req, res) => {
     try {
         const checkout = req.query.checkoutcode
-
-        const email = req.session.email
+        const categories=await Category.find({is_active:true})
+        const brands=await Brand.find({is_active:true})
+        const email = req.session.email;
         const index = req.query.index
         const userData = await User.findOne({ email: email })
         const address = userData.address[index]
-        res.render('editAddressForm', { address, index, checkout })
+        res.render('editAddressForm', { address, index, checkout,user:userData,categories,brands })
     } catch (error) {
         console.log(error.message)
     }
@@ -817,6 +835,7 @@ module.exports = {
     loadHome,
     loginLoad,
     loadRegister,
+    checkReferral,
     insertUser,
     verifyLogin,
     checkUniqueEmail,

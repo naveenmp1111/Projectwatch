@@ -34,7 +34,7 @@ const productSchema=mongoose.Schema({
         required:true
     },
     image:[{
-        type:Buffer
+        type:Buffer 
     }],
     categoryId:{
         type:mongoose.Schema.Types.ObjectId,
@@ -57,7 +57,7 @@ const productSchema=mongoose.Schema({
     },
     discountPrice:{
         type:Number,
-        default:true
+        default:null
     },
     quantity:{
         type:Number,

@@ -402,13 +402,14 @@ const checkWallet =async(req,res)=>{
             const finalPrice=totalAmount-couponData.discount
             totalAmount=finalPrice
         }
-
+        console.log(userData.wallet)
         if(totalAmount>userData.wallet){
             res.status(200).json({
                 message:'Insufficient Balance in Wallet'
             })
         }else{
-            res.redirect(`/walletpayment?addressIndex=${addressIndex}&totalAmount=${totalAmount}`)
+            // res.redirect(`/walletpayment?addressIndex=${addressIndex}&totalAmount=${totalAmount}`)
+            res.status(200).json({status:"Success"})
         }
 
     } catch (error) {
@@ -424,7 +425,7 @@ const walletPayment = async (req, res) => {
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const addressIndex = req.query.addressIndex       
         const paymentMethod = 'Wallet'
-        let totalAmount =req.query.totalAmount
+        let totalAmount =parseFloat(req.query.totalAmount)
         console.log(totalAmount)
 
        const couponData=await Coupon.findOne({couponCode:couponCode})
@@ -437,18 +438,17 @@ const walletPayment = async (req, res) => {
                userId:userData._id
            }
            await couponData.redeemedUsers.push(obj)
-           couponData.save()
+           await couponData.save()
            coupon=couponData.discount
        }else{
-           totalAmount = req.body.totalAmount
+           totalAmount = req.query.totalAmount
        }
-        // console.log(req.body.selectAddress)
-
-        // console.log(paymentMethod)
 
         userData.wallet= userData.wallet-totalAmount
 
+
         await userData.save()
+        // console.log('his')
 
         if (addressIndex >= 0 && userData.cart.length > 0) {
 
@@ -466,7 +466,7 @@ const walletPayment = async (req, res) => {
                 }
 
                 const userData = await Product.findByIdAndUpdate({ _id: userCart[i].productId._id }, { $set: { quantity: userCart[i].productId.quantity - userCart[i].quantity } })
-                await userData.save()
+                // await userData.save()
             }
 
             let arr = []
@@ -507,14 +507,14 @@ const walletPayment = async (req, res) => {
                 coupon:coupon
             })
             const orderData = await order.save()
+            console.log(orderData)
 
-            if (orderData) {
+            if (orderData) {              
                 userData.cart = []
-                await userData.save()
+                await userData.save()            
                 setTimeout(() => {
                     res.redirect('/userAccount')
                 }, 2000)
-
             }
         } else {
             res.redirect('/checkOut')

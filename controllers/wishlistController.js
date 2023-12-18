@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const Product = require('../models/productModel')
 const Wishlist=require('../models/wishlistModel')
 const Category=require('../models/categoryModel')
+const Brand=require('../models/brandModel')
 
 
 const addToWishlist = async (req, res) => {
@@ -70,11 +71,13 @@ const showWishlist=async(req,res)=>{
         const email=req.session.email
         const userData=await User.findOne({email})
         const wishlistData=await Wishlist.findOne({userId:userData._id}).populate('products.productId')
+        const categories=await Category.find({is_active:true})
+        const brands=await Brand.find({is_active:true})
         // console.log(wishlistData.products)
         // console.log(userData.cart[0].productId)
         // console.log(wishlistData.products[0].productId._id)
         // console.log(wishlistData.products.length)
-        res.render('wishlist',{wishlist:wishlistData,user:userData})
+        res.render('wishlist',{wishlist:wishlistData,user:userData,categories,brands})
     }catch(error){
         console.log(error.message)
     }
@@ -96,9 +99,7 @@ const addToCart=async(req,res)=>{
         // let flag = 0;
         //    console.log(fullUserData.cart);
         if (userData && userData.cart) {
-            if(userData.is_active==false){
-                res.render('login',{message:'User is blocked'})
-            }else{
+            
                 await User.findOneAndUpdate(
                     { email: email },
                     { $push: { cart: cartItem } },
@@ -107,7 +108,7 @@ const addToCart=async(req,res)=>{
                 res.redirect('/cart')
                 //     res.write('1111')
                 //    res.end()
-            }
+            
         }
 
     }catch(error){

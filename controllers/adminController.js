@@ -5,6 +5,7 @@ const Order = require('../models/orderModel')
 const Brand = require('../models/brandModel')
 const sharp =require('sharp')
 const fs =require('fs')
+const path=require('path')
 
 
 const loadLogin = async (req, res) => {
@@ -145,41 +146,39 @@ const loadAddProduct = async (req, res) => {
 //     }
 // }
 
-const addNewProduct = async (req, res) => {
+
+   const addNewProduct = async (req, res) => {
     try {
         let salePrice;
-
         if (req.body.discountPercentage.trim() > 0) {
             salePrice = req.body.regularPrice - (req.body.regularPrice.trim() * req.body.discountPercentage / 100);
         } else {
             salePrice = req.body.regularPrice.trim();
         }
 
-        // Use Sharp.js to resize and crop images
-        const processedImages = await Promise.all(
-            req.files.map(async (file) => {
-                const imageBuffer = await sharp(file.path)
-                    .resize({ width: 600, height: 600 }) // Resize the image to a standard size
-                    .extract({ left: 0, top: 0, width: 600, height: 600 }) // Crop the image as needed
-                    .jpeg({ quality: 80 }) // Adjust quality as needed
-                    .toBuffer();
+        const imagePromises = req.files.map(async (file) => {
+            const imagePath = `uploads/${file.filename}`;
+             const resizedImagePath = `uploads/resized_${file.filename}`;
+             await sharp(imagePath)
+            .resize({ width: 572, height: 572})
+            .toFile(resizedImagePath);
 
-                return { buffer: imageBuffer };
-            })
-        );
+      // Remove the original uploaded image
+            // fs.unlinkSync(imagePath);
+            // fse.remove(imagePath, (err) => {
+            //     if (err) {
+            //       console.error(err);
+            //     } else {
+            //       console.log('File deleted successfully');
+            //     }
+            //   });
 
-        // Delay for 1 second using a promise
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+             return resizedImagePath;
+            });
 
-        // Remove original images
-        req.files.forEach((file) => {
-            try {
-                fs.unlink(file.path);
-                console.log(`File ${file.path} deleted successfully`);
-            } catch (error) {
-                console.error('Error deleting file:', error);
-            }
-        });
+            const resizedImageUrls = await Promise.all(imagePromises);
+
+
 
         const productData = {
             title: req.body.title.trim(),
@@ -191,19 +190,13 @@ const addNewProduct = async (req, res) => {
             regularPrice: req.body.regularPrice.trim(),
             discountPercentage: req.body.discountPercentage.trim(),
             bestDiscount: req.body.discountPercentage.trim(),
+            discountPrice:salePrice,
             salePrice: salePrice,
             quantity: req.body.quantity.trim(),
             categoryId: req.body.category.trim(),
             gender: req.body.gender.trim(),
             tags: req.body.tags.trim(),
-            image: processedImages.map((processedImage, index) => {
-                const filename = `processed_image_${index}.jpg`;
-                const filePath = path.join(__dirname, 'uploads', filename);
-
-                fs.writeFileSync(filePath, processedImage.buffer);
-
-                return filePath;
-            }),
+            image: resizedImageUrls,
         };
 
         const product = new Product(productData);
@@ -221,6 +214,8 @@ const addNewProduct = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
+
 
 
 
@@ -292,19 +287,32 @@ const loadEditProductList = async (req, res) => {
 
         // Your existing size code...
         let Newimages = []
-        req.files.forEach((image) => {
-            Newimages.push(
-                image.path
-            )
-        })
-
-        Newimages.forEach((image) => {
-            product.image.push(
-                image
-
-            )
-        })
-        await product.save()
+        // req.files.forEach((image) => {
+        //     Newimages.push(
+        //         image.path
+        //     )
+        // })
+        await Promise.all(req.files.map(async (file) => {
+            const imagePath = `uploads/${file.filename}`;
+            const resizedImagePath = `uploads/resized_${file.filename}`;
+          
+            // Resize the image
+            await sharp(imagePath)
+              .resize({ width: 572, height: 572 })
+              .toFile(resizedImagePath);
+          
+          
+            // Push the resized image path to Newimages array
+            Newimages.push(resizedImagePath);
+          }));
+          
+          // Now that all asynchronous operations are completed, proceed with further processing
+          Newimages.forEach((image) => {
+            product.image.push(image);
+          });
+          
+          // Save the product
+          await product.save();
         let salePrice
         if(req.body.discountPercentage.trim() > 0){
              salePrice=req.body.regularPrice - (req.body.regularPrice.trim()*req.body.discountPercentage/100)
@@ -312,27 +320,6 @@ const loadEditProductList = async (req, res) => {
             salePrice=req.body.regularPrice.trim()
         }
 
-        // var userData = await Product.findByIdAndUpdate({ _id: id }, {
-        //     $set: {
-        //         title: req.body.title.trim(),
-        //     weight: req.body.weight.trim(),
-        //     color: req.body.color.trim(),
-        //     shape: req.body.shape.trim(),
-        //     brandId: req.body.brand.trim(),
-        //     description: req.body.description.trim(),
-        //     regularPrice: req.body.regularPrice.trim(),
-        //     // salePrice: req.body.salePrice.trim(),
-        //     discountPercentage:req.body.discountPercentage.trim(),
-        //     bestDiscount:'$discountPercentage'>'catDiscountPercentage'?'$discountPercentage':'catDiscountPercentage',
-        //     salePrice: salePrice,
-        //     quantity: req.body.quantity.trim(),
-        //     categoryId: req.body.category.trim(),
-        //     gender: req.body.gender.trim(),
-        //     tags: req.body.tags.trim(),
-
-
-        //     }
-        // })
 
         const categoryData=await Category.findById(product.categoryId)
         const catDiscountPercentage=categoryData.discount

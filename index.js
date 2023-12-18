@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost:27017/project_watch')
 
-
 const express = require('express')
 // const session = require('express-session')
 const app = express()
@@ -10,6 +9,7 @@ const userRoute = require('./routes/userRoute')
 const adminRoute = require('./routes/adminRoute')
 const multer = require('multer')
 const nocache = require('nocache')
+// const cron= require('./other/cron')
 app.use(express.json())
 
 

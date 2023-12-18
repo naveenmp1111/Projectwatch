@@ -5,6 +5,8 @@ const Order = require('../models/orderModel')
 const Brand = require('../models/brandModel')
 
 
+
+
 const categoryOffer=async(req,res)=>{
     try {
         const categoryData=await Category.find({})
@@ -154,7 +156,6 @@ const deleteCategoryOffer=async(req,res)=>{
           {
             $set: {
               catDiscountPercentage: null,
-              discountPrice: null,
               bestDiscount: {
                 $cond: {
                   if: { $ifNull: ['$discountPercentage', false] },

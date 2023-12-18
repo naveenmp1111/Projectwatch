@@ -20,17 +20,17 @@
 })
         </script>
       <%}%> -->
-    <section class=" bg-black" style="height: 115vh;">
+    <section class=" bg-black" style="height: 127vh;">
         <div class="container py-5 h-90">
           <h3 class="text-center text-white">REGISTER HERE</h3><br>
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col">
-              <div class="card card-registration " style="height: 90vh;">
+              <div class="card card-registration " style="height: 105vh;">
                 <div class="row g-0">
                   <div class="col-xl-6 d-none d-xl-block">
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
                       alt="Sample photo" class="img-fluid"
-                      style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem; height:90vh;" />
+                      style="border-top-left-radius: .25rem; border-bottom-left-radius: .25rem; height:105vh; width: 90%;" />
                   </div>
                   <div class="col-xl-6">
                     <div class="card-body p-md-5 text-black">
@@ -38,7 +38,7 @@
                       
                       <form action="/register" method="post">
                         <div class="text-danger" id="message"></div>
-                        <div class="form-outline mb-4">
+                        <div class="form-outline mb-3">
                             <input type="text" id="name" class="form-control form-control-lg" pattern="^(?!\s*$)[a-zA-Z](?:[-'a-zA-Z]+[a-zA-Z])?$" name="name" onkeyup="validateName()" required/>
                             <label class="form-label" for="form3Example1cg">Your Name</label>
                         </div>
@@ -66,28 +66,58 @@
                           <span class="text-danger"><%=message%></span>
                         <%}%>
                 
-                        <div class="form-outline mb-4">
+                        <div class="form-outline mb-3">
                             <input type="email" id="form3Example3cg" class="form-control form-control-lg" name="email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" required />
                             <label class="form-label" for="form3Example3cg">Your Email</label>
                         </div>
                 
-                        <div class="form-outline mb-4">
+                        <div class="form-outline mb-3">
                             <input type="number" id="form3Example4cg" class="form-control form-control-lg" name="mobile" required/>
                             <label class="form-label" for="form3Example4cg">Mobile</label>
                         </div>
                 
-                        <div class="form-outline mb-4">
+                        <div class="form-outline mb-3">
                             <input type="password" id="password" class="form-control form-control-lg" name="password" oninput="validatePassword()" required />
                             <label class="form-label" for="password">Password</label>
                             <div id="password-strength"></div>
                         </div>
                 
-                        <div class="form-outline mb-4">
-                            <input type="password" id="confirmPassword" class="form-control form-control-lg" name="confirmPassword" oninput="validateMatchingPasswords()" required />
-                            <label class="form-label" for="confirmPassword">Confirm Password</label>
-                            <div id="password-match"></div>
-                        </div>
-                
+                        <div class="form-outline mb-1">
+                          <input type="password" id="confirmPassword" class="form-control form-control-lg" name="confirmPassword" oninput="validateMatchingPasswords()" required />
+                          <label class="form-label" for="confirmPassword">Confirm Password</label>
+                          <div id="password-match"></div>
+                          
+                          <p class="text-black mt-3 mb-1">
+                              Have any referral code?
+                              <label class="fw-bold text-body" onclick="toggleReferralCodeInput()">
+                                  <u class="text-black">Click here</u>
+                              </label>
+                          </p>
+                      
+                          <!-- Referral Code Input Field (Initially Hidden) -->
+                          <div id="referralCodeInputContainer" style="display: none;">
+                              
+                              <input type="text" id="referralCodeInput" class="form-control form-control-lg" name="referralCode" placeholder="Enter Referral Code" onkeyup="checkReferral()" />
+                              <span class="text-secondary" id="referralMessage"></span>
+                            </div>
+                      </div><br>
+                      <script>
+                        function checkReferral(){
+                          var code=document.getElementById('referralCodeInput').value
+                          fetch(`/checkReferral?code=${code}`)
+                          .then(response=>response.json())
+                          .then(data=>{
+                            document.getElementById('referralMessage').innerHTML=data.message
+                          })
+                        }
+                      </script>
+                      <script>
+                          function toggleReferralCodeInput() {
+                              const referralCodeInputContainer = document.getElementById('referralCodeInputContainer');
+                              referralCodeInputContainer.style.display = referralCodeInputContainer.style.display === 'none' ? 'block' : 'none';
+                          }
+                      </script>
+                      
                         <script>
                             function validatePassword() {
                                 const passwordInput = document.getElementById('password');
@@ -132,13 +162,14 @@
                             I agree all statements in <a href="#!" class="text-body"><u>Terms of service</u></a>
                           </label>
                         </div> -->
-        
+                      
+                       
                         <div class="d-flex justify-content-center">
                           <button type="submit"
                             class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
                         </div>
                         
-                        <p  class=" text-center text-black mt-5 mb-0">Have already an account? <a href="/"
+                        <p  class=" text-center text-black mt-3 mb-0">Have already an account? <a href="/"
                             class="fw-bold text-body"><u class="text-black">Login here</u></a></p>
         
                       </form>
