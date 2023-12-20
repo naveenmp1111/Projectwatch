@@ -3,11 +3,12 @@ const Product = require('../models/productModel')
 const Order = require('../models/orderModel')
 const { use } = require('../routes/adminRoute')
 const Coupon=require('../models/couponModel')
+require('dotenv').config();
 
 const Razorpay=require('razorpay')
 var instance = new Razorpay({
-  key_id: 'rzp_test_xgAbYbKWLNZHR0',
-  key_secret: 'pBaRn0FrJtHGQABUEkHfJwCZ'
+  key_id: process.env.YOUR_KEY_ID,
+  key_secret: process.env.YOUR_KEY_SECRET
 });
 
 
@@ -315,7 +316,7 @@ const paymentSuccess = async (req, res) => {
             couponData.save()
             coupon=couponData.discount
         }else{
-            totalAmount = req.body.totalAmount
+            totalAmount = req.query.totalAmount
         }
 
         if (addressIndex >= 0 && userData.cart.length > 0) {
@@ -409,7 +410,7 @@ const checkWallet =async(req,res)=>{
             })
         }else{
             // res.redirect(`/walletpayment?addressIndex=${addressIndex}&totalAmount=${totalAmount}`)
-            res.status(200).json({status:"Success"})
+            res.status(200).json({status:"Success",message:''})
         }
 
     } catch (error) {

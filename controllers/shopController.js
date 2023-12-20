@@ -21,7 +21,7 @@ const showShop = async (req, res) => {
         const message = req.query.message;
         const sort = req.query.sort;
         const currentPage = parseInt(req.query.page) || 1;
-        const pageSize = 6;
+        const pageSize = 9;
 
         console.log(req.query.gender);
         console.log(message);
