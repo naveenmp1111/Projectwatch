@@ -936,7 +936,12 @@
                                                 <div class="product-extra-link2">
                                                     
                                                     <button type="submit" class="button button-add-to-cart">Add to cart</button>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addToWishlist?id=<%=product._id%>"><i class="fi-rs-heart"></i></a>
+                                                    <%if(user){%>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addToWishlist?id=<%=product._id%>"><i class="fi-rs-heart"></i></a>
+                                                        <%}else{%>
+                                                            <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/login"><i class="fi-rs-heart"></i></a>
+                                                            <%}%>
+                                                    <!-- <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/addToWishlist?id=<%=product._id%>"><i class="fi-rs-heart"></i></a> -->
                                                     <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                                 </div>
                                                 <%}else{%>

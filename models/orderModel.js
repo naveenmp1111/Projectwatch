@@ -26,7 +26,7 @@ const orderSchema=mongoose.Schema({
         default:Date.now
     },
     totalAmount:{
-        type:String,
+        type:Number,
         required:true
     },
     orderstatus:{

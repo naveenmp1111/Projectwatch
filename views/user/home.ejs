@@ -209,7 +209,8 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="index.html"><img src="/assets/imgs/nmplogo.jpg" alt="logo"></a>
+                        <!-- <a href="index.html"><img src="/assets/imgs/nmplogo.jpg" alt="logo"></a> -->
+                        <h3 class="font-weight-bold"><b>OZORA WATCHES</b></h3>
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
@@ -264,8 +265,8 @@
                     </div>
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
-                            <a class="categori-button-active" href="#">
-                                <span class="fi-rs-apps"></span> Browse Categories
+                            <a class="categori-button-active" href="#" style="background-color: white; color: black;">
+                                <span class="fi-rs-apps"></span> CATEGORIES<i class="fi-rs-angle-down"></i>
                             </a>
                             <div class="categori-dropdown-wrap categori-dropdown-active-large">
                                 <ul>
@@ -733,7 +734,8 @@
                                                         </div>
                                                         <div class="product-price">
                                                             <%if(locals.products[i].bestDiscount > 0){%>
-                                                                <span>र<%=products[i].salePrice%></span>
+                                                                <span>र<%= products[i].salePrice.toFixed(2) %></span>
+
                                                                 <span class="old-price">र<%=products[i].regularPrice%></span>&nbsp;&nbsp;&nbsp;
                                                                 <span class="text-muted"><%=products[i].bestDiscount%>% OFF</span>
                                                                 <%}else{%>

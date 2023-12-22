@@ -76,7 +76,7 @@ const placeOrder = async (req, res) => {
             })
             // console.log(arr);
 
-            //-------------------orderId Generation----------------->
+            //-------------------orderId Generating session----------------->
 
             const randomid = randomId()
             async function randomId() {
@@ -153,12 +153,11 @@ const cancelOrder = async (req, res) => {
                 console.log(productId)
                 const quantityToAdd = item.quantity
                 //   console.log(productId)
-                // Find the product by its _id
+                // Finding the product with _id
                 const productData = await Product.findById(productId);
                 productData.quantity += quantityToAdd;
                 await productData.save()
 
-                // Do something with the productData, for example:
                 if (productData)
                     console.log(productData);
                 else
@@ -174,8 +173,6 @@ const cancelOrder = async (req, res) => {
             await userData.save()
             res.redirect('/orderDetails?id=' + orderId)
         }
-
-
         res.redirect('/orderDetails?id=' + orderId)
     } catch (error) {
         console.log(error.message)
@@ -188,8 +185,6 @@ const returnOrder = async (req, res) => {
         const orderId = req.query.id
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const orderData = await Order.findById({ _id: orderId }).populate('products.productId').populate('userId')
-
-
         // console.log(orderData)
         orderData.orderstatus = 'Returned'
         await orderData.save()
@@ -197,19 +192,13 @@ const returnOrder = async (req, res) => {
         async function processOrder(orderData) {
             for (const item of orderData.products) {
                 const productId = item.productId._id;
-                console.log(productId)
+                // console.log(productId)
                 const quantityToAdd = item.quantity
                 //   console.log(productId)
                 // Find the product by its _id
                 const productData = await Product.findById(productId);
                 productData.quantity += quantityToAdd;
                 await productData.save()
-
-                // Do something with the productData, for example:
-                if (productData)
-                    console.log(productData);
-                else
-                    console.log('no data found')
             }
         }
 
@@ -233,10 +222,9 @@ const onlinePayment = async (req, res) => {
     try {
         // console.log(req.body.totalAmount)
         // console.log(req.body.couponCode)
-        let totalAmount = parseFloat(req.query.totalAmount); // Assuming you are using query parameters
-        console.log('HAI');
-        console.log(totalAmount);
-        const couponCode = req.session.couponCode; // Assuming you are using query parameters
+        let totalAmount = parseFloat(req.query.totalAmount); 
+        // console.log(totalAmount);
+        const couponCode = req.session.couponCode; 
         console.log(couponCode);
         const couponData = await Coupon.findOne({ couponCode: couponCode });
         console.log(couponData);
@@ -294,8 +282,8 @@ const onlinePayment = async (req, res) => {
 
 const paymentSuccess = async (req, res) => {
     try {
-        console.log(req.query.addressIndex)
-        console.log(req.query.totalAmount);
+        // console.log(req.query.addressIndex)
+        // console.log(req.query.totalAmount);
         const email = req.session.email
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const addressIndex = req.query.addressIndex
@@ -395,7 +383,7 @@ const checkWallet =async(req,res)=>{
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const addressIndex = req.query.addressIndex       
         let totalAmount =req.query.totalAmount
-        console.log(totalAmount)
+        // console.log(totalAmount)
 
        const couponData=await Coupon.findOne({couponCode:couponCode})
 
@@ -427,7 +415,7 @@ const walletPayment = async (req, res) => {
         const addressIndex = req.query.addressIndex       
         const paymentMethod = 'Wallet'
         let totalAmount =parseFloat(req.query.totalAmount)
-        console.log(totalAmount)
+        // console.log(totalAmount)
 
        const couponData=await Coupon.findOne({couponCode:couponCode})
 
@@ -508,7 +496,7 @@ const walletPayment = async (req, res) => {
                 coupon:coupon
             })
             const orderData = await order.save()
-            console.log(orderData)
+            // console.log(orderData)
 
             if (orderData) {              
                 userData.cart = []

@@ -146,30 +146,15 @@ const sendOtp = async (req, res) => {
         });
 
         req.session.otp = randomotp
-        // console.log(req.session.otpIsVerified)
+ 
         console.log(req.session.otp)
         setTimeout(() => {
-            // req.session.otpIsVerified = false
-            // delete req.session.otpIsVerified
             console.log('session ended')
-            // console.log(req.session.otpIsVerified)
         }, 30000);
-
-
-        // console.log(req.session.data)
-
-        // const name = req.query.name
-        // const email = req.query.email
-        // const mobile = req.query.mobile
-        // const password = req.query.password
-
-        // res.render('otpverification', { name, email, mobile, password, randomotp, message: '' })
-
 
         req.session.otpTime=Date.now()
 
         res.render('otpverification', { message: '' })
-        // res.render('otpverification', { message: '' })
 
     } catch (error) {
         console.log(error.message)
@@ -187,7 +172,7 @@ const verifyOtp = async (req, res) => {
         }else{
             const { name, email, mobile, password ,referralCode} = req.session.data
            
-            console.log(req.session.otpIsVerified);
+            // console.log(req.session.otpIsVerified);
             // if (req.session.otpIsVerified) {
                 if (randomotp == otp) {
     
@@ -228,9 +213,7 @@ const verifyOtp = async (req, res) => {
                 } else {
                     res.render('otpverification', { message: 'Invalid Otp' })
                 }
-            // } else {
-            //     res.render('otpverification', { message: 'OTP timeout' })
-            // }
+
         }
        
 
@@ -252,7 +235,6 @@ const verifyLogin = async (req, res) => {
                 if (userData.password === password) {
                     req.session.email = email
                     res.redirect('/')
-                    // res.render('userHome', { products: productData, user: userData })
                 } else {
                     res.render('login', { message: 'invalid password' })
                 }
@@ -291,10 +273,7 @@ const checkUniqueEmail = async (req, res, next) => {
 
 const forgotPassword = async (req, res) => {
     try {
-
         res.render('forgotPassword', { message: '' })
-
-
     } catch (error) {
         console.log(error.message)
     }
@@ -354,8 +333,8 @@ const generatePasswordOtp = async (req, res) => {
 const verifypasswordotp = async (req, res) => {
     try {
         const passwordTimeLimit=Date.now()
-        console.log('limit'+passwordTimeLimit)
-        console.log('start'+req.session.passwordOtpTime)
+        // console.log('limit'+passwordTimeLimit)
+        // console.log('start'+req.session.passwordOtpTime)
         const typedotp = req.body.otp
         const email = req.body.email
         const randomotp = req.body.randomotp
@@ -399,7 +378,6 @@ const productDetails = async (req, res) => {
     try {
         const id = req.query.id
         const email = req.session.email
-        // console.log(id)
         const productData = await Product.findById({ _id: id })
         const userData = await User.findOne({ email })
         if (productData) {
@@ -408,7 +386,6 @@ const productDetails = async (req, res) => {
             res.redirect('/home')
 
         }
-
     } catch (error) {
         console.log(error.message)
     }
@@ -416,7 +393,6 @@ const productDetails = async (req, res) => {
 
 const addToCart = async (req, res) => {
     try {
-        // const productId = req.body.productId
         const productId = req.query.productId
         const quantity = parseInt(req.body.quantity, 10) ?? 1
         const email = req.session.email
@@ -425,11 +401,9 @@ const addToCart = async (req, res) => {
             quantity: quantity
         }
         const userData = await User.findOne({ email: email })
-        //    const fullUserData=await User.findOne({email:email}).populate('cart.productId')
-        //    const userCart=userData.cart
-        //    const userCartData=fullUserData.cart
+
         let flag = 0;
-        //    console.log(fullUserData.cart);
+
         if (userData && userData.cart) {
             for (i = 0; i < userData.cart.length; i++) {
 
@@ -448,8 +422,6 @@ const addToCart = async (req, res) => {
                         // {upsert:true,new:true}
                     )
                     res.redirect('/cart')
-                    //     res.write('1111')
-                    //    res.end()
                 
 
             } else {
@@ -479,10 +451,8 @@ const userAccount = async (req, res) => {
         const user = await User.findOne({ email: email });
         const orders = await Order.find({ userId: user._id }).populate('products.productId').sort({ orderDate: -1 });
 
-            // console.log(orders);
             res.render('userAccount', { user: user, orders ,categories,brands})
         
-
     } catch (error) {
         console.log(error.message)
     }
@@ -495,7 +465,7 @@ const addressForm = async (req, res) => {
         const email = req.session.email;
         const user = await User.findOne({ email: email });
         const checkout = req.query.checkout
-        console.log(checkout)
+        // console.log(checkout)
         res.render('addressForm',{checkout,user,categories,brands})
     } catch (error) {
         console.log(error.message)
@@ -505,7 +475,7 @@ const addressForm = async (req, res) => {
 const addAddress = async (req, res) => {
     try {
         const checkout = req.body.checkout
-        console.log(checkout)
+        // console.log(checkout)
         const email = req.session.email
         const userData = await User.findOne({ email: email })
         const { fname, lname, country, houseName, city, state, pincode, phone } = req.body
@@ -550,7 +520,6 @@ const showCart = async (req, res) => {
         const userData = await User.findOne({ email: email })
         const categories=await Category.find({is_active:true})
         const brands=await Brand.find({is_active:true})
-        // console.log(userData)
         if (userData) {
             
                 const fullUserData = await User.findOne({ email: email }).populate('cart.productId')
@@ -579,8 +548,6 @@ const deleteFromCart = async (req, res) => {
         if (userData) {
             res.redirect('/cart')
         }
-
-
     } catch (error) {
         console.log(error.message)
     }
@@ -592,7 +559,6 @@ const showCheckOut = async (req, res) => {
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const coupon = await Coupon.find({ is_active: true, "redeemedUsers.userId": { $ne: userData._id } });
 
-        // console.log(userData)
         if (userData.cart.length > 0) {
             res.render('checkout', { user: userData ,coupon})
         } else {
@@ -714,8 +680,6 @@ const updateQuantity = async (req, res) => {
     try {
         const { index, newQuantity } = req.params;
         const email = req.session.email
-        // console.log(index)
-        // console.log(newQuantity)
         const userData = await User.findOne({ email: email }).populate('cart.productId');
 
         if (!userData) {
@@ -753,9 +717,6 @@ const updateUserDetails = async (req, res) => {
 }
 
 const checkUniqueEmail2 = async (req, res, next) => {
-
-
-
     try {
         const nemail = req.body.nemail;
 
@@ -763,7 +724,7 @@ const checkUniqueEmail2 = async (req, res, next) => {
         const userData = await User.findOne({ email: email });
         if (userData) {
             const id = userData._id
-            console.log(id);
+            // console.log(id);
             const existingUser = await User.findOne({
                 _id: { $ne: id },
                 email: nemail
@@ -788,9 +749,7 @@ const updatePassword = async (req, res) => {
        
         const email = req.session.email
         const { currentPassword, npassword, cpassword } = req.body
-        
-       
-        
+               
         const userData = await User.findOne({ email })
         if (userData.password == currentPassword) {
             if (npassword == cpassword) {

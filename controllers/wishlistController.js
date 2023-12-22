@@ -23,15 +23,13 @@ const addToWishlist = async (req, res) => {
                 // console.log("item.productId:", item.productId, typeof item.productId);
                 // console.log("productData._id:", productData._id, typeof productData._id);
                 if (item.productId.toString() === productData._id.toString()) {
-                    // console.log('hai')
                     productExists = true;
-                    break; // Exit the loop when a match is found
+                    break; 
                 }
             }
 
             if (productExists) {
                 res.redirect('/wishlist')
-                // res.render('home', { user: userData, products: productData,categories, message: 'alreadyexists' });
             } else {
                 wishlist.products.push({ productId: productData._id });
                 const wishlistData = await wishlist.save();
@@ -73,10 +71,6 @@ const showWishlist=async(req,res)=>{
         const wishlistData=await Wishlist.findOne({userId:userData._id}).populate('products.productId')
         const categories=await Category.find({is_active:true})
         const brands=await Brand.find({is_active:true})
-        // console.log(wishlistData.products)
-        // console.log(userData.cart[0].productId)
-        // console.log(wishlistData.products[0].productId._id)
-        // console.log(wishlistData.products.length)
         res.render('wishlist',{wishlist:wishlistData,user:userData,categories,brands})
     }catch(error){
         console.log(error.message)
@@ -93,11 +87,7 @@ const addToCart=async(req,res)=>{
             quantity: 1
         }
         const userData = await User.findOne({ email: email })
-        //    const fullUserData=await User.findOne({email:email}).populate('cart.productId')
-        //    const userCart=userData.cart
-        //    const userCartData=fullUserData.cart
-        // let flag = 0;
-        //    console.log(fullUserData.cart);
+ 
         if (userData && userData.cart) {
             
                 await User.findOneAndUpdate(
@@ -106,9 +96,6 @@ const addToCart=async(req,res)=>{
                     // {upsert:true,new:true}
                 )
                 res.redirect('/cart')
-                //     res.write('1111')
-                //    res.end()
-            
         }
 
     }catch(error){

@@ -3,14 +3,14 @@ const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 const Order = require('../models/orderModel')
 const Brand = require('../models/brandModel')
-const sharp =require('sharp')
-const fs =require('fs')
-const path=require('path')
+const sharp = require('sharp')
+const fs = require('fs')
+const path = require('path')
 
 
 const loadLogin = async (req, res) => {
     try {
-        
+
         // await Product.updateMany({},{$set:{catStatus:true}})
         res.render('login', { message: '' })
     } catch (error) {
@@ -26,7 +26,7 @@ const verifyLogin = async (req, res) => {
         if (userData) {
             if (userData.is_admin === 1) {
                 if (userData.password === password) {
-                    req.session.adminId=userData._id
+                    req.session.adminId = userData._id
                     // console.log(req.session.adminId)
                     res.redirect('/admin/home')
                 } else {
@@ -46,14 +46,106 @@ const verifyLogin = async (req, res) => {
 
 const loadDashboard = async (req, res) => {
     try {
-        const user=await User.find({})
-        const order=await Order.find({}).sort({orderDate:-1}).populate('userId')
-        const product=await Product.find({})
-        let totalTransaction=0
-        order.forEach((item)=>{
-            totalTransaction+= parseFloat(item.totalAmount)
-        })
-        res.render('dashboard',{user,order,product,totalTransaction})
+        const user = await User.find({})
+        const order = await Order.find({}).sort({ orderDate: -1 }).populate('userId')
+        const product = await Product.find({})
+        let totalTransaction = 0
+        const orderData = await Order.aggregate([
+            {
+                $unwind: '$products' // Unwind the products array
+            },
+            {
+                $group: {
+                    _id: { month: { $month: '$orderDate' } },
+                    totalOrders: { $sum: 1 },
+                    totalProducts: { $sum: '$products.quantity' },
+                }
+            },
+            {
+                $sort: {
+                    '_id.month': 1 // Sort by month
+                }
+            }
+        ]);
+
+        const userData = await User.aggregate([
+            {
+                $group: {
+                    _id: { $month: '$date' },
+                    totalRegister: { $sum: 1 },
+                }
+            },
+            {
+                $sort: {
+                    '_id': 1 // Sort by month
+                }
+            }
+        ]);
+
+        const orderStats = await Order.aggregate([
+            {
+              $unwind: '$products'
+            },
+            {
+              $lookup: {
+                from: 'products',
+                localField: 'products.productId',
+                foreignField: '_id',
+                as: 'productInfo'
+              }
+            },
+            {
+              $unwind: '$productInfo'
+            },
+            {
+              $lookup: {
+                from: 'categories',
+                localField: 'productInfo.categoryId',
+                foreignField: '_id',
+                as: 'categoryInfo'
+              }
+            },
+            {
+              $group: {
+                _id: '$categoryInfo._id',
+                categoryName: { $first: '$categoryInfo.categoryName' },
+                orderCount: { $sum: 1 }
+              }
+            }
+          ]);
+
+          const categoryNames = JSON.stringify(orderStats.map(stat => stat.categoryName).flat());
+        const orderCounts = JSON.stringify(orderStats.map(stat => stat.orderCount));
+
+        // console.log(categoryNames)
+        // console.log(orderCounts)
+
+        const monthlyData = Array.from({ length: 12 }, (_, index) => {
+            const monthOrderData = orderData.find(item => item._id.month === index + 1) || { totalOrders: 0, totalProducts: 0 };
+            const monthUserData = userData.find(item => item._id === index + 1) || { totalRegister: 0 };
+            return {
+                totalOrders: monthOrderData.totalOrders,
+                totalProducts: monthOrderData.totalProducts,
+                totalRegister: monthUserData.totalRegister
+            };
+            
+        });
+
+        const totalOrdersJson= JSON.stringify(monthlyData.map(item => item.totalOrders));
+        const totalProductsJson = JSON.stringify(monthlyData.map(item => item.totalProducts));
+        const totalRegisterJson = JSON.stringify(monthlyData.map(item => item.totalRegister));
+
+        order.forEach((item) => {
+            if (item.totalAmount !== undefined && item.totalAmount !== null) {
+                totalTransaction += parseFloat(item.totalAmount);
+            }
+        });
+
+
+
+        // console.log(totalTransaction)
+        res.render('dashboard', { user, order, product, totalTransaction ,totalRegisterJson,
+            totalOrdersJson,totalProductsJson,categoryNames,orderCounts})
     } catch (error) {
         console.log(error.message)
     }
@@ -97,57 +189,15 @@ const unblockUser = async (req, res) => {
 const loadAddProduct = async (req, res) => {
     try {
         const categoryData = await Category.find({ is_active: true })
-        const brandData=await Brand.find({is_active:true})
-        res.render('addproduct', { category: categoryData,brand:brandData })
+        const brandData = await Brand.find({ is_active: true })
+        res.render('addproduct', { category: categoryData, brand: brandData })
     } catch (error) {
         console.log(error.message)
     }
 }
 
-// const addNewProduct = async (req, res) => {
-//     try {
-//         // console.log(req.body.brand);
-//         // console.log(req.body.category);
-//         let salePrice
-//         if(req.body.discountPercentage.trim() > 0){
-//              salePrice=req.body.regularPrice - (req.body.regularPrice.trim()*req.body.discountPercentage/100)
-//         }else{
-//             salePrice=req.body.regularPrice.trim()
-//         }
-//         const product = new Product({
-//             title: req.body.title.trim(),
-//             weight: req.body.weight.trim(),
-//             color: req.body.color.trim(),
-//             shape: req.body.shape.trim(),
-//             brandId: req.body.brand.trim(),
-//             description: req.body.description.trim(),
-//             regularPrice: req.body.regularPrice.trim(),
-//             // salePrice: req.body.salePrice.trim(),
-//             discountPercentage:req.body.discountPercentage.trim(),
-//             bestDiscount:req.body.discountPercentage.trim(),
-//             salePrice: salePrice,
-//             quantity: req.body.quantity.trim(),
-//             categoryId: req.body.category.trim(),
-//             gender: req.body.gender.trim(),
-//             tags: req.body.tags.trim(),
-//             image: req.files.map((file) => file.path)
-//         })
 
-//         const userData = await product.save()
-//         if (userData) {
-//             res.redirect('/admin/home')
-//         } else {
-//             console.log('Problem identified')
-//             res.write('problem in addnewProduct')
-//             res.end()
-//         }
-//     } catch (error) {
-//         console.log(error.message)
-//     }
-// }
-
-
-   const addNewProduct = async (req, res) => {
+const addNewProduct = async (req, res) => {
     try {
         let salePrice;
         if (req.body.discountPercentage.trim() > 0) {
@@ -158,12 +208,12 @@ const loadAddProduct = async (req, res) => {
 
         const imagePromises = req.files.map(async (file) => {
             const imagePath = `uploads/${file.filename}`;
-             const resizedImagePath = `uploads/resized_${file.filename}`;
-             await sharp(imagePath)
-            .resize({ width: 572, height: 572})
-            .toFile(resizedImagePath);
+            const resizedImagePath = `uploads/resized_${file.filename}`;
+            await sharp(imagePath)
+                .resize({ width: 572, height: 572 })
+                .toFile(resizedImagePath);
 
-      // Remove the original uploaded image
+            // Remove the original uploaded image
             // fs.unlinkSync(imagePath);
             // fse.remove(imagePath, (err) => {
             //     if (err) {
@@ -173,10 +223,10 @@ const loadAddProduct = async (req, res) => {
             //     }
             //   });
 
-             return resizedImagePath;
-            });
+            return resizedImagePath;
+        });
 
-            const resizedImageUrls = await Promise.all(imagePromises);
+        const resizedImageUrls = await Promise.all(imagePromises);
 
 
 
@@ -190,7 +240,7 @@ const loadAddProduct = async (req, res) => {
             regularPrice: req.body.regularPrice.trim(),
             discountPercentage: req.body.discountPercentage.trim(),
             bestDiscount: req.body.discountPercentage.trim(),
-            discountPrice:salePrice,
+            discountPrice: salePrice,
             salePrice: salePrice,
             quantity: req.body.quantity.trim(),
             categoryId: req.body.category.trim(),
@@ -239,12 +289,12 @@ const editProductList = async (req, res) => {
 
         const id = req.query.id
         const userData = await Product.findOne({ _id: id }).populate('brandId').populate('categoryId')
-        console.log(userData)
+        // console.log(userData)
         const brandData = await Brand.find({ is_active: true })
 
         const categoryData = await Category.find({ is_active: true })
         if (userData) {
-            res.render('editProduct', { products: userData, category: categoryData,brand:brandData })
+            res.render('editProduct', { products: userData, category: categoryData, brand: brandData })
         }
 
     } catch (error) {
@@ -259,7 +309,7 @@ const deleteImage = async (req, res) => {
         const productId = req.params.productId;
         const imageIndex = req.params.index;
         const product = await Product.findOne({ _id: productId })
-        console.log(imageIndex);
+        // console.log(imageIndex);
         product.image.splice(imageIndex, 1)
 
         const updated = await product.save()
@@ -283,78 +333,62 @@ const loadEditProductList = async (req, res) => {
     try {
         const id = req.query.id
         const product = await Product.findOne({ _id: id })
-        console.log(req.files);
-
-        // Your existing size code...
+        // console.log(req.files);
         let Newimages = []
-        // req.files.forEach((image) => {
-        //     Newimages.push(
-        //         image.path
-        //     )
-        // })
         await Promise.all(req.files.map(async (file) => {
             const imagePath = `uploads/${file.filename}`;
             const resizedImagePath = `uploads/resized_${file.filename}`;
-          
+
             // Resize the image
             await sharp(imagePath)
-              .resize({ width: 572, height: 572 })
-              .toFile(resizedImagePath);
-          
-          
-            // Push the resized image path to Newimages array
+                .resize({ width: 572, height: 572 })
+                .toFile(resizedImagePath);
+
             Newimages.push(resizedImagePath);
-          }));
-          
-          // Now that all asynchronous operations are completed, proceed with further processing
-          Newimages.forEach((image) => {
+        }));
+        Newimages.forEach((image) => {
             product.image.push(image);
-          });
-          
-          // Save the product
-          await product.save();
+        });
+
+        // Save the product
+        await product.save();
         let salePrice
-        if(req.body.discountPercentage.trim() > 0){
-             salePrice=req.body.regularPrice - (req.body.regularPrice.trim()*req.body.discountPercentage/100)
-        }else{
-            salePrice=req.body.regularPrice.trim()
+        if (req.body.discountPercentage.trim() > 0) {
+            salePrice = req.body.regularPrice - (req.body.regularPrice.trim() * req.body.discountPercentage / 100)
+        } else {
+            salePrice = req.body.regularPrice.trim()
         }
 
-
-        const categoryData=await Category.findById(product.categoryId)
-        const catDiscountPercentage=categoryData.discount
+        const categoryData = await Category.findById(product.categoryId)
+        const catDiscountPercentage = categoryData.discount
 
         const bestDiscount = req.body.discountPercentage > catDiscountPercentage
-        ? req.body.discountPercentage
-        : catDiscountPercentage;
-      
-      // Use the calculated value in the update
-      const userData = await Product.findByIdAndUpdate(
-        { _id: id },
-        {
-          $set: {
-            title: req.body.title.trim(),
-            weight: req.body.weight.trim(),
-            color: req.body.color.trim(),
-            shape: req.body.shape.trim(),
-            brandId: req.body.brand.trim(),
-            description: req.body.description.trim(),
-            regularPrice: req.body.regularPrice.trim(),
-            discountPercentage: req.body.discountPercentage.trim(),
-            bestDiscount: bestDiscount,
-            salePrice: salePrice,
-            quantity: req.body.quantity.trim(),
-            categoryId: req.body.category.trim(),
-            gender: req.body.gender.trim(),
-            tags: req.body.tags.trim(),
-          }
-        }
-      );
-          
+            ? req.body.discountPercentage
+            : catDiscountPercentage;
 
+        const userData = await Product.findByIdAndUpdate(
+            { _id: id },
+            {
+                $set: {
+                    title: req.body.title.trim(),
+                    weight: req.body.weight.trim(),
+                    color: req.body.color.trim(),
+                    shape: req.body.shape.trim(),
+                    brandId: req.body.brand.trim(),
+                    description: req.body.description.trim(),
+                    regularPrice: req.body.regularPrice.trim(),
+                    discountPercentage: req.body.discountPercentage.trim(),
+                    bestDiscount: bestDiscount,
+                    salePrice: salePrice,
+                    quantity: req.body.quantity.trim(),
+                    categoryId: req.body.category.trim(),
+                    gender: req.body.gender.trim(),
+                    tags: req.body.tags.trim(),
+                }
+            }
+        );
         if (userData)
             res.redirect('/admin/productsList')
-
     } catch (error) {
         console.log(error.message)
     }
@@ -370,8 +404,6 @@ const blockProductList = async (req, res) => {
             console.log('user not found or update failed')
             res.status(404).send('user not found')
         }
-
-
     } catch (error) {
         console.log(error.message)
     }
@@ -399,7 +431,6 @@ const loadCategories = async (req, res) => {
         if (userData) {
             res.render('category', { category: userData })
         }
-
     } catch (error) {
         console.log(error.message)
     }
@@ -407,21 +438,16 @@ const loadCategories = async (req, res) => {
 
 const checkUniqueCategory = async (req, res, next) => {
     const { categoryName } = req.body;
-    console.log('here is ' + categoryName)
+    // console.log('here is ' + categoryName)
     try {
         const existingCategory = await Category.findOne({ categoryName: categoryName });
-        console.log(existingCategory);
-
-
+        // console.log(existingCategory);
         if (existingCategory) {
-
             const categoryData = await Category.find({})
             res.render('category', { message: 'Category already exists', category: categoryData })
-
         } else {
             next();
         }
-
     } catch (err) {
         return res.status(500).json({ error: 'Database error' });
     }
@@ -429,7 +455,6 @@ const checkUniqueCategory = async (req, res, next) => {
 
 const addCategories = async (req, res) => {
     try {
-        console.log('addcategoy')
         const category = new Category({
             categoryName: req.body.categoryName.trim()
         })
@@ -450,8 +475,7 @@ const blockCategory = async (req, res) => {
         await Product.updateMany(
             { categoryId: id },
             { $set: { catStatus: false } }
-          );
-       
+        );
         if (userData) {
             res.redirect('/admin/category')
         }
@@ -468,7 +492,7 @@ const unBlockCategory = async (req, res) => {
         await Product.updateMany(
             { categoryId: id },
             { $set: { catStatus: true } }
-          );
+        );
         if (userData) {
             res.redirect('/admin/category')
         }
@@ -504,9 +528,7 @@ const editCategory = async (req, res) => {
 const loadEditCategory = async (req, res) => {
     try {
         const id = req.query.id
-        console.log('hai')
-        console.log(id)
-        const userData = await Category.findByIdAndUpdate({ _id: id },{$set:{categoryName:req.body.categoryName}})
+        const userData = await Category.findByIdAndUpdate({ _id: id }, { $set: { categoryName: req.body.categoryName } })
         await userData.save()
         if (userData) {
             res.redirect('/admin/category')
@@ -518,7 +540,7 @@ const loadEditCategory = async (req, res) => {
 
 const ordersList = async (req, res) => {
     try {
-        const orderData = await Order.find({}).populate('userId').sort({orderDate:-1})
+        const orderData = await Order.find({}).sort({ orderDate: -1 }).populate('userId')
         // console.log(orderData)
         if (orderData) {
             res.render('ordersList', { order: orderData })
@@ -550,8 +572,8 @@ const updateOrderStatus = async (req, res) => {
         const orderId = req.query.orderId
         const newStatus = req.body.status
         const orderData = await Order.findOne({ _id: orderId })
-        if(newStatus=='Delivered'){
-            orderData.paymentStatus='Success'
+        if (newStatus == 'Delivered') {
+            orderData.paymentStatus = 'Success'
             await orderData.save()
         }
         orderData.orderstatus = newStatus
@@ -577,12 +599,8 @@ const loadBrands = async (req, res) => {
 
 const checkUniqueBrand = async (req, res, next) => {
     const { brandName } = req.body;
-    // console.log('here is ' + categoryName)
     try {
         const existingBrand = await Brand.findOne({ brandName: brandName });
-        // console.log(existingCategory);
-
-
         if (existingBrand) {
 
             const brandData = await Brand.find({})
@@ -665,7 +683,7 @@ const editBrand = async (req, res) => {
 const loadEditBrand = async (req, res) => {
     try {
         const id = req.query.id
-        const userData = await Brand.findByIdAndUpdate({ _id: id },{$set:{brandName:req.body.brandName}})
+        const userData = await Brand.findByIdAndUpdate({ _id: id }, { $set: { brandName: req.body.brandName } })
         await userData.save()
         if (userData) {
             res.redirect('/admin/brand')
@@ -676,95 +694,117 @@ const loadEditBrand = async (req, res) => {
 }
 
 
-const salesReport=async(req,res)=>{
-    try{
-        
-        if(req.query.startDate && req.query.endDate){
-            const orderData=await Order.find({ orderDate: {
-                $gte: req.query.startDate,
-                $lte: req.query.endDate
-              }}).populate('userId').sort({ orderDate: -1 })
-              let totalTransaction=0
-              let totalOrders=0
-              let userData=await User.find({ date: {
-                $gte: req.query.startDate,
-                $lte: req.query.endDate
-              }})
-              let totalCustomers=userData.length
-              let onlinePayments=0
-              let cashOnDelivery=0
-              let orderCancelled=0
+const salesReport = async (req, res) => {
+    try {
 
-              orderData.forEach((item)=>{
-                totalTransaction+= parseFloat(item.totalAmount)
+        if (req.query.startDate && req.query.endDate) {
+            const orderData = await Order.find({
+                orderDate: {
+                    $gte: req.query.startDate,
+                    $lte: req.query.endDate
+                }
+            }).populate('userId').sort({ orderDate: -1 })
+            let totalTransaction = 0
+            let totalOrders = 0
+            // let userData = await User.find({
+            //     date: {
+            //         $gte: req.query.startDate,
+            //         $lte: req.query.endDate
+            //     }
+            // })
+            const userData = await Order.distinct('userId', {
+                orderDate: {
+                    $gte: req.query.startDate,
+                    $lte: req.query.endDate
+                }
+            })
+            let totalCustomers = userData.length
+            let onlinePayments = 0
+            let cashOnDelivery = 0
+            let orderCancelled = 0
+
+            ///////
+            // order.forEach((item) => {
+            //     if (item.totalAmount !== undefined && item.totalAmount !== null) {
+            //         totalTransaction += parseFloat(item.totalAmount);
+            //     }
+            // });
+            ////////
+
+            orderData.forEach((item) => {
+                if (item.totalAmount !== undefined && item.totalAmount !== null) {
+                    totalTransaction += parseFloat(item.totalAmount);
+                }
                 totalOrders++
-                if(item.paymentMethod==='Paypal'){
+                if (item.paymentMethod === 'Paypal') {
                     onlinePayments++
-                }else{
+                } else {
                     cashOnDelivery++
                 }
-                if(item.orderstatus=='Cancelled'){
+                if (item.orderstatus == 'Cancelled') {
                     orderCancelled++
                 }
 
-              })
-            //   console.log(totalTransaction)
+            })
+            //   console.log(totalTransaction) 
             //   console.log(totalOrders)
             //   console.log(totalCustomers)
             //   console.log(onlinePayments)
             //   console.log(cashOnDelivery)
             //   console.log(orderCancelled)
 
-            res.render('salesReport',{orders:orderData,totalCustomers,totalOrders,totalTransaction,onlinePayments,cashOnDelivery,orderCancelled})
-        }else{
-            const orderData=await Order.find({}).populate('userId').sort({ orderDate: -1 })
-              let totalTransaction=0
-              let totalOrders=0
-              let userData=await User.find({})
-              let totalCustomers=userData.length
-              let onlinePayments=0
-              let cashOnDelivery=0
-              let orderCancelled=0
+            res.render('salesReport', { orders: orderData, totalCustomers, totalOrders, totalTransaction, onlinePayments, cashOnDelivery, orderCancelled })
+        } else {
+            const orderData = await Order.find({}).populate('userId').sort({ orderDate: -1 })
+            let totalTransaction = 0
+            let totalOrders = 0
+            const userData = await Order.distinct('userId' )
+            let totalCustomers = userData.length
+            let onlinePayments = 0
+            let cashOnDelivery = 0
+            let orderCancelled = 0
 
-              orderData.forEach((item)=>{
-                totalTransaction+= parseFloat(item.totalAmount)
+            orderData.forEach((item) => {
+                if (item.totalAmount !== undefined && item.totalAmount !== null) {
+                    totalTransaction += parseFloat(item.totalAmount);
+                }
                 totalOrders++
-                if(item.paymentMethod==='Paypal'){
+                if (item.paymentMethod === 'Paypal') {
                     onlinePayments++
-                }else{
+                } else {
                     cashOnDelivery++
                 }
-                if(item.orderstatus=='Cancelled'){
+                if (item.orderstatus == 'Cancelled') {
                     orderCancelled++
                 }
 
-              })
-              res.render('salesReport',{orders:orderData,totalCustomers,totalOrders,totalTransaction,onlinePayments,cashOnDelivery,orderCancelled})
+            })
+            res.render('salesReport', { orders: orderData, totalCustomers, totalOrders, totalTransaction, onlinePayments, cashOnDelivery, orderCancelled })
         }
-        
-        
-    }catch(error){
+
+
+    } catch (error) {
         console.log(error.message)
     }
 }
 
-const dateFilter=async(req,res)=>{
-    try{
+const dateFilter = async (req, res) => {
+    try {
         // console.log(req.query.startDate)
-        const startDate=req.body.startDate
-        const endDate=req.body.endDate
+        const startDate = req.body.startDate
+        const endDate = req.body.endDate
         res.redirect(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
-    }catch(error){
+    } catch (error) {
         console.log(error.message)
     }
 }
 
-const logout=async(req,res)=>{
-    try{
-       delete req.session.adminId
-       req.session.save()
-       res.redirect('/admin')
-    }catch(error){
+const logout = async (req, res) => {
+    try {
+        delete req.session.adminId
+        req.session.save()
+        res.redirect('/admin')
+    } catch (error) {
         console.log(error.message)
     }
 }

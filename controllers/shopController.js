@@ -10,7 +10,6 @@ const Brand=require('../models/brandModel')
 
 const showShop = async (req, res) => {
     try {
-        console.log('jai');
         const email = req.session.email;
         const userData = await User.findOne({ email: email });
         const categories = await Category.find({ is_active: true });
@@ -23,9 +22,9 @@ const showShop = async (req, res) => {
         const currentPage = parseInt(req.query.page) || 1;
         const pageSize = 9;
 
-        console.log(req.query.gender);
-        console.log(message);
-        console.log(gender);
+        // console.log(req.query.gender);
+        // console.log(message);
+        // console.log(gender);
 
         const getPaginatedProducts = async (query, sortOptions) => {
             const skip = (currentPage - 1) * pageSize;
