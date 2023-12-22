@@ -28,43 +28,7 @@ const addCategoryOffer=async(req,res)=>{
     }
 }
 
-// const updateCategoryOffer=async(req,res)=>{
-//     try {
-//         console.log(req.body.expiry)
-//         console.log(typeof req.body.discount)
-//         const categoryId=req.query.categoryId
-//         const discount=parseFloat(req.body.discount)
-//         const expiry=req.body.expiry
-//         const categoryData=await Category.findByIdAndUpdate({_id:categoryId},{$set:{discount:discount,expiry:expiry,offerStatus:true}})
-//         const discountMultiplier = 1 - discount / 100;
-//         console.log(discountMultiplier)
 
-//         // Update product data
-//         const updateProducts = await Product.updateMany(
-//             { categoryId: categoryId },
-//             [
-//               {
-//                 $set: {
-//                   discountPrice: {
-//                     $round: [
-//                       { $multiply: ['$salePrice', discountMultiplier] },
-//                       0 // specify the number of decimal places to round to
-//                     ]
-//                   },discountPercentage:'$discountPercentage' + discount
-//                 }
-//               }
-//             ]
-//           );
-          
-//           console.log(updateProducts)
-          
-//         if(categoryData){
-//             res.redirect('/admin/categoryOffer')
-//         }
-//     } catch (error) {
-//         console.log(error.message)
-//     }
-// }
 
 const updateCategoryOffer=async(req,res)=>{
     try {

@@ -144,8 +144,10 @@ const cancelOrder = async (req, res) => {
 
 
         // console.log(orderData)
+        if(orderData.userId==userData._id){
         orderData.orderstatus = 'Cancelled'
         await orderData.save()
+        
 
         async function processOrder(orderData) {
             for (const item of orderData.products) {
@@ -174,6 +176,10 @@ const cancelOrder = async (req, res) => {
             res.redirect('/orderDetails?id=' + orderId)
         }
         res.redirect('/orderDetails?id=' + orderId)
+
+    }else{
+        res.send('Invalid user')
+    }
     } catch (error) {
         console.log(error.message)
     }

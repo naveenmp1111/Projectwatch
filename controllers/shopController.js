@@ -34,7 +34,7 @@ const showShop = async (req, res) => {
                 .skip(skip)
                 .limit(pageSize);
         };
-
+        let search = '';
         let query = {};
         let sortOptions = {};
 
@@ -70,7 +70,7 @@ const showShop = async (req, res) => {
                 query.gender = gender;
             }
 
-            let search = '';
+             search = '';
 
             if (req.query.search) {
                 search = req.query.search;
@@ -97,7 +97,7 @@ const showShop = async (req, res) => {
         res.render('shop', {
             products: productData,
             user: userData,
-            search: '',
+            search: search,
             categories,
             message,
             categoryId,

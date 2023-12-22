@@ -22,8 +22,11 @@ const orderSchema=mongoose.Schema({
         required:true
     },
     orderDate:{
-        type:Date,
-        default:Date.now
+        type: Date,
+        default: Date.now,
+        get: (timestamp) => {
+          return new Date(timestamp).toLocaleDateString('en-US');
+        },
     },
     totalAmount:{
         type:Number,

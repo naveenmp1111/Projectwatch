@@ -25,8 +25,11 @@ const userSchema=mongoose.Schema({
         default:true
     },
     date:{
-        type:Date,
-        default:Date.now
+        type: Date,
+        default: Date.now,
+        get: (timestamp) => {
+          return new Date(timestamp).toLocaleDateString('en-US');
+        },
     },
     otp:{
         type:Number,

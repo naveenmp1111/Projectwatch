@@ -31,6 +31,7 @@ const addToWishlist = async (req, res) => {
             if (productExists) {
                 res.redirect('/wishlist')
             } else {
+                console.log('coming')
                 wishlist.products.push({ productId: productData._id });
                 const wishlistData = await wishlist.save();
 
@@ -69,6 +70,7 @@ const showWishlist=async(req,res)=>{
         const email=req.session.email
         const userData=await User.findOne({email})
         const wishlistData=await Wishlist.findOne({userId:userData._id}).populate('products.productId')
+        console.log(wishlistData)
         const categories=await Category.find({is_active:true})
         const brands=await Brand.find({is_active:true})
         res.render('wishlist',{wishlist:wishlistData,user:userData,categories,brands})

@@ -2,11 +2,11 @@ const User = require('../models/userModel')
 const Product = require('../models/productModel')
 const nodemailer = require('nodemailer')
 const Order = require('../models/orderModel')
-const Category=require('../models/categoryModel')
-const Brand =require('../models/brandModel')
-const Coupon=require('../models/couponModel')
-const RandomString=require('randomstring')
-const Wishlist=require('../models/wishlistModel')
+const Category = require('../models/categoryModel')
+const Brand = require('../models/brandModel')
+const Coupon = require('../models/couponModel')
+const RandomString = require('randomstring')
+const Wishlist = require('../models/wishlistModel')
 const userAuth = require('../middlewares/userAuth')
 const { ConversationListInstance } = require('twilio/lib/rest/conversations/v1/conversation')
 const { json } = require('express')
@@ -27,24 +27,24 @@ const loadHome = async (req, res) => {
         //     }
         //   );
         //   console.log(updateDocuments)
-          
+
 
         const email = req.session.email
         const userData = await User.findOne({ email: email })
-        const categoryData=await Category.find({is_active:true})
-        const brandData=await Brand.find({is_active:true})
-        const productData = await Product.find({ 
+        const categoryData = await Category.find({ is_active: true })
+        const brandData = await Brand.find({ is_active: true })
+        const productData = await Product.find({
             is_active: true,
-            catStatus:true
-         }).populate('brandId').populate('categoryId').sort({date:-1}).limit(9)
+            catStatus: true
+        }).populate('brandId').populate('categoryId').sort({ date: -1 }).limit(9)
 
         // const res=productData.sort({salePrice:-1})
         // console.log(res)
-         if (userData) {
-                res.render('home', { products: productData, user: userData,categories:categoryData,brands:brandData })
-            
+        if (userData) {
+            res.render('home', { products: productData, user: userData, categories: categoryData, brands: brandData })
+
         } else {
-            res.render('home', { products: productData, user: userData ,categories:categoryData,brands:brandData})
+            res.render('home', { products: productData, user: userData, categories: categoryData, brands: brandData })
         }
 
     } catch (error) {
@@ -55,9 +55,9 @@ const loadHome = async (req, res) => {
 const loginLoad = async (req, res) => {
     try {
 
-        if(req.query.message==='blocked'){
+        if (req.query.message === 'blocked') {
             res.render('login', { message: 'User is Blocked' })
-        }else{
+        } else {
             res.render('login', { message: '' })
         }
     } catch (error) {
@@ -75,40 +75,40 @@ const loadRegister = async (req, res) => {
 
 const insertUser = async (req, res) => {
     try {
-        if(req.body.password == req.body.confirmPassword){
-        const obj = {
-            name: req.body.name,
-            email: req.body.email,
-            mobile: req.body.mobile,
-            password: req.body.password,
-            referralCode:req.body.referralCode
-        }
+        if (req.body.password == req.body.confirmPassword) {
+            const obj = {
+                name: req.body.name,
+                email: req.body.email,
+                mobile: req.body.mobile,
+                password: req.body.password,
+                referralCode: req.body.referralCode
+            }
 
-        req.session.data = obj
-        if (obj.name) {
-            res.redirect('/verifyOtp')
-        } else {
-            res.write('fill all fields')
+            req.session.data = obj
+            if (obj.name) {
+                res.redirect('/verifyOtp')
+            } else {
+                res.write('fill all fields')
+            }
         }
-    }
 
     } catch (error) {
         console.log(error.message)
     }
 }
 
-const checkReferral =async(req,res)=>{
+const checkReferral = async (req, res) => {
     try {
-        const code=req.query.code
-        const userData=await User.findOne({referralCode:code})
-        if(userData){
-            req.session.referralCode=code
+        const code = req.query.code
+        const userData = await User.findOne({ referralCode: code })
+        if (userData) {
+            req.session.referralCode = code
             res.status(200).json({
-                message:'Valid Coupon'
+                message: 'Valid Coupon'
             })
-        }else{
+        } else {
             res.status(200).json({
-                message:'Invalid Coupon'
+                message: 'Invalid Coupon'
             })
         }
     } catch (error) {
@@ -146,13 +146,13 @@ const sendOtp = async (req, res) => {
         });
 
         req.session.otp = randomotp
- 
+
         console.log(req.session.otp)
         setTimeout(() => {
             console.log('session ended')
         }, 30000);
 
-        req.session.otpTime=Date.now()
+        req.session.otpTime = Date.now()
 
         res.render('otpverification', { message: '' })
 
@@ -165,57 +165,57 @@ const verifyOtp = async (req, res) => {
     try {
         const otp = req.session.otp
         const randomotp = req.body.otp
-        const timelimit=Date.now()
+        const timelimit = Date.now()
 
-        if(timelimit - req.session.otpTime > 30000){
+        if (timelimit - req.session.otpTime > 30000) {
             res.render('otpverification', { message: 'OTP timeout' })
-        }else{
-            const { name, email, mobile, password ,referralCode} = req.session.data
-           
+        } else {
+            const { name, email, mobile, password, referralCode } = req.session.data
+
             // console.log(req.session.otpIsVerified);
             // if (req.session.otpIsVerified) {
-                if (randomotp == otp) {
-    
+            if (randomotp == otp) {
 
-                    const myReferralCode = await generateReferralCode();
 
-                    async function generateReferralCode() {
-                        const randomString = RandomString.generate(5);
-                        const randomNumber = Math.floor(100 + Math.random() * 900).toString();
-                        const RandomReferralCode = randomString + randomNumber;
-                    
-                        const userData = await User.findOne({ RandomReferralCode });
-                    
-                        if (userData) {
-                            return await generateReferralCode();
-                        } else {
-                            return RandomReferralCode;
-                        }
+                const myReferralCode = await generateReferralCode();
+
+                async function generateReferralCode() {
+                    const randomString = RandomString.generate(5);
+                    const randomNumber = Math.floor(100 + Math.random() * 900).toString();
+                    const RandomReferralCode = randomString + randomNumber;
+
+                    const userData = await User.findOne({ RandomReferralCode });
+
+                    if (userData) {
+                        return await generateReferralCode();
+                    } else {
+                        return RandomReferralCode;
                     }
-
-                    const user = new User({
-                        name: name,
-                        email: email,
-                        mobile: mobile,
-                        password: password,
-                        is_admin: 0,
-                        referralCode:myReferralCode
-                        
-                    })
-                    await user.save()
-
-                    if(referralCode){
-                        await User.findOneAndUpdate({referralCode:referralCode},{$inc:{wallet:+200}})
-                        await User.findOneAndUpdate({email:email},{$set:{wallet:100}})
-                    }
-
-                    res.redirect('/login')
-                } else {
-                    res.render('otpverification', { message: 'Invalid Otp' })
                 }
 
+                const user = new User({
+                    name: name,
+                    email: email,
+                    mobile: mobile,
+                    password: password,
+                    is_admin: 0,
+                    referralCode: myReferralCode
+
+                })
+                await user.save()
+
+                if (referralCode) {
+                    await User.findOneAndUpdate({ referralCode: referralCode }, { $inc: { wallet: +200 } })
+                    await User.findOneAndUpdate({ email: email }, { $set: { wallet: 100 } })
+                }
+
+                res.redirect('/login')
+            } else {
+                res.render('otpverification', { message: 'Invalid Otp' })
+            }
+
         }
-       
+
 
     } catch (error) {
         console.log(error.message)
@@ -228,16 +228,21 @@ const verifyLogin = async (req, res) => {
 
         const password = req.body.password
         const userData = await User.findOne({ email: email })
-        const productData = await Product.find({  is_active: true,catStatus:true })
+        const productData = await Product.find({ is_active: true, catStatus: true })
         // console.log(productData)
         // console.log(userData.address[0].fname);
         if (userData) {
+            if (userData.is_active == true) {
+
                 if (userData.password === password) {
                     req.session.email = email
                     res.redirect('/')
                 } else {
                     res.render('login', { message: 'invalid password' })
                 }
+            } else {
+                res.redirect('/login?message=blocked');
+            }
 
         } else {
             res.render('login', { message: 'User not found' })
@@ -279,9 +284,9 @@ const forgotPassword = async (req, res) => {
     }
 }
 
-const getPasswordOtp=async(req,res)=>{
+const getPasswordOtp = async (req, res) => {
     try {
-        req.session.forgotPasswordEmail=req.body.email
+        req.session.forgotPasswordEmail = req.body.email
         res.redirect('/generatePasswordOtp')
     } catch (error) {
         console.log(error.message)
@@ -315,7 +320,7 @@ const generatePasswordOtp = async (req, res) => {
                 console.log('Email sent: ' + info.response);
             }
         });
-        req.session.passwordOtpTime=Date.now()
+        req.session.passwordOtpTime = Date.now()
         const email = req.session.forgotPasswordEmail
         const userData = await User.findOneAndUpdate({ email: email }, { $set: { otp: randomotp } })
         if (userData) {
@@ -332,21 +337,21 @@ const generatePasswordOtp = async (req, res) => {
 
 const verifypasswordotp = async (req, res) => {
     try {
-        const passwordTimeLimit=Date.now()
+        const passwordTimeLimit = Date.now()
         // console.log('limit'+passwordTimeLimit)
         // console.log('start'+req.session.passwordOtpTime)
         const typedotp = req.body.otp
         const email = req.body.email
         const randomotp = req.body.randomotp
         const userData = await User.findOne({ email: email })
-        if(passwordTimeLimit-req.session.passwordOtpTime<60000){
+        if (passwordTimeLimit - req.session.passwordOtpTime < 60000) {
             if (typedotp == randomotp) {
                 await User.findOneAndUpdate({ email: email }, { $set: { otp: null } })
                 res.render('newPassword', { email, message: '' })
             } else {
                 res.render('passwordOtpform', { message: 'invalid otp', randomotp: userData.otp, email })
             }
-        }else{
+        } else {
             res.render('passwordOtpform', { message: 'invalid otp', randomotp: userData.otp, email })
         }
     } catch (error) {
@@ -409,31 +414,34 @@ const addToCart = async (req, res) => {
 
                 if (productId == userData.cart[i].productId) {
                     flag = 1;
+                    userData.cart[i].quantity += quantity;
+                    userData.save()
                     break;
                 }
             }
         }
         if (flag == 0) {
             if (userData) {
-               
-                    await User.findOneAndUpdate(
-                        { email: email },
-                        { $push: { cart: cartItem } },
-                        // {upsert:true,new:true}
-                    )
-                    res.redirect('/cart')
-                
+
+                await User.findOneAndUpdate(
+                    { email: email },
+                    { $push: { cart: cartItem } },
+                    // {upsert:true,new:true}
+                )
+                res.redirect('/cart')
+
 
             } else {
                 res.redirect('/login')
             }
         } else {
-            const email = req.session.email
-            const userData = await User.findOne({ email })
-            const productData = await Product.findOne({ _id: productId })
-            if (productData) {
-                res.render('productDetails', { product: productData, message: "Already exists in cart", user: userData })
-            }
+            res.redirect('/cart')
+            // const email = req.session.email
+            // const userData = await User.findOne({ email })
+            // const productData = await Product.findOne({ _id: productId })
+            // if (productData) {
+            //     res.render('productDetails', { product: productData, message: "Already exists in cart", user: userData })
+            // }
         }
 
 
@@ -444,15 +452,20 @@ const addToCart = async (req, res) => {
 
 const userAccount = async (req, res) => {
     try {
-        // const id = req.query.id
-        const categories=await Category.find({is_active:true})
-        const brands=await Brand.find({is_active:true})
-        const email = req.session.email;
+        let email;
+        if(req.query.newEmail){
+            email=req.query.newEmail
+        }else{
+            email = req.session.email;
+        }
+        // const  = req.query.id
+        const categories = await Category.find({ is_active: true })
+        const brands = await Brand.find({ is_active: true })       
         const user = await User.findOne({ email: email });
         const orders = await Order.find({ userId: user._id }).populate('products.productId').sort({ orderDate: -1 });
 
-            res.render('userAccount', { user: user, orders ,categories,brands})
-        
+        res.render('userAccount', { user: user, orders, categories, brands })
+
     } catch (error) {
         console.log(error.message)
     }
@@ -460,13 +473,13 @@ const userAccount = async (req, res) => {
 
 const addressForm = async (req, res) => {
     try {
-        const categories=await Category.find({is_active:true})
-        const brands=await Brand.find({is_active:true})
+        const categories = await Category.find({ is_active: true })
+        const brands = await Brand.find({ is_active: true })
         const email = req.session.email;
         const user = await User.findOne({ email: email });
         const checkout = req.query.checkout
         // console.log(checkout)
-        res.render('addressForm',{checkout,user,categories,brands})
+        res.render('addressForm', { checkout, user, categories, brands })
     } catch (error) {
         console.log(error.message)
     }
@@ -503,10 +516,10 @@ const addAddress = async (req, res) => {
                 }
             })
         if (result) {
-            if(checkout){
+            if (checkout) {
                 res.redirect('/checkout')
-            }else{
-            res.redirect('/userAccount')
+            } else {
+                res.redirect('/userAccount')
             }
         }
     } catch (error) {
@@ -518,15 +531,15 @@ const showCart = async (req, res) => {
     try {
         const email = req.session.email
         const userData = await User.findOne({ email: email })
-        const categories=await Category.find({is_active:true})
-        const brands=await Brand.find({is_active:true})
+        const categories = await Category.find({ is_active: true })
+        const brands = await Brand.find({ is_active: true })
         if (userData) {
-            
-                const fullUserData = await User.findOne({ email: email }).populate('cart.productId')
-                // console.log(fullUserData.cart)
-                // console.log(fullUserData.cart[1].quantity)
-                res.render('cart', { user: userData, userCart: fullUserData,brands,categories })
-            
+
+            const fullUserData = await User.findOne({ email: email }).populate('cart.productId')
+            // console.log(fullUserData.cart)
+            // console.log(fullUserData.cart[1].quantity)
+            res.render('cart', { user: userData, userCart: fullUserData, brands, categories })
+
 
         } else {
             res.redirect('/login')
@@ -560,7 +573,7 @@ const showCheckOut = async (req, res) => {
         const coupon = await Coupon.find({ is_active: true, "redeemedUsers.userId": { $ne: userData._id } });
 
         if (userData.cart.length > 0) {
-            res.render('checkout', { user: userData ,coupon})
+            res.render('checkout', { user: userData, coupon })
         } else {
             res.redirect('/cart')
         }
@@ -570,58 +583,58 @@ const showCheckOut = async (req, res) => {
     }
 }
 
-const applyCoupon=async(req,res)=>{
+const applyCoupon = async (req, res) => {
     try {
-        req.session.couponCode=req.query.couponCode
+        req.session.couponCode = req.query.couponCode
         const couponCode = req.query.couponCode;
         const totalAmount = req.query.totalAmount;
         console.log(couponCode)
         try {
             const couponData = await Coupon.findOne({ couponCode: couponCode });
-            
+
             if (!couponData) {
-               
+
                 return res.status(200).json({
                     message: 'Invalid Coupon',
                     finalPrice: totalAmount
                 });
             }
-        
+
             const userData = await User.findOne({ email: req.session.email });
-        
+
             // Check if the user ID is in the redeemedUsers array
             const isRedeemed = couponData.redeemedUsers.some(user => user.userId === userData._id.toString());
 
 
-        // console.log(isRedeemed)
-            if (isRedeemed  || totalAmount<couponData.minPurchase) {
+            // console.log(isRedeemed)
+            if (isRedeemed || totalAmount < couponData.minPurchase) {
                 return res.status(200).json({
                     message: 'Invalid Coupon',
                     finalPrice: totalAmount
                 });
-            }else{
+            } else {
 
                 const finalPrice = totalAmount - couponData.discount;
-                const discountAmount=couponData.discount
-                
+                const discountAmount = couponData.discount
+
                 res.status(200).json({
                     message: 'Coupon Applied Successfully',
                     finalPrice: finalPrice,
                     couponAmount: discountAmount
                 });
             }
-        
-           
+
+
         } catch (error) {
             console.error(error);
             res.status(500).json({
                 message: 'Internal Server Error'
             });
         }
-        
 
-        
-      
+
+
+
     } catch (error) {
         console.log(error.message)
     }
@@ -630,13 +643,13 @@ const applyCoupon=async(req,res)=>{
 const editAddressForm = async (req, res) => {
     try {
         const checkout = req.query.checkoutcode
-        const categories=await Category.find({is_active:true})
-        const brands=await Brand.find({is_active:true})
+        const categories = await Category.find({ is_active: true })
+        const brands = await Brand.find({ is_active: true })
         const email = req.session.email;
         const index = req.query.index
         const userData = await User.findOne({ email: email })
         const address = userData.address[index]
-        res.render('editAddressForm', { address, index, checkout,user:userData,categories,brands })
+        res.render('editAddressForm', { address, index, checkout, user: userData, categories, brands })
     } catch (error) {
         console.log(error.message)
     }
@@ -705,7 +718,7 @@ const updateUserDetails = async (req, res) => {
         const { name, nemail, mobile } = req.body
         const userData = await User.findOneAndUpdate({ email }, { $set: { name: name, email: nemail, mobile: mobile } })
         if (userData) {
-            res.redirect('/userAccount')
+            res.redirect(`/userAccount?newEmail=${nemail}`)
         } else {
             res.write('need to handle')
             res.end()
@@ -724,18 +737,19 @@ const checkUniqueEmail2 = async (req, res, next) => {
         const userData = await User.findOne({ email: email });
         if (userData) {
             const id = userData._id
-            // console.log(id);
+            console.log('peace');
             const existingUser = await User.findOne({
                 _id: { $ne: id },
                 email: nemail
             });
 
             if (existingUser) {
-
+                console.log('peaceout');
                 res.write('email already exists')
                 res.end()
 
             } else {
+                console.log('chillpeace');
                 next();
             }
         }
@@ -746,27 +760,27 @@ const checkUniqueEmail2 = async (req, res, next) => {
 
 const updatePassword = async (req, res) => {
     try {
-       
+
         const email = req.session.email
         const { currentPassword, npassword, cpassword } = req.body
-               
+
         const userData = await User.findOne({ email })
         if (userData.password == currentPassword) {
             if (npassword == cpassword) {
                 userData.password = npassword
                 userData.save()
-            
+
                 res.status(200).json({
-                    message3:'success'
+                    message3: 'success'
                 })
             } else {
                 res.status(200).json({
-                    message2:'Passwords dont match'
+                    message2: 'Passwords dont match'
                 })
             }
         } else {
             res.status(200).json({
-                message1:'Invalid Password'
+                message1: 'Invalid Password'
             })
         }
     } catch (error) {

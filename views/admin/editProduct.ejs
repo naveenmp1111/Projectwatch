@@ -182,16 +182,16 @@
         </header>
         <section class="content-main">
 
-            <form action="/admin/editProductList?id=<%=products._id%>" method="post" enctype="multipart/form-data">
+            <form action="/admin/editProductList?id=<%=products._id%>" method="post" enctype="multipart/form-data" onsubmit="return validateForm()" >
                 <!-- <form action="/admin/editProductList?id=<%=products._id%>" method="post" > -->
                 <div class="row">
                     <div class="col-9">
                         <div class="content-header">
                             <h2 class="content-title">Edit Product</h2>
                             <div>
-                                <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to
+                                <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to
                                     draft</button>
-                                <button class="btn btn-md rounded font-sm hover-up">Publich</button>
+                                <button class="btn btn-md rounded font-sm hover-up">Publich</button> -->
                             </div>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                                 <div class="mb-4">
                                     <label for="product_title" class="form-label">Product title</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_title"
-                                        name="title" value="<%=products.title%>">
+                                        name="title" value="<%=products.title%>" required>
                                 </div>
                                 <div class="row gx-3">
                                     <div class="col-md-4  mb-3">
@@ -222,7 +222,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-4">
-                                    <select class="form-select" name="brand">
+                                    <select class="form-select" name="brand"  required>
                                         <%for(i=0;i<brand.length;i++){%>
                                             <option value="<%=brand[i]._id%>"
                                                 <%if(products.brandId.brandName===brand[i].brandName){%>selected
@@ -252,7 +252,7 @@
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control"
+                                                <input placeholder="$" type="number" class="form-control" min="0"
                                                     name="regularPrice" value="<%=products.regularPrice%>" required>
                                             </div>
                                         </div>
@@ -334,42 +334,20 @@
                                     }
                                 }
                             </script>
-
-
-                            <!-- <% for (let j = 0; j < products.image.length; j++) { %>
-                                <div class="image-preview">
-                                  <button type="button" class="btn btn-danger" onclick="deleteImage('<%= j %>','<%= products._id %>')">Delete</button>
-                                  <img src="/<%= products.image[j] %>">
-                                </div>
-                              <% } %>
-                              
-                              <script>
-                                 function deleteImage(index, productId) {
-                                  try {
-                                    console.log('yes');
-                                    const imagePreview = document.querySelectorAll('.image-preview')[index];
-                              
-                                    if (imagePreview) {
-                                      imagePreview.remove();
-                                    } else {
-                                      console.error('Something went wrong with removing the image preview');
-                                      return;
+                            <script>
+                                function validateForm() {
+                                    var title = document.querySelector('input[name="title"]').value.trim();
+                            
+                                    if (title === '') {
+                                        alert('Invalid Product title');
+                                        return false;
                                     }
-                             
-                                      fetch(`/admin/deleteImage/${productId}/${index}`, {
-                                      method: 'DELETE',
-                                    })
-                                 
-                                    .then(respose=>response.json())
-                                    .then(data=>{
- 
-                                    })
-                                  } catch (error) {
-                                    console.error(error);
-                                  }
+                            
+                                    return true;
                                 }
-                              </script> -->
+                            </script>
 
+                            
 
 
                         </div> <!-- card end// -->

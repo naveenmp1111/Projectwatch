@@ -84,37 +84,37 @@ const loadDashboard = async (req, res) => {
 
         const orderStats = await Order.aggregate([
             {
-              $unwind: '$products'
+                $unwind: '$products'
             },
             {
-              $lookup: {
-                from: 'products',
-                localField: 'products.productId',
-                foreignField: '_id',
-                as: 'productInfo'
-              }
+                $lookup: {
+                    from: 'products',
+                    localField: 'products.productId',
+                    foreignField: '_id',
+                    as: 'productInfo'
+                }
             },
             {
-              $unwind: '$productInfo'
+                $unwind: '$productInfo'
             },
             {
-              $lookup: {
-                from: 'categories',
-                localField: 'productInfo.categoryId',
-                foreignField: '_id',
-                as: 'categoryInfo'
-              }
+                $lookup: {
+                    from: 'categories',
+                    localField: 'productInfo.categoryId',
+                    foreignField: '_id',
+                    as: 'categoryInfo'
+                }
             },
             {
-              $group: {
-                _id: '$categoryInfo._id',
-                categoryName: { $first: '$categoryInfo.categoryName' },
-                orderCount: { $sum: 1 }
-              }
+                $group: {
+                    _id: '$categoryInfo._id',
+                    categoryName: { $first: '$categoryInfo.categoryName' },
+                    orderCount: { $sum: 1 }
+                }
             }
-          ]);
+        ]);
 
-          const categoryNames = JSON.stringify(orderStats.map(stat => stat.categoryName).flat());
+        const categoryNames = JSON.stringify(orderStats.map(stat => stat.categoryName).flat());
         const orderCounts = JSON.stringify(orderStats.map(stat => stat.orderCount));
 
         // console.log(categoryNames)
@@ -128,10 +128,10 @@ const loadDashboard = async (req, res) => {
                 totalProducts: monthOrderData.totalProducts,
                 totalRegister: monthUserData.totalRegister
             };
-            
+
         });
 
-        const totalOrdersJson= JSON.stringify(monthlyData.map(item => item.totalOrders));
+        const totalOrdersJson = JSON.stringify(monthlyData.map(item => item.totalOrders));
         const totalProductsJson = JSON.stringify(monthlyData.map(item => item.totalProducts));
         const totalRegisterJson = JSON.stringify(monthlyData.map(item => item.totalRegister));
 
@@ -144,8 +144,10 @@ const loadDashboard = async (req, res) => {
 
 
         // console.log(totalTransaction)
-        res.render('dashboard', { user, order, product, totalTransaction ,totalRegisterJson,
-            totalOrdersJson,totalProductsJson,categoryNames,orderCounts})
+        res.render('dashboard', {
+            user, order, product, totalTransaction, totalRegisterJson,
+            totalOrdersJson, totalProductsJson, categoryNames, orderCounts
+        })
     } catch (error) {
         console.log(error.message)
     }
@@ -706,12 +708,7 @@ const salesReport = async (req, res) => {
             }).populate('userId').sort({ orderDate: -1 })
             let totalTransaction = 0
             let totalOrders = 0
-            // let userData = await User.find({
-            //     date: {
-            //         $gte: req.query.startDate,
-            //         $lte: req.query.endDate
-            //     }
-            // })
+
             const userData = await Order.distinct('userId', {
                 orderDate: {
                     $gte: req.query.startDate,
@@ -723,13 +720,6 @@ const salesReport = async (req, res) => {
             let cashOnDelivery = 0
             let orderCancelled = 0
 
-            ///////
-            // order.forEach((item) => {
-            //     if (item.totalAmount !== undefined && item.totalAmount !== null) {
-            //         totalTransaction += parseFloat(item.totalAmount);
-            //     }
-            // });
-            ////////
 
             orderData.forEach((item) => {
                 if (item.totalAmount !== undefined && item.totalAmount !== null) {
@@ -753,12 +743,12 @@ const salesReport = async (req, res) => {
             //   console.log(cashOnDelivery)
             //   console.log(orderCancelled)
 
-            res.render('salesReport', { orders: orderData, totalCustomers, totalOrders, totalTransaction, onlinePayments, cashOnDelivery, orderCancelled })
+            res.render('salesReport', { orders: orderData, totalCustomers, totalOrders, totalTransaction, onlinePayments, cashOnDelivery, orderCancelled, start: req.query.startDate, end: req.query.endDate })
         } else {
             const orderData = await Order.find({}).populate('userId').sort({ orderDate: -1 })
             let totalTransaction = 0
             let totalOrders = 0
-            const userData = await Order.distinct('userId' )
+            const userData = await Order.distinct('userId')
             let totalCustomers = userData.length
             let onlinePayments = 0
             let cashOnDelivery = 0

@@ -88,22 +88,6 @@
                 </li>
             </ul>
             <hr>
-            <!-- <ul class="menu-aside">
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
-                        <span class="text"> Starter page </span>
-                    </a>
-                </li>
-            </ul> -->
             <br>
             <br>
         </nav>
@@ -165,138 +149,151 @@
         </header> 
         <section class="content-main">
 
-            <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-9">
-                    <div class="content-header">
-                        <h2 class="content-title">Add New Product</h2>
-                        <div>
-                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
-                            <button class="btn btn-md rounded font-sm hover-up">Publich</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="mb-4">
-                                <label for="product_title" class="form-label">Product title</label>
-                                <input type="text" placeholder="Type here" class="form-control" id="product_title" name="title" required>
-                            </div>
-                            <div class="row gx-3">
-                                <div class="col-md-4  mb-3">
-                                    <label for="product_sku" class="form-label">Weight</label>
-                                    <input type="number" min="0" placeholder="Type here" class="form-control" id="product_sku" name="weight" required>
-                                </div>
-                                <div class="col-md-4  mb-3">
-                                    <label for="product_color" class="form-label">Color</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color" required>
-                                </div>
-                                <div class="col-md-4  mb-3">
-                                    <label for="product_size" class="form-label">Shape</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_size" name="shape" required>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <select class="form-select" name="brand" required>
-                                    <%for(i=0;i<brand.length;i++){%>
-                                        <option value="<%=brand[i]._id%>"><%=brand[i].brandName%>
-                                        </option>
-                                        <%}%>
-                                    </select>
-                            </div>
-                        </div>
-                    </div> <!-- card end// -->
-                    <div class="card mb-4">
-                        <div class="card-body">
+            <form action="/admin/addProduct" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="content-header">
+                            <h2 class="content-title">Add New Product</h2>
                             <div>
-                                <label class="form-label">Description</label>
-                                <textarea placeholder="Type here" class="form-control" rows="4" name="description" required></textarea>
+                                <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                                <button class="btn btn-md rounded font-sm hover-up">Publich</button> -->
                             </div>
                         </div>
-                    </div> <!-- card end// -->
-                    <div class="card mb-4">
-                        <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="mb-4">
-                                <label class="form-label">Regular price</label>
-                                <div class="row gx-2">
-                                    <input placeholder="$" type="Number" class="form-control" name="regularPrice" required min="0">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="mb-4">
-                                <label class="form-label">Discount Percentage</label>
-                                <input placeholder="$" type="Number" class="form-control" name="discountPercentage" required min="0" max="100">
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="mb-4">
-                                <label class="form-label">Quantity</label>
-                                <input placeholder="Nos" type="number" class="form-control" name="quantity" required min="0">
-                            </div>
-                        </div>
-                       
                     </div>
-                    </div>
-                </div>
-                
-                </div>
-                
-                    <div class="col-lg-3">
+                    
+                    <div class="col-lg-6">
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Media</h4>
-                            </div>
                             <div class="card-body">
-                                <div class="input-upload">
-                                    <img src="/assetsb/imgs/theme/upload.svg" alt="">
-                                    <input class="form-control" type="file" name="image" accept="image/*" multiple >
+                                <div class="mb-4">
+                                    <label for="product_title" class="form-label">Product title</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_title" name="title" required>
+                                </div>
+                                <div class="row gx-3">
+                                    <div class="col-md-4  mb-3">
+                                        <label for="product_sku" class="form-label">Weight</label>
+                                        <input type="number" min="0" placeholder="Type here" class="form-control" id="product_sku" name="weight" required>
+                                    </div>
+                                    <div class="col-md-4  mb-3">
+                                        <label for="product_color" class="form-label">Color</label>
+                                        <input type="text" placeholder="Type here" class="form-control" id="product_color" name="color" required>
+                                    </div>
+                                    <div class="col-md-4  mb-3">
+                                        <label for="product_size" class="form-label">Shape</label>
+                                        <input type="text" placeholder="Type here" class="form-control" id="product_size" name="shape" required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <select class="form-select" name="brand" required>
+                                        <%for(i=0;i<brand.length;i++){%>
+                                            <option value="<%=brand[i]._id%>"><%=brand[i].brandName%>
+                                            </option>
+                                            <%}%>
+                                        </select>
                                 </div>
                             </div>
                         </div> <!-- card end// -->
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <h4>Organization</h4>
-                            </div>
                             <div class="card-body">
-                                <div class="row gx-2">
-                                    <div class="col-sm-12 mb-3">
-                                        <h5 class="mb-3">Categories</h5>
-                                        <div class="mb-4">
-                                            <select class="form-select" name="category" required>
-                                                <%for(i=0;i<category.length;i++){%>
-                                                <option value="<%=category[i]._id%>"><%=category[i].categoryName%></option>
-                                                <%}%>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 mb-3">
-                                        <h5 class="mb-3">Gender</h5>
-                                        <div class="mb-4">
-                                            <select class="form-select" name="gender" required>
-                                                <option>Mens</option>
-                                                <option>Womens</option>
-                                                <option>Unisex</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="mb-4">
-                                        <label for="product_name" class="form-label">Tags</label>
-                                        <input type="text" class="form-control" name="tags">
-                                    </div>
-                                </div> <!-- row.// -->
+                                <div>
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description" required></textarea>
+                                </div>
                             </div>
                         </div> <!-- card end// -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Regular price</label>
+                                    <div class="row gx-2">
+                                        <input placeholder="$" type="Number" class="form-control" name="regularPrice" required min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Discount Percentage</label>
+                                    <input placeholder="$" type="Number" class="form-control" name="discountPercentage" required min="0" max="100">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Quantity</label>
+                                    <input placeholder="Nos" type="number" class="form-control" name="quantity" required min="0">
+                                </div>
+                            </div>
+                           
+                        </div>
+                        </div>
+                    </div>
+                    
+                    </div>
+                    
+                        <div class="col-lg-3">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h4>Media</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-upload">
+                                        <img src="/assetsb/imgs/theme/upload.svg" alt="">
+                                        <input class="form-control" type="file" name="image" accept="image/*" multiple required>
+                                    </div>
+                                </div>
+                            </div> <!-- card end// -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h4>Organization</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row gx-2">
+                                        <div class="col-sm-12 mb-3">
+                                            <h5 class="mb-3">Categories</h5>
+                                            <div class="mb-4">
+                                                <select class="form-select" name="category" required>
+                                                    <%for(i=0;i<category.length;i++){%>
+                                                    <option value="<%=category[i]._id%>"><%=category[i].categoryName%></option>
+                                                    <%}%>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 mb-3">
+                                            <h5 class="mb-3">Gender</h5>
+                                            <div class="mb-4">
+                                                <select class="form-select" name="gender" required>
+                                                    <option>Mens</option>
+                                                    <option>Womens</option>
+                                                    <option>Unisex</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="mb-4">
+                                            <label for="product_name" class="form-label">Tags</label>
+                                            <input type="text" class="form-control" name="tags">
+                                        </div>
+                                    </div> <!-- row.// -->
+                                </div>
+                            </div> <!-- card end// -->
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
-        </form>
+                <button type="submit" class="btn btn-md rounded font-sm hover-up" >Publish</button>
+            </form>
+            <script>
+                function validateForm() {
+                    var title = document.querySelector('input[name="title"]').value.trim();
+            
+                    if (title === '') {
+                        alert('Invalid Product title');
+                        return false;
+                    }
+            
+                    return true;
+                }
+            </script>
+            
 
         </section>
         <footer class="main-footer font-xs">

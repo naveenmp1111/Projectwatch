@@ -6,13 +6,15 @@ const multer=require('multer')
 const upload=multer({dest:'uploads/'})
 const Product = require('../models/productModel')
 const auth=require('../middlewares/adminAuth')
+const uuid = require('uuid');
+const sessionSecret = uuid.v4();
   
 
 adminRoute.set('view engine','ejs')
 adminRoute.set('views','./views/admin')
 
 adminRoute.use(session({
-    secret:'secret',
+    secret:sessionSecret,
     resave:false,
     saveUninitialized:true
 }))
