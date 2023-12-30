@@ -7,7 +7,10 @@ const brandSchema=mongoose.Schema({
      is_active:{
         type:Boolean,
         default:true
-     }
+     },
+     brandImage:[{
+        type:String,
+     }]
 })
 
 module.exports=mongoose.model('Brand',brandSchema)

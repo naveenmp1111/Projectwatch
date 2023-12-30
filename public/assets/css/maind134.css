@@ -2372,6 +2372,7 @@ label {
   width: auto;
   display: inline-block;
   padding: 10px 0;
+  
 }
 
 /*Heading tab*/
@@ -5342,15 +5343,18 @@ h6.post-title {
 
 .logo a {
   display: block;
+
 }
 
 .logo.logo-width-1 {
   margin-right: 123px;
+ 
 }
 
 .logo.logo-width-1 a img {
   width: 120px;
   min-width: 120px;
+  
 }
 
 .search-style-1 form {
@@ -6601,7 +6605,7 @@ h6.post-title {
 }
 
 .header-style-4 .header-top-ptb-1 {
-  background-color: #d8f4e2;
+  background-color: #e2e9e1;
   background-image: none;
   padding: 15px 0;
   border: 0;
@@ -6692,7 +6696,7 @@ h6.post-title {
 }
 
 .header-style-5 .logo.logo-width-1 a img {
-  width: 120px;
+  
   margin-top: 5px;
 }
 
@@ -9215,6 +9219,8 @@ span.fi-rs-apps {
   }
   .logo.logo-width-1 a img {
     width: 120px;
+  
+    
   }
   .header-action .header-action-icon {
     margin-right: 15px;
@@ -9282,6 +9288,7 @@ span.fi-rs-apps {
   }
   .mobile-header-wrapper-style .mobile-header-wrapper-inner .mobile-header-top .mobile-header-logo a img {
     width: 80px;
+   
   }
   .mobile-header-wrapper-style .mobile-header-wrapper-inner .mobile-header-content-area {
     padding: 30px 20px;
@@ -9505,6 +9512,7 @@ span.fi-rs-apps {
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .logo.logo-hm3 a img {
     width: 120px;
+    
   }
   .header-style-5 .search-style-2 {
     display: none;

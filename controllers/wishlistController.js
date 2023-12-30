@@ -59,7 +59,8 @@ const addToWishlist = async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        res.redirect('/500')
+        // res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 
@@ -76,6 +77,7 @@ const showWishlist=async(req,res)=>{
         res.render('wishlist',{wishlist:wishlistData,user:userData,categories,brands})
     }catch(error){
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -102,6 +104,7 @@ const addToCart=async(req,res)=>{
 
     }catch(error){
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -118,6 +121,7 @@ const deleteFromWishlist=async(req,res)=>{
         
     }catch(error){
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 

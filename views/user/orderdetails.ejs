@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>OZORA</title>
@@ -17,9 +18,146 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assetsb/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/assetsb/css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- Add these links in your HTML head section -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Add these links in your HTML head section -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <style>
+        .star-rating {
+            display: flex;
+        }
+
+        .star {
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        input[type="checkbox"]:checked+label {
+            color: gold;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="modal" id="createReviewModal" tabindex="-1" role="dialog" aria-labelledby="createReviewModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createReviewModalLabel">Create Review</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="rating">Rating:</label>
+                    <div class="star-rating" id="ratingStars">
+                        <input type="checkbox" id="star1" name="rating" value="1" />
+                        <label for="star1" class="star"><i class="fas fa-star"></i></label>
+
+                        <input type="checkbox" id="star2" name="rating" value="2" />
+                        <label for="star2" class="star"><i class="fas fa-star"></i></label>
+
+                        <input type="checkbox" id="star3" name="rating" value="3" />
+                        <label for="star3" class="star"><i class="fas fa-star"></i></label>
+
+                        <input type="checkbox" id="star4" name="rating" value="4" />
+                        <label for="star4" class="star"><i class="fas fa-star"></i></label>
+
+                        <input type="checkbox" id="star5" name="rating" value="5" />
+                        <label for="star5" class="star"><i class="fas fa-star"></i></label>
+                    </div><br>
+
+                    <label for="comment">Comment:</label>
+                    <textarea id="comment" name="comment" rows="4" required></textarea>
+                </div>
+                
+                <input type="hidden" id="modalProductId" name="productId">
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitReview()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stars = document.querySelectorAll('.star-rating input');
+
+            stars.forEach(function (star, index) {
+                star.addEventListener('click', function () {
+                    const clickedStarValue = parseInt(this.value);
+
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].checked = true;
+                    }
+
+                    for (let i = index + 1; i < stars.length; i++) {
+                        stars[i].checked = false;
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        function submitReview() {
+            // Get the selected rating
+            const stars = document.querySelectorAll('.star-rating input:checked');
+            const rating = stars.length > 0 ? parseInt(stars[stars.length - 1].value) : 0;
+            const productId = document.getElementById('modalProductId').value
+            // Get the comment
+            const comment = document.getElementById('comment').value;
+
+            // Validate that a rating is selected
+            if (rating === 0) {
+                alert('Please select a rating before submitting.');
+                return;
+            }
+
+            // Create an object to hold the data
+            const reviewData = {
+                rating: rating,
+                comment: comment,
+                productId: productId
+            };
+
+            // Use fetch to send the data to the server
+            fetch('/createProductReview', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    // Handle success (e.g., update UI, show success message)
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle errors (e.g., show error message)
+                })
+                .finally(() => {
+                    window.reload()
+                    // Close the modal
+                    // const createReviewModal = new bootstrap.Modal(document.getElementById('createReviewModal'));
+                    // createReviewModal.hide();
+                });
+        }
+    </script>
+
     <!-- <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
@@ -136,7 +274,7 @@
     </aside> -->
     <main class="text-center">
         <!-- <header class="main-header navbar"> -->
-            <!-- <div class="col-search">
+        <!-- <div class="col-search">
                 <form class="searchform">
                     <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
@@ -193,7 +331,8 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Order detail</h2>
-                    <p>Details for Order ID: ORD<%=orders.orderId%></p>
+                    <p>Details for Order ID: ORD<%=orders.orderId%>
+                    </p>
                 </div>
             </div>
             <div class="card text-center">
@@ -201,89 +340,88 @@
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
                             <span>
-                                <i class="material-icons md-calendar_today"></i> <b><%=orders.orderDate%></b>
+                                <i class="material-icons md-calendar_today"></i> <b>
+                                    <%=orders.orderDate%>
+                                </b>
                             </span> <br>
                             <small class="text-muted">Order ID: ORD<%=orders.orderId%></small>
                         </div>
                         <div class="col-lg-6 col-md-6 ms-auto text-md-end">
-                            <!-- <select class="form-select d-inline-block mb-lg-0 mb-15 mw-200">
-                                <option>Change status</option>
-                                <option>Awaiting payment</option>
-                                <option>Confirmed</option>
-                                <option>Shipped</option>
-                                <option>Delivered</option>
-                            </select> -->
+
                             <%if(orders.orderstatus=='Delivered'){%>
-                            <a class="btn btn-danger"  onclick="returnOrder('<%=orders._id%>')">Return Order</a>
-                            <!-- <a class="btn btn-primary" href="/cancelOrder?id=<%=orders._id%>" onclick="sweet('<%=orders._id%>')">Cancel Order</a> -->
-                            <%}else if(orders.orderstatus!='Cancelled' && orders.orderstatus!='Returned'){%>
-                                <a class="btn btn-primary"  onclick="cancel('<%=orders._id%>')">Cancel Order</a>
-                                <%}%>
-                            <button class="btn btn-secondary print ms-2" id="printScreen"><i class="icon material-icons md-print"></i></button>
+
+                                <a class="btn btn-danger" onclick="returnOrder('<%=orders._id%>')">Return Order</a>
+                                <!-- <a class="btn btn-primary" href="/cancelOrder?id=<%=orders._id%>" onclick="sweet('<%=orders._id%>')">Cancel Order</a> -->
+                                <%}else if(orders.orderstatus!='Cancelled' && orders.orderstatus!='Returned' ){%>
+                                    <a class="btn btn-primary" onclick="cancel('<%=orders._id%>')">Cancel Order</a>
+                                    <%}%>
+                                        <button class="btn btn-secondary print ms-2" id="printScreen"><i
+                                                class="icon material-icons md-print"></i></button>
                         </div>
                         <script>
-                            const printid=document.getElementById('printScreen')
-                            printid.addEventListener('click',function(){
+                            const printid = document.getElementById('printScreen')
+                            printid.addEventListener('click', function () {
                                 window.print()
                             })
                         </script>
                     </div>
                 </header>
-                 <!-- card-header end// -->
 
-                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            function cancel(orderId) {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You want to cancel order",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Cancel order"
-                }).then((result) => {
-                    if (result.isConfirmed) {
+                <!-- card-header end// -->
+
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    function cancel(orderId) {
                         Swal.fire({
-                            title: "cancelled",
-                            text: "Order Cancelled.",
-                            icon: "success"
-                        }).then((res) => {
-                            if (res.isConfirmed) {
-                                // Redirect after the second confirmation
-                                window.location.href = `cancelOrder?id=${orderId}`;
+                            title: "Are you sure?",
+                            text: "You want to cancel order",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Cancel order"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "cancelled",
+                                    text: "Order Cancelled.",
+                                    icon: "success"
+                                }).then((res) => {
+                                    if (res.isConfirmed) {
+                                        // Redirect after the second confirmation
+                                        window.location.href = `cancelOrder?id=${orderId}`;
+                                    }
+                                });
                             }
                         });
                     }
-                });
-            }
-        </script>
-        <script>
-            function returnOrder(orderId) {
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You want to Return order",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Return order"
-                }).then((result) => {
-                    if (result.isConfirmed) {
+                </script>
+                <script>
+                    function returnOrder(orderId) {
                         Swal.fire({
-                            title: "Returned",
-                            text: "Order Returned.",
-                            icon: "success"
-                        }).then((res) => {
-                            if (res.isConfirmed) {
-                                // Redirect after the second confirmation
-                                window.location.href = `returnOrder?id=${orderId}`;
+                            title: "Are you sure?",
+                            text: "You want to Return order",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Return order"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "Returned",
+                                    text: "Order Returned.",
+                                    icon: "success"
+                                }).then((res) => {
+                                    if (res.isConfirmed) {
+                                        // Redirect after the second confirmation
+                                        window.location.href = `returnOrder?id=${orderId}`;
+                                    }
+                                });
                             }
                         });
                     }
-                });
-            }
-        </script>
+                </script>
 
 
                 <div class="card-body ">
@@ -296,7 +434,10 @@
                                 <div class="text">
                                     <h6 class="mb-1">Customer</h6>
                                     <p class="mb-1">
-                                        <%=orders.userId.name%>  <template class="__cf_email__" data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template> <br><%=orders.userId.mobile%>
+                                        <%=orders.userId.name%> <template class="__cf_email__"
+                                                data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template>
+                                            <br>
+                                            <%=orders.userId.mobile%>
                                     </p>
                                     <a href="#">View profile</a>
                                 </div>
@@ -310,12 +451,17 @@
                                 <div class="text">
                                     <h6 class="mb-1">Payment info</h6>
                                     <p class="mb-1">
-                                         Pay method: <%=orders.paymentMethod%> <br>Payment Status: <%if(orders.paymentStatus == 'Success'){%>
-                                            <span class="text-success"><%=orders.paymentStatus%></span>
-                                            <%}else{%>
-                                                <span class="text-danger"><%=orders.paymentStatus%></span>
-                                                <%}%>
-                                                
+                                        Pay method: <%=orders.paymentMethod%> <br>Payment Status:
+                                            <%if(orders.paymentStatus=='Success' ){%>
+                                                <span class="text-success">
+                                                    <%=orders.paymentStatus%>
+                                                </span>
+                                                <%}else{%>
+                                                    <span class="text-danger">
+                                                        <%=orders.paymentStatus%>
+                                                    </span>
+                                                    <%}%>
+
                                     </p>
                                     <a href="#">Download info</a>
                                 </div>
@@ -330,12 +476,17 @@
                                     <h6 class="mb-1">Order info</h6>
                                     <p class="mb-1">
                                         Order Status:
-                                       
-                                        <% if (orders.orderstatus === 'Cancelled' || orders.orderstatus === 'Returned') { %>
-                                            <span class="text-danger"><%= orders.orderstatus %></span>
-                                        <% } else { %>
-                                            <span class="text-success"><%= orders.orderstatus %></span>
-                                        <% } %>
+
+                                        <% if (orders.orderstatus==='Cancelled' || orders.orderstatus==='Returned' ) {
+                                            %>
+                                            <span class="text-danger">
+                                                <%= orders.orderstatus %>
+                                            </span>
+                                            <% } else { %>
+                                                <span class="text-success">
+                                                    <%= orders.orderstatus %>
+                                                </span>
+                                                <% } %>
                                     </p>
                                     <a href="#">Download info</a>
                                 </div>
@@ -349,13 +500,16 @@
                                 <div class="text">
                                     <h6 class="mb-1">Deliver to</h6>
                                     <p class="mb-1">
-                                      <%=orders.userId.address[orders.addressIndex].housename%> <br>  <%=orders.userId.address[orders.addressIndex].city%> <br><%=orders.userId.address[orders.addressIndex].state%><br> <%=orders.userId.address[orders.addressIndex].pincode%>
+                                        <%=orders.userId.address[orders.addressIndex].housename%> <br>
+                                            <%=orders.userId.address[orders.addressIndex].city%> <br>
+                                                <%=orders.userId.address[orders.addressIndex].state%><br>
+                                                    <%=orders.userId.address[orders.addressIndex].pincode%>
                                     </p>
                                     <a href="#">View profile</a>
                                 </div>
                             </article>
                         </div>
-                         <!-- col// -->
+                        <!-- col// -->
                     </div> <!-- row // -->
                     <div class="row align-items-center">
                         <div class="col-lg-12">
@@ -364,84 +518,138 @@
                                     <thead>
                                         <tr>
                                             <th width="20%">Product</th>
-                                            <th width="20%">MRP</th>
-                                            <th width="20%">Offer Price</th>
-                                            <th width="20%">Quantity</th>
-                                            <th width="20%" >Total</th>
-                                           
-                                            <!-- <th width="10%" class="text-end">Action</th> -->
+                                            <%if(orders.orderstatus=='Delivered' || orders.orderstatus=='Order Placed'
+                                                ){%>
+                                                <th width="20%">Review</th>
+                                                <%}%>
+                                                    <th width="20%">MRP</th>
+                                                    <th width="20%">Offer Price</th>
+                                                    <th width="20%">Quantity</th>
+                                                    <th width="20%">Total</th>
+
+                                                    <!-- <th width="10%" class="text-end">Action</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <%for(i=0;i<orders.products.length;i++){%>
-                                        <tr>
-                                            <td>
-                                                <a class="itemside" href="#">
-                                                    <div class="left">
-                                                        <img src="/<%=orders.products[i].productId.image[0]%>" width="40" height="40" class="img-xs" alt="Item">
-                                                    </div>
-                                                    <div class="info"><%=orders.products[i].productId.title%></div>
-                                                </a>
-                                            </td>
-                                            <td><%=orders.products[i].productId.regularPrice%></td>
-                                           
-                                            <td><%=orders.products[i].productId.salePrice%></td>
-                                            <td><%=orders.products[i].quantity%></td>
-                                            <td ><%=(orders.products[i].productId.salePrice)*(orders.products[i].quantity)%></td>
-                                            <!-- <td class="text-end"><button class="btn-primary btn-danger">Cancel</button></td> -->
-                                        </tr>
-                                        <%}%>
-                                        <tr>
-                                            <td colspan="6">
-                                                <article class="float-end">
-                                                    <%if(orders.coupon!=null){%>
-                                                        <dl class="dlist">
-                                                            <dt>Coupon:</dt>
-                                                            <dd>Applied( -<span class="text-success"><%=orders.coupon%></span> )</dd>
-                                                        </dl>
-                                                        <%}%>
-                                                    <dl class="dlist">
-                                                        <dt>Subtotal:</dt>
-                                                        <dd><%=orders.totalAmount%></dd>
-                                                    </dl>
-                                                   
-                                                    <dl class="dlist">
-                                                        <dt>Shipping cost:</dt>
-                                                        <dd>free</dd>
-                                                    </dl>
-                                                    <dl class="dlist">
-                                                        <dt>Grand total:</dt>
-                                                        <dd> <b class="h5"><%=orders.totalAmount%></b> </dd>
-                                                    </dl>
+                                            <tr>
+                                                <td>
+                                                    <a class="itemside" href="#">
+                                                        <div class="left">
+                                                            <img src="/<%=orders.products[i].productId.image[0]%>"
+                                                                width="40" height="40" class="img-xs" alt="Item">
+                                                        </div>
+                                                        <div class="info">
+                                                            <%=orders.products[i].productId.title%>
+                                                        </div>
+                                                    </a>
+                                                </td>
+                                                <%if(orders.orderstatus=='Delivered' ||
+                                                    orders.orderstatus=='Order Placed' ){%>
+                                                    <td>
+                                                        <a class="btn btn-secondary create-review-btn"
+                                                        data-toggle="modal"
+                                                        data-target="#createReviewModal"
+                                                        data-product-id="<%= orders.products[i].productId._id %>"
+                                                        onclick="setModalProductId('<%= orders.products[i].productId._id %>')">
+                                                        Create Review
+                                                    </a>
                                                     
-                                                    <dl class="dlist">
-                                                        <dt class="text-muted">Status:</dt>
-                                                        <dd><%console.log(orders.paymentStatus)%>
-                                                            <%if(orders.paymentStatus == 'Success'){%>
-                                                            <span class="badge rounded-pill alert-success text-success"><%=orders.paymentStatus%></span>
-                                                            <%}else{%>
-                                                            <span class="badge rounded-pill alert-danger text-danger"><%=orders.paymentStatus%></span>
-                                                            <%}%>
-                                                        </dd>
-                                                    </dl>
+                                                    </td>
+
+                                                    <script>
+                                                        function setModalProductId(productId) {
+                                                            // Set the value of the hidden input field
+                                                            console.log(productId)
+                                                            document.getElementById('modalProductId').value = productId;
+                                                        }
                                                     
-                                                   
-                                                </article>
-                                               
-                                                
-                                            </td>
-                                        </tr>
+                                                        // ... (other JavaScript code)
+                                                    </script>
+                                                    
+
+                                                    <%}%>
+                                                        <td>
+                                                            <%=orders.products[i].productId.regularPrice%>
+                                                        </td>
+
+                                                        <td>
+                                                            <%=orders.products[i].productId.salePrice%>
+                                                        </td>
+                                                        <td>
+                                                            <%=orders.products[i].quantity%>
+                                                        </td>
+                                                        <td>
+                                                            <%=(orders.products[i].productId.salePrice)*(orders.products[i].quantity)%>
+                                                        </td>
+                                                        <!-- <td class="text-end"><button class="btn-primary btn-danger">Cancel</button></td> -->
+                                            </tr>
+                                            <%}%>
+                                                <tr>
+                                                    <td colspan="6">
+                                                        <article class="float-end">
+                                                            <%if(orders.coupon!=null){%>
+                                                                <dl class="dlist">
+                                                                    <dt>Coupon:</dt>
+                                                                    <dd>Applied( -<span class="text-success">
+                                                                            <%=orders.coupon%>
+                                                                        </span> )</dd>
+                                                                </dl>
+                                                                <%}%>
+                                                                    <dl class="dlist">
+                                                                        <dt>Subtotal:</dt>
+                                                                        <dd>
+                                                                            <%=orders.totalAmount%>
+                                                                        </dd>
+                                                                    </dl>
+
+                                                                    <dl class="dlist">
+                                                                        <dt>Shipping cost:</dt>
+                                                                        <dd>free</dd>
+                                                                    </dl>
+                                                                    <dl class="dlist">
+                                                                        <dt>Grand total:</dt>
+                                                                        <dd> <b class="h5">
+                                                                                <%=orders.totalAmount%>
+                                                                            </b> </dd>
+                                                                    </dl>
+
+                                                                    <dl class="dlist">
+                                                                        <dt class="text-muted">Status:</dt>
+                                                                        <dd>
+                                                                            <%console.log(orders.paymentStatus)%>
+                                                                                <%if(orders.paymentStatus=='Success'
+                                                                                    ){%>
+                                                                                    <span
+                                                                                        class="badge rounded-pill alert-success text-success">
+                                                                                        <%=orders.paymentStatus%>
+                                                                                    </span>
+                                                                                    <%}else{%>
+                                                                                        <span
+                                                                                            class="badge rounded-pill alert-danger text-danger">
+                                                                                            <%=orders.paymentStatus%>
+                                                                                        </span>
+                                                                                        <%}%>
+                                                                        </dd>
+                                                                    </dl>
+
+
+                                                        </article>
+
+
+                                                    </td>
+                                                </tr>
                                     </tbody>
                                 </table>
                             </div> <!-- table-responsive// -->
                         </div> <!-- col// -->
-                        
-                           
-                       
-                       
-                        
+
+
+
+
+
                         <!-- <div class="col-lg-4"> -->
-                            <!-- <div class="box shadow-sm bg-light">
+                        <!-- <div class="box shadow-sm bg-light">
                                 <h6 class="mb-15">Payment info</h6>
                                 <p>
                                     <img src="/assetsb/imgs/card-brands/2.png" class="border" height="20"> Master Card **** **** 4768 <br>
@@ -464,8 +672,10 @@
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-                    document.write(new Date().getFullYear())
+                    <script data-cfasync="false"
+                        src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                    <script>
+                        document.write(new Date().getFullYear())
                     </script> ©, Evara - HTML Ecommerce Template .
                 </div>
                 <div class="col-sm-6">
@@ -487,4 +697,5 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-detail.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:22 GMT -->
+
 </html>

@@ -1,15 +1,15 @@
+require('dotenv').config();
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost:27017/project_watch')
+mongoose.connect(process.env.MONGODB_URI)
 
 const express = require('express')
-// const session = require('express-session')
 const app = express()
-// const path = require('path')
 const userRoute = require('./routes/userRoute')
 const adminRoute = require('./routes/adminRoute')
 const multer = require('multer')
-const nocache = require('nocache')
-// const cron= require('./other/cron')
+const nocache = require('nocache');
+const errorController = require('./controllers/errorController');
+const cron= require('./other/cron') 
 app.use(express.json())
 
 
@@ -39,7 +39,13 @@ app.use('/', userRoute)
 
 app.use('/admin', adminRoute)
 
+app.use('*',async(req,res)=>{
 
-app.listen(7000, () => {
-  console.log('http://localhost:7000')
+ res.render('user/404page')
 })
+
+
+const PORT = process.env.PORT || 7000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});

@@ -92,7 +92,7 @@ const myTask = async () => {
   
   // Schedule the task to run every minute (*/1)
   // You can adjust the cron expression as needed
-  Cron.schedule('* * * * * *', myTask);
+  Cron.schedule('0 0 * * * *', myTask);
 
 
   

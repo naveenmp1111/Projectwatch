@@ -63,6 +63,7 @@ userRoute.post('/onlinepayment', orderController.onlinePayment)
 userRoute.get('/onlinepayment', orderController.paymentSuccess)
 userRoute.get('/checkWallet', orderController.checkWallet)
 userRoute.get('/walletpayment', orderController.walletPayment)
+userRoute.post('/createProductReview',orderController.createProductReview)
 
 
 
@@ -74,6 +75,7 @@ userRoute.get('/wishlist', auth.isBlocked, wishlistController.showWishlist)
 userRoute.get('/addToCart', auth.isBlocked, wishlistController.addToCart)
 userRoute.get('/deleteFromWishlist', wishlistController.deleteFromWishlist)
 
+userRoute.get('/500',userController.error500)
 
 
 module.exports = userRoute

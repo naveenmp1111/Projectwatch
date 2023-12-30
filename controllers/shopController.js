@@ -20,7 +20,7 @@ const showShop = async (req, res) => {
         const message = req.query.message;
         const sort = req.query.sort;
         const currentPage = parseInt(req.query.page) || 1;
-        const pageSize = 9;
+        const pageSize = 6;
 
         // console.log(req.query.gender);
         // console.log(message);
@@ -75,8 +75,9 @@ const showShop = async (req, res) => {
             if (req.query.search) {
                 search = req.query.search;
                 query.$or = [
-                    { title: { $regex: '.*' + search + '.*', $options: 'i' } },
-                    { brand: { $regex: '.*' + search + '.*', $options: 'i' } },
+                    
+                     { 'brandId.brandName': { $regex: '.*' + search + '.*', $options: 'i' } },
+                     { title: { $regex: '.*' + search + '.*', $options: 'i' } },
                 ];
             }
         }
@@ -109,6 +110,7 @@ const showShop = async (req, res) => {
         });
     } catch (error) {
         console.log(error.message);
+        res.redirect('/500')
     }
 };
 
@@ -433,6 +435,7 @@ const homeSort = async (req, res) => {
         });
     } catch (error) {
         console.log(error.message);
+        res.redirect('/500')
     }
 };
 
@@ -508,6 +511,7 @@ const homeDeepSort = async (req, res) => {
         });
     } catch (error) {
         console.log(error.message);
+        res.redirect('/500')
     }
 };
 

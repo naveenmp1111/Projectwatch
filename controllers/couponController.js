@@ -8,6 +8,7 @@ const loadCouponPage=async(req,res)=>{
         res.render('coupon',{coupon})
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -27,6 +28,7 @@ const addCoupon=async(req,res)=>{
 
     }catch(error){
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -38,6 +40,7 @@ const blockCoupon=async(req,res)=>{
         res.redirect('/admin/coupon')
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -48,6 +51,7 @@ const unblockCoupon=async(req,res)=>{
         res.redirect('/admin/coupon')
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 

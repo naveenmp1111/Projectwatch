@@ -27,6 +27,12 @@ const placeOrder = async (req, res) => {
         //     couponCode=null
         // }
 
+        for(i=0;i<userData.cart.length;i++){
+            if(userData.cart[i].productId.quantity<userData.cart[i].quantity){
+                return res.redirect('/cart?message=stockout')
+            }
+        }
+
        const couponData=await Coupon.findOne({couponCode:couponCode})
        let coupon = null
         if(couponData!=null){
@@ -42,6 +48,8 @@ const placeOrder = async (req, res) => {
             totalAmount = req.body.totalAmount
         }
 
+
+        
         // console.log(req.body.selectAddress)
 
         // console.log(paymentMethod)
@@ -119,6 +127,7 @@ const placeOrder = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -132,6 +141,7 @@ const orderDetails = async (req, res) => {
         res.render('orderDetails', { orders: orderData })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -143,8 +153,12 @@ const cancelOrder = async (req, res) => {
         const orderData = await Order.findById({ _id: orderId }).populate('products.productId').populate('userId')
 
 
-        // console.log(orderData)
-        if(orderData.userId==userData._id){
+        
+        // console.log('sfsf'+userData._id)
+        // console.log(orderData.userId._id.toString())
+        // console.log('djdjfdjjff')
+        if(orderData.userId._id.toString()==userData._id){
+            // console.log('haiiii')
         orderData.orderstatus = 'Cancelled'
         await orderData.save()
         
@@ -174,14 +188,17 @@ const cancelOrder = async (req, res) => {
             userData.wallet+=parseFloat(orderData.totalAmount)
             await userData.save()
             res.redirect('/orderDetails?id=' + orderId)
+        }else{
+            res.redirect('/orderDetails?id=' + orderId)
         }
-        res.redirect('/orderDetails?id=' + orderId)
+       
 
     }else{
-        res.send('Invalid user')
+        res.render('404page')
     }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -215,12 +232,15 @@ const returnOrder = async (req, res) => {
             userData.wallet+=parseFloat(orderData.totalAmount)
             await userData.save()
             res.redirect('/orderDetails?id=' + orderId)
+        }else{
+            res.redirect('/orderDetails?id=' + orderId)
         }
 
 
-        res.redirect('/orderDetails?id=' + orderId)
+        
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -261,9 +281,10 @@ const onlinePayment = async (req, res) => {
         // Rest of your code...
     } catch (error) {
         console.error(error);
-        res.status(500).json({
-            message: 'Internal Server Error'
-        });
+        res.redirect('/500')
+        // res.status(500).json({
+        //     message: 'Internal Server Error'
+        // });
     }
 
 
@@ -379,6 +400,7 @@ const paymentSuccess = async (req, res) => {
         
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -409,6 +431,7 @@ const checkWallet =async(req,res)=>{
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -519,8 +542,53 @@ const walletPayment = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
+
+const createProductReview = async (req, res) => {
+    try {
+        const userData=await User.findOne({email:req.session.email})
+        const userId=userData._id
+        const {  rating, comment, productId } = req.body;
+        console.log('here is the results')
+        console.log(productId)
+        console.log(comment)
+       
+        console.log(rating)
+        // Validate the data
+        if (!productId || !rating || !comment) {
+            return res.status(400).json({ error: 'User ID, rating, and comment are required.' });
+        }
+
+        // Check if a review by the user already exists for the product
+        const productData = await Product.findOne({ _id: productId });
+
+        try {
+            const obj = {
+                userId: userId,
+                comment: comment,
+                rating: rating,
+                date: Date.now(),
+                get: (timestamp) => new Date(timestamp).toLocaleDateString('en-US'),
+                // Add other fields specific to the first review if needed
+            };
+
+            productData.productReview.push(obj);
+            await productData.save();
+
+            const message = productData.productReview.length > 1 ? 'Review updated successfully' : 'First review created successfully';
+
+            res.status(200).json({ message: message, review: obj });
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).json({ error: 'Internal Server Error' });
+        }
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
 
 
 module.exports = {
@@ -531,5 +599,6 @@ module.exports = {
     paymentSuccess,
     checkWallet,
     walletPayment,
-    returnOrder
+    returnOrder,
+    createProductReview
 }

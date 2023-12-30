@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Evara Dashboard</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assetsb/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assetsb/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/assetsb/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
+                </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/productsList"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add Product</span> </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" disabled href="/admin/category"> <i
+                            class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Categories</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/usersList"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Users</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="/admin/ordersList"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span> </a>
+                </li>
+                <li class="menu-item ">
+                    <a class="menu-link" disabled href="/admin/brand"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Brands</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text">Offers</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/categoryoffer">Category offer</a>
+                        <!-- <a href="page-account-register.html">User registration</a>
+                        <a href="page-error-404.html">Error 404</a> -->
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" disabled href="/admin/coupon"> <i
+                            class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Banner Management</span>
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <!-- <ul class="menu-aside">
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Settings</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-settings-1.html">Setting sample 1</a>
+                        <a href="page-settings-2.html">Setting sample 2</a>
+                    </div>
+                </li>
+                <li class="menu-item">
+                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
+                        <span class="text"> Starter page </span>
+                    </a>
+                </li>
+            </ul> -->
+            <br>
+            <br>
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
+                        <button class="btn btn-light bg" type="button"> <i
+                                class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                        <option value="Products">
+                        <option value="New orders">
+                        <option value="Apple iphone">
+                        <option value="Ahmed Hassan">
+                    </datalist>
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
+                        class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon" href="#">
+                            <i class="material-icons md-notifications animation-shake"></i>
+                            <span class="badge rounded-pill">3</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i
+                                class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
+                            aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="/assetsb/imgs/theme/flag-us.png"
+                                    alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/assetsb/imgs/theme/flag-fr.png"
+                                    alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/assetsb/imgs/theme/flag-jp.png"
+                                    alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/assetsb/imgs/theme/flag-cn.png"
+                                    alt="Français">中国人</a>
+                        </div>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
+                            aria-expanded="false"> <img class="img-xs rounded-circle"
+                                src="/assetsb/imgs/people/avatar2.jpg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
+                                Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account
+                                Settings</a>
+                            <a class="dropdown-item" href="#"><i
+                                    class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help
+                                center</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#"><i
+                                    class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Banner Management</h2>
+
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary btn-sm rounded" data-bs-toggle="modal"
+                        data-bs-target="#createBannerModal">
+                        Create new
+                    </button>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="createBannerModal" tabindex="-1" aria-labelledby="createBannerModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createBannerModalLabel">Create New Banner</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Form for creating a new banner -->
+                                <form id="createBannerForm">
+                                    <div class="mb-3">
+                                        <label for="bannername" class="form-label">Banner Name</label>
+                                        <input type="text" class="form-control" id="bannername" name="bannername"
+                                            required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="bannertext" class="form-label">Banner Text</label>
+                                        <textarea class="form-control" id="bannertext" name="bannertext" rows="3"
+                                            required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <input class="form-control" id="bannerimage" type="file" name="image"
+                                            accept="image/*" multiple required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Create Banner</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script defer>
+                    document.getElementById('createBannerForm').addEventListener('submit', function (event) {
+                        event.preventDefault();
+
+                        // Get form data
+                        const bannername = document.getElementById('bannername').value;
+                        const bannertext = document.getElementById('bannertext').value;
+                        const bannerimageInput = document.getElementById('bannerimage');
+                        const bannerimageFile = bannerimageInput.files[0];
+
+                        // Create FormData object to send files
+                        const formData = new FormData();
+                        formData.append('bannername', bannername);
+                        formData.append('bannertext', bannertext);
+                        formData.append('image', bannerimageFile);
+
+                        // Use fetch to send the data to the server
+                        fetch('/admin/addBanner', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())  // Assuming the server responds with JSON
+                            .then(data => {
+
+                                console.log('Success:', data);
+                                // You can handle success here (e.g., show a success message)
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                                // Handle errors here (e.g., show an error message)
+                            })
+
+                            .finally(() => {
+                                // Close the modal
+                                window.location.reload()
+                            });
+                    });
+                </script>
+
+
+            </div>
+
+            <div class="row">
+                <%if(locals.banner){%>
+                    <%for(i=0;i<banner.length;i++){%>
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="card card-product-grid">
+                                <a href="#" class="img-wrap"> <img src="/<%=banner[i].bannerImage[0]%>" alt="Product">
+                                </a>
+                                <div class="text-center">
+                                    <div class="dropdown text-center">
+                                        <%if(banner[i].is_active==true){%>
+                                            <a href="/admin/blockBanner?bannerId=<%=banner[i]._id%>"
+                                                class="btn btn-sm btn-danger rounded">
+                                                <i class="material-icons md-edit mr-5"></i>block
+                                            </a>
+                                            <%}else if(banner[i].is_active==false){%>
+                                                <a href="/admin/unblockBanner?bannerId=<%=banner[i]._id%>"
+                                                    class="btn btn-sm btn-success rounded text-white">
+                                                    <i class="material-icons md-edit mr-5"></i>unblock
+                                                </a>
+                                                <%}%>
+
+
+                                                    <a href="" class="btn btn-sm btn-brand rounded"
+                                                        data-bs-toggle="modal" data-bs-target="#editBannerModal" onclick="loadValues('<%=banner[i]._id%>','<%=banner[i].bannerName%>','<%=banner[i].bannerText%>','<%=banner[i].bannerImage[0]%>')">
+                                                        <i class="material-icons md-edit mr-5"></i>Edit
+                                                    </a>
+
+
+                                                   
+                                    </div>
+
+                                </div>
+                            </div> <!-- card-product  end// -->
+                        </div> <!-- col.// -->
+                        <%}%>
+                            <%}%>
+                                <!-- col.// -->
+            </div> <!-- row.// -->
+
+        </section> <!-- content-main end// -->
+
+
+
+        <script>
+            function loadValues(bannerid,bannerName,bannerText,bannerImage){
+                console.log(bannerImage)
+                document.getElementById('editbannername').value=bannerName
+                document.getElementById('editbannertext').value=bannerText
+                document.getElementById('bannerIdvalue').value=bannerid
+                document.getElementById('editbannerimage').value=bannerImage
+            }
+        </script>
+
+        <!-- Edit Banner Modal -->
+        <div class="modal fade" id="editBannerModal" tabindex="-1"
+            aria-labelledby="editBannerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBannerModalLabel">
+                            Edit Banner</h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form for editing the banner -->
+                        <form id="editBannerForm">
+                            <input type="hidden" id="bannerIdvalue">
+                            <div class="mb-3">
+                                <label for="bannername" class="form-label">Banner Name</label>
+                                <input type="text" class="form-control" id="editbannername" name="bannername"
+                                    required readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bannertext" class="form-label">Banner Text</label>
+                                <textarea class="form-control" id="editbannertext" name="bannertext" rows="3"
+                                    required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" id="editbannerimage" type="file" name="image"
+                                    accept="image/*" multiple required>
+                            </div>
+                            <button type="submit"
+                                class="btn btn-primary">Save
+                                Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.getElementById('editBannerForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                // Get the edited form data here
+                const bannername = document.getElementById('editbannername').value;
+                        const bannertext = document.getElementById('editbannertext').value;
+                        const bannerId = document.getElementById('bannerIdvalue').value;
+                        const bannerimageInput = document.getElementById('editbannerimage');
+                        const bannerimageFile = bannerimageInput.files[0];
+
+                        // Create FormData object to send files
+                        const formData = new FormData();
+                        formData.append('bannername', bannername);
+                        formData.append('bannertext', bannertext);
+                        formData.append('image', bannerimageFile);
+                        formData.append('bannerId',bannerId)
+
+                // Use fetch to send the edited data to the server
+                fetch('/admin/editBanner', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        // Handle success (e.g., update UI, show success message)
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Handle errors (e.g., show error message)
+                    })
+                    .finally(() => {
+                        // Close the edit modal
+                        window.location.reload()
+                        // const editBannerModal = new bootstrap.Modal(document.getElementById('editBannerModal'));
+                        // editBannerModal.hide();
+                    });
+            });
+
+        </script>
+
+
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/assetsb/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/assetsb/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/assetsb/js/vendors/select2.min.js"></script>
+    <script src="/assetsb/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/assetsb/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/assetsb/js/main.js" type="text/javascript"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-products-grid-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
+
+</html>

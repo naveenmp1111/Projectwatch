@@ -5,6 +5,7 @@ const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel')
 const Brand = require('../models/brandModel')
 const Coupon = require('../models/couponModel')
+const Banner = require('../models/bannerModel')
 const RandomString = require('randomstring')
 const Wishlist = require('../models/wishlistModel')
 const userAuth = require('../middlewares/userAuth')
@@ -27,8 +28,7 @@ const loadHome = async (req, res) => {
         //     }
         //   );
         //   console.log(updateDocuments)
-
-
+        
         const email = req.session.email
         const userData = await User.findOne({ email: email })
         const categoryData = await Category.find({ is_active: true })
@@ -37,18 +37,20 @@ const loadHome = async (req, res) => {
             is_active: true,
             catStatus: true
         }).populate('brandId').populate('categoryId').sort({ date: -1 }).limit(9)
+        const bannerData=await Banner.find({is_active:true})
 
         // const res=productData.sort({salePrice:-1})
         // console.log(res)
         if (userData) {
-            res.render('home', { products: productData, user: userData, categories: categoryData, brands: brandData })
+            res.render('home', { products: productData, user: userData, categories: categoryData, brands: brandData ,banner:bannerData})
 
         } else {
-            res.render('home', { products: productData, user: userData, categories: categoryData, brands: brandData })
+            res.render('home', { products: productData, user: userData, categories: categoryData, brands: brandData ,banner:bannerData})
         }
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -62,6 +64,7 @@ const loginLoad = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -70,6 +73,7 @@ const loadRegister = async (req, res) => {
         res.render('registration', { message: '' })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -94,6 +98,7 @@ const insertUser = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -104,15 +109,16 @@ const checkReferral = async (req, res) => {
         if (userData) {
             req.session.referralCode = code
             res.status(200).json({
-                message: 'Valid Coupon'
+                message: 'Valid Code'
             })
         } else {
             res.status(200).json({
-                message: 'Invalid Coupon'
+                message: 'Invalid Code'
             })
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -158,6 +164,7 @@ const sendOtp = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -219,6 +226,7 @@ const verifyOtp = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -249,6 +257,7 @@ const verifyLogin = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -269,7 +278,8 @@ const checkUniqueEmail = async (req, res, next) => {
         }
 
     } catch (err) {
-        return res.status(500).json({ error: 'Database error' });
+        console.log(err.message)
+        res.redirect('/500')
     }
 };
 
@@ -290,6 +300,7 @@ const getPasswordOtp = async (req, res) => {
         res.redirect('/generatePasswordOtp')
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -332,6 +343,7 @@ const generatePasswordOtp = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -356,6 +368,7 @@ const verifypasswordotp = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -376,6 +389,7 @@ const resetPassword = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -393,6 +407,7 @@ const productDetails = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -447,6 +462,7 @@ const addToCart = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -468,6 +484,7 @@ const userAccount = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -482,6 +499,7 @@ const addressForm = async (req, res) => {
         res.render('addressForm', { checkout, user, categories, brands })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -524,11 +542,16 @@ const addAddress = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
 const showCart = async (req, res) => {
     try {
+        let message=''
+        if(req.query.message=='stockout'){
+            message='Remove stock out items and try again'
+        }
         const email = req.session.email
         const userData = await User.findOne({ email: email })
         const categories = await Category.find({ is_active: true })
@@ -538,7 +561,7 @@ const showCart = async (req, res) => {
             const fullUserData = await User.findOne({ email: email }).populate('cart.productId')
             // console.log(fullUserData.cart)
             // console.log(fullUserData.cart[1].quantity)
-            res.render('cart', { user: userData, userCart: fullUserData, brands, categories })
+            res.render('cart', { user: userData, userCart: fullUserData, brands, categories ,message})
 
 
         } else {
@@ -547,6 +570,7 @@ const showCart = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -563,6 +587,7 @@ const deleteFromCart = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -580,6 +605,7 @@ const showCheckOut = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -637,6 +663,7 @@ const applyCoupon = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -652,6 +679,7 @@ const editAddressForm = async (req, res) => {
         res.render('editAddressForm', { address, index, checkout, user: userData, categories, brands })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -686,6 +714,7 @@ const updateAddress = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -708,7 +737,8 @@ const updateQuantity = async (req, res) => {
         res.status(200).send('Quantity updated successfully');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.redirect('/500')
+        // res.status(500).send('Internal Server Error');
     }
 }
 
@@ -726,6 +756,7 @@ const updateUserDetails = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -749,12 +780,14 @@ const checkUniqueEmail2 = async (req, res, next) => {
                 res.end()
 
             } else {
-                console.log('chillpeace');
+                // console.log('chillpeace');
                 next();
             }
         }
     } catch (err) {
-        return res.status(500).json({ error: 'Database error' });
+        // return res.status(500).json({ error: 'Database error' });
+        console.log(err.message)
+        res.redirect('/500')
     }
 };
 
@@ -785,9 +818,9 @@ const updatePassword = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
-
 
 
 const logout = async (req, res) => {
@@ -797,12 +830,17 @@ const logout = async (req, res) => {
         res.redirect('/')
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
-
-
-
+const error500=async(req,res)=>{
+    try {
+        res.render('error500')
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 module.exports = {
     loadHome,
@@ -834,7 +872,6 @@ module.exports = {
     updateQuantity,
     updateUserDetails,
     updatePassword,
-    logout
-    // forgotPasswordUserHome,
-    // verificationOtpUserHome
+    logout,
+    error500
 }

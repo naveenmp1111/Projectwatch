@@ -14,6 +14,7 @@ const categoryOffer=async(req,res)=>{
         res.render('categoryOffer',{category:categoryData})
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -25,6 +26,7 @@ const addCategoryOffer=async(req,res)=>{
         res.render('addCategoryOffer',{specificCategory,category})
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -98,6 +100,7 @@ const updateCategoryOffer=async(req,res)=>{
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -152,6 +155,7 @@ const deleteCategoryOffer=async(req,res)=>{
       }
   } catch (error) {
       console.log(error.message)
+      res.redirect('/500')
   }
 }
 

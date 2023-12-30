@@ -177,7 +177,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/brand" method="post">
+                            <form action="/admin/brand" method="post" enctype="multipart/form-data">
                                 <div class="mb-4">
                                     
                                     <label for="product_name" class="form-label">Name</label>
@@ -185,6 +185,10 @@
                                     <%if(locals.message){%>
                                         <span class="text-danger"><%=message%></span>
                                         <%}%>
+                                    </div>
+                                        <div class="mb-4">
+                                        <input class="form-control" id="brandImage" type="file" name="image"
+                                    accept="image/*" multiple  required>
                                 </div>
                                 <script>
                                     // Define a JavaScript function called toUpperCaseInput
@@ -223,7 +227,7 @@
                                                     <input class="form-check-input" type="checkbox" value="" />
                                                 </div>
                                             </th> -->
-                                            <!-- <th>ID</th> -->
+                                            <th>Logo</th>
                                             <th>Name</th>
                                             <th>Status</th>
                                             <!-- <th>Description</th>
@@ -240,7 +244,13 @@
                                                     <input class="form-check-input" type="checkbox" value="" />
                                                 </div>
                                             </td> -->
-                                            <!-- <td><%=brand[i]._id%></td> -->
+                                            <td>
+                                                <!-- <a class="itemside" href="#"> -->
+                                                    <div class="left">
+                                                        <img src="/<%= brand[i].brandImage[0] %>" class="img-sm " alt="Item">
+                                                    </div>
+                                                <!-- </a> -->
+                                            </td>
                                             <td><b><%=brand[i].brandName%></b></td>
                                             <%if(brand[i].is_active){%>
                                                 <td><span class="badge rounded-pill alert-success">Active</span></td>

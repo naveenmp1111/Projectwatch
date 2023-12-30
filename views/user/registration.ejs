@@ -72,9 +72,38 @@
                         </div>
                 
                         <div class="form-outline mb-3">
-                            <input type="number" id="form3Example4cg" class="form-control form-control-lg" name="mobile" required/>
-                            <label class="form-label" for="form3Example4cg">Mobile</label>
-                        </div>
+                          <input type="tel" id="form3Example4cg" class="form-control form-control-lg" name="mobile" oninput="validatePhoneNumber()" required />
+                          <label class="form-label" for="form3Example4cg">Mobile</label>
+                          <div id="phone-number"></div>
+                      </div>
+                     
+                  
+                      <script>
+                          function validatePhoneNumber() {
+                              const phoneNumberInput = document.getElementById('form3Example4cg');
+                              const phoneNumber = phoneNumberInput.value;
+                              const mobileMessage= document.getElementById('phone-number')
+                  
+                              // Define the phone number validation criteria (assuming a 10-digit format)
+                              const phoneRegex = /^\d{10}$/;
+                  
+                              // Check if the phone number meets the criteria
+                              if (phoneRegex.test(phoneNumber)) {
+                               
+                                mobileMessage.innerHTML='<span style="color: green;"></span>';
+                                  // Valid phone number
+                                  // You can also display a success message or perform other actions here
+                              } else {
+                              
+                                mobileMessage.innerHTML='<span style="color: red;">Invalid number</span>';
+                                  // Invalid phone number
+                                  // Display an error message or perform other actions as needed
+                                  // alert('Please enter a valid 10-digit phone number.');
+                                  // You can also update the UI to show an error message or add a class to indicate an error state
+                                  // For example: phoneNumberInput.classList.add('is-invalid');
+                              }
+                          }
+                      </script>
                 
                         <div class="form-outline mb-3">
                             <input type="password" id="password" class="form-control form-control-lg" name="password" oninput="validatePassword()" required />

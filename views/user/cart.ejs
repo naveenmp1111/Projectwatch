@@ -439,7 +439,9 @@
                                 </thead> -->
                                 <tbody>
                                     <% if (user && user.cart) { %>
-
+                                        <%if(locals.message){%>
+                                            <h4 class="text-danger text-center"><%=message%></h4><br>
+                                            <%}%>
                                     <% if (user.cart.length) { %>
                                         <thead>
                                             <tr class="main-heading">
@@ -448,13 +450,14 @@
                                                 <th scope="col">Price</th>
                                                 <th scope="col">Quantity</th>
                                                 <th scope="col">Subtotal</th>
+                                                <th scope="col">Stock</th>
                                                 <th scope="col">Remove</th>
                                             </tr>
                                         </thead>
 
                                     <% for (let i=user.cart.length - 1; i>= 0; i--) { %>
 
-                                        <%const salePrice=userCart.cart[i].productId.salePrice%>
+                                        
                                             <tr>
                                                 <td class="image product-thumbnail"><img
                                                         src="<%=userCart.cart[i].productId.image[0]%>" alt="#"></td>
@@ -489,11 +492,12 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <input type="hidden"
-                                                        value="<%=userCart.cart[i].productId.salePrice%>"
-                                                        id="salePrice<%= i %>">
+                                                    <%if(userCart.cart[i].productId.quantity>0){%>
+                                                        <span class="text-success">In Stock.</span>
+                                                        <%}else{%>
+                                                            <span class="text-danger">Out of Stock.</span>
+                                                            <%}%>
                                                 </td>
-
                                                 <td class="action" data-title="Remove">
                                                     <a href="/deleteFromCart?id=<%=userCart.cart[i].productId._id%>"
                                                         class="text-muted">
@@ -501,6 +505,9 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            <input type="hidden"
+                                            value="<%=userCart.cart[i].productId.salePrice%>"
+                                            id="salePrice<%= i %>">
                                             <% } %>
                                             <% }else{ %>
                                                 <span class="text-center"><h4 class="text-danger">Cart is empty</h4></span>

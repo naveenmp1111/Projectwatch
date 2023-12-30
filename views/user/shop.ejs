@@ -630,7 +630,11 @@
                                                     <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
-                                                    <span class="hot"><%=products[i].tags%></span>
+                                                    <%if(products[i].tags.length>0){%>
+                                                        <span class="hot"><%=products[i].tags%></span>
+                                                        <%}else{%>
+                                                            <span></span>
+                                                            <%}%>
                                                 </div>
                                             </div>
                                             <div class="product-content-wrap">
@@ -752,7 +756,7 @@
                             </ul>
                         </div>
                         <!-- Product sidebar Widget -->
-                        <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
+                        <!-- <div class="sidebar-widget product-sidebar  mb-30 p-30 bg-grey border-radius-10">
                             <div class="widget-header position-relative mb-20 pb-10">
                                 <h5 class="widget-title mb-10">New products</h5>
                                 <div class="bt-1 border-color-1"></div>
@@ -801,7 +805,7 @@
                                 <h4>Save 17% on <br>Office Dress</h4>
                                 <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

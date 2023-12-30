@@ -183,12 +183,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <form action="/admin/editBrand?id=<%=brand._id%>" method="post">
+                            <form action="/admin/editBrand?id=<%=brand._id%>" method="post" enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="brandName" value="<%=brand.brandName%>"/>
                                 </div>
-                               
+                                <div class="mb-4">
+                                    <input class="form-control" id="brandImage" type="file" name="image"
+                                    accept="image/*" multiple >
+                                </div>
                                 <div class="d-grid">
                                     <input type="submit" class="btn btn-primary" value="Update Brand"></input>
                                 </div>

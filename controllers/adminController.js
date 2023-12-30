@@ -3,6 +3,7 @@ const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 const Order = require('../models/orderModel')
 const Brand = require('../models/brandModel')
+const Banner =require('../models/bannerModel')
 const sharp = require('sharp')
 const fs = require('fs')
 const path = require('path')
@@ -15,6 +16,7 @@ const loadLogin = async (req, res) => {
         res.render('login', { message: '' })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -41,6 +43,7 @@ const verifyLogin = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -150,6 +153,7 @@ const loadDashboard = async (req, res) => {
         })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -159,6 +163,7 @@ const usersList = async (req, res) => {
         res.render('usersList', { users: userData })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -172,6 +177,7 @@ const blockUser = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -185,6 +191,7 @@ const unblockUser = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -195,6 +202,7 @@ const loadAddProduct = async (req, res) => {
         res.render('addproduct', { category: categoryData, brand: brandData })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -263,7 +271,8 @@ const addNewProduct = async (req, res) => {
         }
     } catch (error) {
         console.error(error.message);
-        res.status(500).send('Internal Server Error');
+        res.redirect('/500')
+        // res.status(500).send('Internal Server Error');
     }
 };
 
@@ -283,6 +292,7 @@ const productsList = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -301,6 +311,7 @@ const editProductList = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -326,7 +337,8 @@ const deleteImage = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-        return res.status(500).send('Internal server error')
+        res.redirect('/500')
+        // return res.status(500).send('Internal server error')
     }
 };
 
@@ -393,6 +405,7 @@ const loadEditProductList = async (req, res) => {
             res.redirect('/admin/productsList')
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -408,6 +421,7 @@ const blockProductList = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -424,6 +438,7 @@ const unBlockProductList = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -435,6 +450,7 @@ const loadCategories = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -451,7 +467,9 @@ const checkUniqueCategory = async (req, res, next) => {
             next();
         }
     } catch (err) {
-        return res.status(500).json({ error: 'Database error' });
+        console.log(err.message)
+        res.redirect('/500')
+        // return res.status(500).json({ error: 'Database error' });
     }
 };
 
@@ -466,6 +484,7 @@ const addCategories = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -483,6 +502,7 @@ const blockCategory = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -500,6 +520,7 @@ const unBlockCategory = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -512,6 +533,7 @@ const deleteCategory = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -524,6 +546,7 @@ const editCategory = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -537,6 +560,7 @@ const loadEditCategory = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -554,6 +578,7 @@ const ordersList = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -566,6 +591,7 @@ const orderDetails = async (req, res) => {
         res.render('orderDetails', { order: orderData })
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -584,6 +610,7 @@ const updateOrderStatus = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -596,6 +623,7 @@ const loadBrands = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -613,14 +641,24 @@ const checkUniqueBrand = async (req, res, next) => {
         }
 
     } catch (err) {
-        return res.status(500).json({ error: 'Database error' });
+        console.log(err.message)
+        res.redirect('/500')
+        // return res.status(500).json({ error: 'Database error' });
     }
 };
 
 const addBrand = async (req, res) => {
     try {
+       const imagePromises = req.files.map(async (file) => {
+            const imagePath = `uploads/${file.filename}`;
+            //code for sharp if needed from the add banner
+            return imagePath
+        });
+
+        const resizedImageUrls = await Promise.all(imagePromises);
         const brand = new Brand({
-            brandName: req.body.brandName.trim()
+            brandName: req.body.brandName.trim(),
+            brandImage:resizedImageUrls
         })
         const userData = await brand.save()
         if (userData) {
@@ -628,6 +666,7 @@ const addBrand = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -641,6 +680,7 @@ const blockBrand = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -654,6 +694,7 @@ const unBlockBrand = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -666,6 +707,7 @@ const deleteBrand = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -679,19 +721,35 @@ const editBrand = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
 const loadEditBrand = async (req, res) => {
     try {
         const id = req.query.id
-        const userData = await Brand.findByIdAndUpdate({ _id: id }, { $set: { brandName: req.body.brandName } })
-        await userData.save()
-        if (userData) {
-            res.redirect('/admin/brand')
+        const imagePromises = req.files.map(async (file) => {
+            const imagePath = `uploads/${file.filename}`;
+            //code for sharp if needed from the add banner
+            return imagePath
+        });
+
+        const resizedImageUrls = await Promise.all(imagePromises);
+        if(resizedImageUrls.length>0){
+            const userData = await Brand.findByIdAndUpdate({ _id: id }, { $set: { brandName: req.body.brandName ,brandImage:resizedImageUrls} })
+            await userData.save()
+        }else{
+            const userData = await Brand.findByIdAndUpdate({ _id: id }, { $set: { brandName: req.body.brandName } })
+            await userData.save()
         }
+        
+        
+        
+            res.redirect('/admin/brand')
+        
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -775,6 +833,7 @@ const salesReport = async (req, res) => {
 
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -784,6 +843,103 @@ const dateFilter = async (req, res) => {
         const startDate = req.body.startDate
         const endDate = req.body.endDate
         res.redirect(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
+    } catch (error) {
+        console.log(error.message)
+        res.redirect('/500')
+    }
+}
+
+const bannerPage= async(req,res)=>{
+    try {
+        const bannerData=await Banner.find({})
+        console.log(bannerData)
+        res.render('banner',{banner:bannerData})
+    } catch (error) {
+        console.log(error.message)
+    }
+} 
+
+const addBanner=async(req,res)=>{
+    try {
+        console.log('haiii')
+        const imagePromises = req.files.map(async (file) => {
+            const imagePath = `uploads/${file.filename}`;
+            // const resizedImagePath = `uploads/resized_${file.filename}`;
+            // await sharp(imagePath)
+            //     .resize({ width: 572, height: 572 })
+            //     .toFile(resizedImagePath);
+
+            // Remove the original uploaded image
+            // fs.unlinkSync(imagePath);
+            // fse.remove(imagePath, (err) => {
+            //     if (err) {
+            //       console.error(err);
+            //     } else {
+            //       console.log('File deleted successfully');
+            //     }
+            //   });
+
+            return imagePath
+        });
+
+        const resizedImageUrls = await Promise.all(imagePromises);
+        const bannerData = new Banner({
+            bannerName:req.body.bannername,
+            bannerText:req.body.bannertext,
+            bannerImage:resizedImageUrls
+        })
+         // Save the banner data to the database
+         const savedBanner = await bannerData.save();
+
+         // Send a response back to the client
+         res.status(201).json({ message: 'Banner created successfully', banner: savedBanner });
+
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const blockBanner=async(req,res)=>{
+    try {
+        console.log('coming here')
+        const bannerId=req.query.bannerId
+        await Banner.findByIdAndUpdate({_id:bannerId},{$set:{is_active:false}})
+        res.redirect('/admin/banner')
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const unblockBanner=async(req,res)=>{
+    try {
+        const bannerId=req.query.bannerId
+        await Banner.findByIdAndUpdate({_id:bannerId},{$set:{is_active:true}})
+        res.redirect('/admin/banner')
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const editBanner=async(req,res)=>{
+    try {
+        console.log('yeah')
+        const imagePromises = req.files.map(async (file) => {
+            const imagePath = `uploads/${file.filename}`;
+            //code for sharp if needed from the add banner
+            return imagePath
+        });
+
+        const resizedImageUrls = await Promise.all(imagePromises);
+        const bannerId= req.body.bannerId
+        if(resizedImageUrls.length>0){
+            const bannerData=await Banner.findByIdAndUpdate({_id:bannerId},{$set:{bannerText:req.body.bannerText,bannerImage:resizedImageUrls}})
+        }else{
+            const bannerData=await Banner.findByIdAndUpdate({_id:bannerId},{$set:{bannerText:req.body.bannerText}})
+        }
+        
+       
+            res.status(201).json({ message: 'Banner created successfully' });
+        
     } catch (error) {
         console.log(error.message)
     }
@@ -796,6 +952,7 @@ const logout = async (req, res) => {
         res.redirect('/admin')
     } catch (error) {
         console.log(error.message)
+        res.redirect('/500')
     }
 }
 
@@ -836,5 +993,10 @@ module.exports = {
     deleteBrand,
     editBrand,
     loadEditBrand,
+    bannerPage,
+    addBanner,
+    blockBanner,
+    unblockBanner,
+    editBanner,
     logout
 }
