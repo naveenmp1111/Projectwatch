@@ -14,10 +14,10 @@ const showShop = async (req, res) => {
         const userData = await User.findOne({ email: email });
         const categories = await Category.find({ is_active: true });
         const brands = await Brand.find({ is_active: true });
-        const categoryId = req.query.categoryId;
-        const brandId = req.query.brandId;
-        const gender = req.query.gender;
-        const message = req.query.message;
+        const categoryId = req.query.categoryId ?? null
+        const brandId = req.query.brandId ?? null
+        const gender = req.query.gender ?? null
+        const message = req.query.message ?? null
         const sort = req.query.sort;
         const currentPage = parseInt(req.query.page) || 1;
         const pageSize = 6;
@@ -76,11 +76,30 @@ const showShop = async (req, res) => {
                 search = req.query.search;
                 query.$or = [
                     
-                     { 'brandId.brandName': { $regex: '.*' + search + '.*', $options: 'i' } },
+                     { brandId: { $in: await getCategoryIdsByBrandName(search) } },
+                      { categoryId: { $in: await getCategoryIdsByCategoryName(search) } },
                      { title: { $regex: '.*' + search + '.*', $options: 'i' } },
+                     { gender: { $regex: '.*' + search + '.*', $options: 'i' } },
                 ];
             }
         }
+
+        async function getCategoryIdsByCategoryName(categoryName) {
+            const regexPattern = new RegExp('.*' + categoryName.replace(/ /g, '.*') + '.*', 'i');
+            console.log('Regex Pattern:', regexPattern);
+            const category = await Category.findOne({ categoryName: { $regex: regexPattern } });
+            console.log(category)
+            return category ? [category._id] : [];
+        }
+
+        async function getCategoryIdsByBrandName(brandName) {
+            const regexPattern = new RegExp('.*' + brandName.replace(/ /g, '.*') + '.*', 'i');
+            console.log('Regex Pattern:', regexPattern);
+            const brand = await Brand.findOne({ brandName: { $regex: regexPattern } });
+            console.log(brand)
+            return brand? [brand._id] : [];
+        }
+
 
         if (sort == 'ascending') {
             sortOptions = { salePrice: 1 };
@@ -428,6 +447,9 @@ const homeSort = async (req, res) => {
             products: productData,
             user: userData,
             categories,
+            brandId:'',
+            categoryId:'',
+            gender:'',
             message: '',
             brands,
             currentPage,
@@ -505,6 +527,9 @@ const homeDeepSort = async (req, res) => {
             user: userData,
             categories,
             message: '',
+            brandId:'',
+            categoryId:'',
+            gender:'',
             brands,
             currentPage,
             totalPages // Added totalPages

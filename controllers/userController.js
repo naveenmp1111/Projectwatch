@@ -12,6 +12,7 @@ const userAuth = require('../middlewares/userAuth')
 const { ConversationListInstance } = require('twilio/lib/rest/conversations/v1/conversation')
 const { json } = require('express')
 const cron = require('node-cron');
+const bcrypt=require('bcrypt')
 
 
 
@@ -200,11 +201,13 @@ const verifyOtp = async (req, res) => {
                     }
                 }
 
+                const salt=await bcrypt.genSalt(10)
+                const hashedPassword=await bcrypt.hash(password,salt)
                 const user = new User({
                     name: name,
                     email: email,
                     mobile: mobile,
-                    password: password,
+                    password: hashedPassword,
                     is_admin: 0,
                     referralCode: myReferralCode
 
@@ -241,8 +244,10 @@ const verifyLogin = async (req, res) => {
         // console.log(userData.address[0].fname);
         if (userData) {
             if (userData.is_active == true) {
-
-                if (userData.password === password) {
+                
+                const passwordMatch=await bcrypt.compare(password,userData.password)
+                
+                if (passwordMatch) {
                     req.session.email = email
                     res.redirect('/')
                 } else {
@@ -397,10 +402,11 @@ const productDetails = async (req, res) => {
     try {
         const id = req.query.id
         const email = req.session.email
-        const productData = await Product.findById({ _id: id })
+        const productData = await Product.findById({ _id: id }).populate('productReview.userId')
         const userData = await User.findOne({ email })
+        const categories = await Category.find({ is_active: true })
         if (productData) {
-            res.render('productDetails', { product: productData, user: userData })
+            res.render('productDetails', { product: productData, user: userData, categories })
         } else {
             res.redirect('/home')
 
@@ -551,6 +557,8 @@ const showCart = async (req, res) => {
         let message=''
         if(req.query.message=='stockout'){
             message='Remove stock out items and try again'
+        }else if(req.query.message=='stocklow'){
+            message="Quantity shouldn't be higher than stock"
         }
         const email = req.session.email
         const userData = await User.findOne({ email: email })
@@ -596,9 +604,23 @@ const showCheckOut = async (req, res) => {
         const email = req.session.email
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const coupon = await Coupon.find({ is_active: true, "redeemedUsers.userId": { $ne: userData._id } });
+        const categories = await Category.find({ is_active: true })
+        let flag=0
+        userData.cart.forEach(item=>{
+            if(item.productId.quantity<1){
+                flag=1
+            }else if(item.productId.quantity<item.quantity){
+                flag=2
+            }
+        })
+        if(flag==1){
+            res.redirect('/cart?message=stockout')
+        }else if(flag==2){
+            res.redirect('/cart?message=stocklow')
+        }
 
         if (userData.cart.length > 0) {
-            res.render('checkout', { user: userData, coupon })
+            res.render('checkout', { user: userData, coupon ,categories})
         } else {
             res.redirect('/cart')
         }
@@ -796,11 +818,20 @@ const updatePassword = async (req, res) => {
 
         const email = req.session.email
         const { currentPassword, npassword, cpassword } = req.body
+        
 
         const userData = await User.findOne({ email })
-        if (userData.password == currentPassword) {
+        const passwordMatch = await bcrypt.compare( currentPassword,userData.password);
+
+        
+        console.log(userData.password)
+        console.log(currentPassword)
+        console.log(passwordMatch)
+        if (passwordMatch) {
             if (npassword == cpassword) {
-                userData.password = npassword
+                const salt=await bcrypt.genSalt(10)
+                const hashedPassword=await bcrypt.hash(npassword,salt)
+                userData.password = hashedPassword
                 userData.save()
 
                 res.status(200).json({

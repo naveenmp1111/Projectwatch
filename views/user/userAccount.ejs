@@ -50,8 +50,6 @@
                                     </a>
                                     <ul class="language-dropdown">
                                         <li><a href="/userAccount">Account</a></li>
-                                        <!-- <li><a href="#">Logout</a></li> -->
-                                        <!-- <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li> -->
                                     </ul>
                                 </li>
                             </ul>
@@ -64,7 +62,7 @@
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
                     <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
+                        <a href=""><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
@@ -79,7 +77,7 @@
                                      
                                     
                                  </ul>
-                                <div class="more_categories">Show more...</div>
+                                
                             </div>
                         </div>
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
@@ -106,15 +104,13 @@
                                      <li>
                                         <a href="page-about.html">About</a>
                                     </li>
-                                    <li><a href="blog-category-grid.html">Blog </a>
+                                    <li><a href="blog-category-grid.html">Contact </a>
                                        
                                     </li>
-                                    <li><a href="#">Pages </a>
+                                    <li><a href="/userAccount">Account </a>
                                        
                                     </li>
-                                    <li>
-                                        <a href="page-contact.html">Contact</a>
-                                    </li>
+                                    
                                 </ul>
                             </nav>
                         </div>
@@ -122,57 +118,37 @@
                     <div class="hotline d-none d-lg-block">
                         <p><i class="fi-rs-headset"></i><span>Hotline</span>8594035813 </p>
                     </div>
-                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                    <!-- <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p> -->
                     <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
-                                <a href="shop-wishlist.html">
+                                <%if(user){%>
+                                <a href="/wishlist">
                                     <img alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                    <span class="pro-count white">4</span>
+                                    
                                 </a>
+                                <%}else{%>
+                                    <a href="/login">
+                                        <img alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+                                        
+                                    </a>
+                                    <%}%>
                             </div>
                             <div class="header-action-icon-2">
-                                <a class="mini-cart-icon" href="shop-cart.html">
+                                <%if(user){%>
+                                <a class="mini-cart-icon" href="/cart">
                                     <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                    <span class="pro-count white">2</span>
+                                    <%if(user.cart.length>0){%>
+                                        <span class="pro-count blue"><%=user.cart.length%></span>
+                                        <%}%>
                                 </a>
-                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                    <ul>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-3.jpg"></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-right.html">Plain Striola Shirts</a></h4>
-                                                <h3><span>1 × </span>$800.00</h3>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-4.jpg"></a>
-                                            </div>
-                                            <div class="shopping-cart-title">
-                                                <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
-                                                <h3><span>1 × </span>$3500.00</h3>
-                                            </div>
-                                            <div class="shopping-cart-delete">
-                                                <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="shopping-cart-footer">
-                                        <div class="shopping-cart-total">
-                                            <h4>Total <span>$383.00</span></h4>
-                                        </div>
-                                        <div class="shopping-cart-button">
-                                            <a href="shop-cart.html">View cart</a>
-                                            <a href="shop-checkout.html">Checkout</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%}else{%>
+                                    <a class="mini-cart-icon" href="/login">
+                                        <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
+                                        
+                                    </a>
+                                    <%}%>
+                                
                             </div>
                             <div class="header-action-icon-2 d-block d-lg-none">
                                 <div class="burger-icon burger-icon-white">
@@ -201,12 +177,6 @@
                 </div>
             </div>
             <div class="mobile-header-content-area">
-                <div class="mobile-search search-style-3 mobile-header-border">
-                    <form action="#">
-                        <input type="text" placeholder="Search for items…">
-                        <button type="submit"><i class="fi-rs-search"></i></button>
-                    </form>
-                </div>
                 <div class="mobile-menu-wrap mobile-header-border">
                     <div class="main-categori-wrap mobile-header-border">
                         <a class="categori-button-active-2" href="#">
@@ -214,150 +184,56 @@
                         </a>
                         <div class="categori-dropdown-wrap categori-dropdown-active-small">
                             <ul>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a>
-                                </li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a>
-                                </li>
-                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a>
-                                </li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer &
-                                        Office</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer
-                                        Electronics</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother &
-                                        Kids</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
+                                <%for(i=0;i<categories.length;i++){%>
+                                    <li><a href="/shop?categoryId=<%=categories[i]._id%>&message=withCategory"><%=categories[i].categoryName%></a></li>
+                                    <%}%>
                             </ul>
                         </div>
                     </div>
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu">
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                    href="index.html">Home</a>
+                            <li><a  href="/">Home </a>
+                                <li><a href="/shop" class="active">Shop </a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="">Brands</a>
                                 <ul class="dropdown">
-                                    <li><a href="index.html">Home 1</a></li>
-                                    <li><a href="index-2.html">Home 2</a></li>
-                                    <li><a href="index-3.html">Home 3</a></li>
-                                    <li><a href="index-4.html">Home 4</a></li>
+                                    <% if (locals.brands) { %>
+                                        <% for (let i = 0; i < brands.length; i++) { %>
+                                            <li>
+                                                <a href="/shop?brandId=<%= brands[i]._id %>&message=withBrand<% if (locals.categoryId) { %>&categoryId=<%= categoryId %><% } else if (locals.gender) { %>&gender=<%= gender %><% } %>">
+                                                    <%= brands[i].brandName %>
+                                                </a>
+                                            </li>
+                                        <% } %>
+                                    <% } %>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                    href="shop-grid-right.html">shop</a>
-                                <ul class="dropdown">
-                                    <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
-                                    <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
-                                    <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
-                                    <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
-                                    <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                            href="#">Single Product</a>
-                                        <ul class="dropdown">
-                                            <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
-                                            <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
-                                            <li><a href="shop-product-full.html">Product – No sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="shop-filter.html">Shop – Filter</a></li>
-                                    <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
-                                    <li><a href="shop-cart.html">Shop – Cart</a></li>
-                                    <li><a href="shop-checkout.html">Shop – Checkout</a></li>
-                                    <li><a href="shop-compare.html">Shop – Compare</a></li>
-                                </ul>
+                            <li>
+                                <a href="page-about.html">About</a>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega
-                                    menu</a>
-                                <ul class="dropdown">
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                            href="#">Women's Fashion</a>
-                                        <ul class="dropdown">
-                                            <li><a href="shop-product-right.html">Dresses</a></li>
-                                            <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
-                                            <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
-                                            <li><a href="shop-product-right.html">Women's Sets</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                            href="#">Men's Fashion</a>
-                                        <ul class="dropdown">
-                                            <li><a href="shop-product-right.html">Jackets</a></li>
-                                            <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
-                                            <li><a href="shop-product-right.html">Genuine Leather</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                            href="#">Technology</a>
-                                        <ul class="dropdown">
-                                            <li><a href="shop-product-right.html">Gaming Laptops</a></li>
-                                            <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
-                                            <li><a href="shop-product-right.html">Tablets</a></li>
-                                            <li><a href="shop-product-right.html">Laptop Accessories</a></li>
-                                            <li><a href="shop-product-right.html">Tablet Accessories</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            <li><a href="blog-category-grid.html">Contact </a>
+                               
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                    href="blog-category-fullwidth.html">Blog</a>
-                                <ul class="dropdown">
-                                    <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
-                                    <li><a href="blog-category-list.html">Blog Category List</a></li>
-                                    <li><a href="blog-category-big.html">Blog Category Big</a></li>
-                                    <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
-                                            href="#">Single Product Layout</a>
-                                        <ul class="dropdown">
-                                            <li><a href="blog-post-left.html">Left Sidebar</a></li>
-                                            <li><a href="blog-post-right.html">Right Sidebar</a></li>
-                                            <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Pages</a>
-                                <ul class="dropdown">
-                                    <li><a href="page-about.html">About Us</a></li>
-                                    <li><a href="page-contact.html">Contact</a></li>
-                                    <li><a href="page-account.html">My Account</a></li>
-                                    <li><a href="page-login-register.html">login/register</a></li>
-                                    <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
-                                    <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
-                                    <li><a href="page-terms.html">Terms of Service</a></li>
-                                    <li><a href="page-404.html">404 Page</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Language</a>
-                                <ul class="dropdown">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">German</a></li>
-                                    <li><a href="#">Spanish</a></li>
-                                </ul>
+                            <li><a href="/userAccount">Account </a>
+                               
                             </li>
                         </ul>
                     </nav>
                     <!-- mobile menu end -->
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
-                    <div class="single-mobile-header-info mt-30">
-                        <a href="page-contact.html"> Our location </a>
+               
+                    <div class="single-mobile-header-info">
+                        <%if(user){%>
+                            <a href="/userAccount"><%=user.name%></a>
+                                
+                                <%}else{%>
+                        <a href="/login">Log In / Sign Up </a>
+                        <%}%>
                     </div>
                     <div class="single-mobile-header-info">
-                        <a href="page-login-register.html">Log In / Sign Up </a>
+                        <a href="">+91 8594035813 </a>
                     </div>
-                    <div class="single-mobile-header-info">
-                        <a href="#">(+01) - 2345 - 6789 </a>
-                    </div>
-                </div>
-                <div class="mobile-social-icon">
-                    <h5 class="mb-15 text-grey-4">Follow Us</h5>
-                    <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-                    <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-                    <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-                    <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-                    <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
                 </div>
             </div>
         </div>
@@ -366,7 +242,7 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
+                    <a href="" rel="nofollow">Home</a>
                     <span></span> Pages
                     <span></span> Account
                 </div>
@@ -418,10 +294,6 @@
                                             <a class="nav-link" href="/logout"><i
                                                     class="fi-rs-sign-out mr-10"></i>Logout</a>
                                         </li>
-                                        <!-- <li class="nav-item">
-                                            <a class="nav-link" id="forgot-password-tab" data-bs-toggle="tab" href="#forgot-password" role="tab" aria-controls="forgot-password" aria-selected="true">Forgot Password</a>
-                                        </li> -->
-
 
                                     </ul>
                                 </div>
@@ -486,7 +358,7 @@
 
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table class="table" id="example"> 
                                                         <thead>
                                                             <tr>
                                                                 <th>Order</th>
@@ -544,23 +416,9 @@
                                             </div>
                                             <div class="card-body contact-from-area" style="height: 10em;">
                                                 <br>
-                                                <h4>₹ <%=user.wallet%>
+                                                <h4>₹ <%=user.wallet.toFixed(2)%>
                                                 </h4>
-                                                <!-- <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <form class="contact-form-style mt-30 mb-50" action="#" method="post">
-                                                            <div class="input-style mb-20">
-                                                                <label>Order ID</label>
-                                                                <input name="order-id" placeholder="Found in your order confirmation email" type="text" class="square">
-                                                            </div>
-                                                            <div class="input-style mb-20">
-                                                                <label>Billing email</label>
-                                                                <input name="billing-email" placeholder="Email you used during checkout" type="email" class="square">
-                                                            </div>
-                                                            <button class="submit submit-auto-width" type="submit">Track</button>
-                                                        </form>
-                                                    </div>
-                                                </div> -->
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -595,19 +453,7 @@
                                                     </div>
                                                 </div>
                                                 <%}%>
-                                                    <!-- <div class="col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5 class="mb-0">Shipping Address</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <address>4299 Express Lane<br>
-                                                            Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address>
-                                                        <p>Sarasota</p>
-                                                        <a href="#" class="btn-small">Edit</a>
-                                                    </div>
-                                                </div>
-                                            </div> -->
+                                                   
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="account-detail" role="tabpanel"
@@ -626,11 +472,11 @@
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             <label>Email Address <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="nemail" type="email" value="<%=user.email%>">
+                                                            <input required="" class="form-control square" name="nemail" type="email" value="<%=user.email%>" readonly>
                                                         </div>
                                                         <div class="form-group col-md-12">
                                                             <label>Mobile <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="mobile" type="number" value="<%=user.mobile%>">
+                                                            <input required="" class="form-control square" name="mobile" type="text" pattern="\d{10}" title="Please enter a 10-digit mobile number" value="<%=user.mobile%>">
                                                         </div>
                                                         <div class="col-md-12">
                                                             <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Update Details</button>
@@ -641,15 +487,22 @@
                                                 <script>
                                                     function validateForm() {
                                                         var username = document.forms["enq"]["name"].value.trim();
+                                                        var mobileNumber = document.forms["enq"]["mobile"].value.trim();
                                                 
                                                         if (username === '') {
                                                             alert('Username cannot be empty');
                                                             return false;
                                                         }
                                                 
+                                                        if (!/^\d{10}$/.test(mobileNumber)) {
+                                                            alert('Please enter a valid 10-digit mobile number');
+                                                            return false;
+                                                        }
+                                                
                                                         return true;
                                                     }
                                                 </script>
+                                                
                                                 
 
                                             </div>
@@ -782,124 +635,18 @@
                     </div>
                 </div>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        new DataTable('#example');
+
+})
+</script>
         </section>
     </main>
-    <footer class="main">
-        <section class="newsletter p-30 text-white wow fadeIn animated">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-7 mb-md-3 mb-lg-0">
-                        <div class="row align-items-center">
-                            <div class="col flex-horizontal-center">
-                                <img class="icon-email" src="assets/imgs/theme/icons/icon-email.svg" alt="">
-                                <h4 class="font-size-20 mb-0 ml-3">Sign up to Newsletter</h4>
-                            </div>
-                            <div class="col my-4 my-md-0 des">
-                                <h5 class="font-size-15 ml-4 mb-0">...and receive <strong>$25 coupon for first
-                                        shopping.</strong></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <!-- Subscribe Form -->
-                        <form class="form-subcriber d-flex wow fadeIn animated">
-                            <input type="email" class="form-control bg-white font-small" placeholder="Enter your email">
-                            <button class="btn bg-dark text-white" type="submit">Subscribe</button>
-                        </form>
-                        <!-- End Subscribe Form -->
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="section-padding footer-mid">
-            <div class="container pt-15 pb-20">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="widget-about font-md mb-md-5 mb-lg-0">
-                            <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
-                            </div>
-                            <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
-                            <p class="wow fadeIn animated">
-                                <strong>Address: </strong>562 Wellington Road, Street 32, San Francisco
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Phone: </strong>+01 2222 365 /(+91) 01 2345 6789
-                            </p>
-                            <p class="wow fadeIn animated">
-                                <strong>Hours: </strong>10:00 - 18:00, Mon - Sat
-                            </p>
-                            <h5 class="mb-10 mt-30 fw-600 text-grey-4 wow fadeIn animated">Follow Us</h5>
-                            <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0">
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
-                                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube.svg" alt=""></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">About</h5>
-                        <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Delivery Information</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Terms &amp; Conditions</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Support Center</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-2  col-md-3">
-                        <h5 class="widget-title wow fadeIn animated">My Account</h5>
-                        <ul class="footer-list wow fadeIn animated">
-                            <li><a href="#">Sign In</a></li>
-                            <li><a href="#">View Cart</a></li>
-                            <li><a href="#">My Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Order</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
-                        <h5 class="widget-title wow fadeIn animated">Install App</h5>
-                        <div class="row">
-                            <div class="col-md-8 col-lg-12">
-                                <p class="wow fadeIn animated">From App Store or Google Play</p>
-                                <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
-                                            src="assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg"
-                                            alt=""></a>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
-                                <p class="mb-20 wow fadeIn animated">Secured Payment Gateways</p>
-                                <img class="wow fadeIn animated" src="assets/imgs/theme/payment-method.png" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <div class="container pb-20 wow fadeIn animated">
-            <div class="row">
-                <div class="col-12 mb-20">
-                    <div class="footer-bottom"></div>
-                </div>
-                <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
-                            class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
-                </div>
-                <div class="col-lg-6">
-                    <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
-                        reserved
-                    </p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <%- include('footer') %>
     <!-- Preloader Start -->
     <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">

@@ -7,6 +7,7 @@ const Banner =require('../models/bannerModel')
 const sharp = require('sharp')
 const fs = require('fs')
 const path = require('path')
+const bcrypt=require('bcrypt')
 
 
 const loadLogin = async (req, res) => {
@@ -27,7 +28,11 @@ const verifyLogin = async (req, res) => {
         const userData = await User.findOne({ email: email })
         if (userData) {
             if (userData.is_admin === 1) {
-                if (userData.password === password) {
+                console.log(userData.password)
+                console.log(password)
+                const passwordMatch=await bcrypt.compare(password,userData.password)
+                console.log(passwordMatch)
+                if (passwordMatch) {
                     req.session.adminId = userData._id
                     // console.log(req.session.adminId)
                     res.redirect('/admin/home')
@@ -566,6 +571,7 @@ const loadEditCategory = async (req, res) => {
 
 const ordersList = async (req, res) => {
     try {
+        
         const orderData = await Order.find({}).sort({ orderDate: -1 }).populate('userId')
         // console.log(orderData)
         if (orderData) {
@@ -754,7 +760,7 @@ const loadEditBrand = async (req, res) => {
 }
 
 
-const salesReport = async (req, res) => {
+const  salesReport = async (req, res) => {
     try {
 
         if (req.query.startDate && req.query.endDate) {

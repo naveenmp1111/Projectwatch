@@ -1,3 +1,8 @@
+<section class="bg-black section-overlay" style="height: 127vh; align-items: center; background-image: url('/assets/imgs/watchbackgroundimage.jpg');  background-size: cover; background-repeat: no-repeat; position: relative;">
+
+
+
+
 // try {
 //     // Aggregate orders by month and count the number of products
 //     const orderData = await Order.aggregate([
@@ -223,3 +228,64 @@
       <% } %>
     </div>
 //          <% } %>
+
+
+
+
+const getProductResults = async(req,res) =>{
+  try {
+      console.log(req.query.search)
+      const categoryData = await Category.find({})
+      var search = '';
+      var page = req.query.page||1;
+      var limit = 5;
+      var filter = req.query.filter||'';
+      if(req.query.search||req.query.page&&filter==''){
+          search = req.query.search;
+          page = req.query.page;
+          console.log("Search is",search)
+          // const productData = await Product.find({$or:[{productName:{$regex:'.*'+search+'.*'}},{categoryName:{$regex:search}}]}).populate('categoryid')
+          const productData = await Product.find({
+              $or: [
+                  { productName: { $regex: new RegExp('.*' + search + '.*', 'i') } },
+                  { gender: { $regex: new RegExp('.*' + search + '.*', 'i') } },
+                  { categoryId: { $in: await getCategoryIdsByCategoryName(search) } },
+                  { brand: { $in: await getCategoryIdsByBrandName(search) } }
+              ]
+          }).populate('categoryid').limit(limit)
+          .skip((page-1)*limit)
+          
+          console.log(productData)
+
+          async function getCategoryIdsByCategoryName(categoryName) {
+              const regexPattern = new RegExp('.*' + categoryName.replace(/ /g, '.*') + '.*', 'i');
+              console.log('Regex Pattern:', regexPattern);
+              const category = await Category.findOne({ categoryName: { $regex: regexPattern } });
+              console.log(category)
+              return category ? [category._id] : [];
+          }
+
+          async function getCategoryIdsByBrandName(brandName) {
+              const regexPattern = new RegExp('.*' + brandName.replace(/ /g, '.*') + '.*', 'i');
+              console.log('Regex Pattern:', regexPattern);
+              const brand = await Brand.findOne({ brandName: { $regex: regexPattern } });
+              console.log(brand)
+              return brand? [brand._id] : [];
+          }
+
+          const count = await Product.find({
+              $or: [
+                  { productName: { $regex: new RegExp('.*' + search + '.*', 'i') } },
+                  { categoryid: { $in: await getCategoryIdsByCategoryName(search) } }
+              ]
+          }).countDocuments();
+
+          const totalPages = Math.ceil(count/limit);
+          // console.log(productData)
+          res.render('product-results',{productData,totalPages,search,page,filter:'',categoryData})
+      }
+
+  } catch (error) {
+      console.log(error)
+    }
+}

@@ -62,7 +62,7 @@ const productSchema = mongoose.Schema({
     },
     quantity: {
         type: Number,
-        default: 0
+        default: 1
     },
     date: {
         type: Date,
@@ -82,6 +82,10 @@ const productSchema = mongoose.Schema({
     bestDiscount: {
         type: Number,
         default: 0
+    },
+    rating:{
+        type:Number,
+        default: null
     },
     productReview: [
         {

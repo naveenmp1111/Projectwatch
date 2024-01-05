@@ -120,9 +120,12 @@
             const comment = document.getElementById('comment').value;
 
             // Validate that a rating is selected
-            if (rating === 0) {
+            if (rating === 0 ) {
                 alert('Please select a rating before submitting.');
                 return;
+            }else if(comment==''){
+                alert('Please write your review')
+                return
             }
 
             // Create an object to hold the data
@@ -142,7 +145,11 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log('Success:', data);
+                    Swal.fire({
+                            title: "Review submitted successfully",
+                            icon: "success"
+                    // console.log('Success:', data);
+                    })
                     // Handle success (e.g., update UI, show success message)
                 })
                 .catch(error => {
@@ -150,7 +157,10 @@
                     // Handle errors (e.g., show error message)
                 })
                 .finally(() => {
-                    window.reload()
+                    setTimeout(function(){
+                        window.location.reload()
+                    },1000)
+                    
                     // Close the modal
                     // const createReviewModal = new bootstrap.Modal(document.getElementById('createReviewModal'));
                     // createReviewModal.hide();
@@ -158,175 +168,9 @@
         }
     </script>
 
-    <!-- <div class="screen-overlay"></div>
-    <aside class="navbar-aside" id="offcanvas_aside">
-        <div class="aside-top">
-            <a href="index.html" class="brand-wrap">
-                <img src="/assetsb/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
-            </a>
-            <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
-            </div>
-        </div>
-        <nav>
-            <ul class="menu-aside">
-                <li class="menu-item">
-                    <a class="menu-link" href="index.html"> <i class="icon material-icons md-home"></i>
-                        <span class="text">Dashboard</span>
-                    </a>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
-                        <span class="text">Products</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-products-list.html">Product List</a>
-                        <a href="page-products-grid.html">Product grid</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a>
-                        <a href="page-categories.html">Categories</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu active">
-                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
-                        <span class="text">Orders</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-orders-1.html">Order list 1</a>
-                        <a href="page-orders-2.html">Order list 2</a>
-                        <a href="page-orders-detail.html" class="active">Order detail</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Sellers</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-sellers-cards.html">Sellers cards</a>
-                        <a href="page-sellers-list.html">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add product</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-form-product-1.html">Add product 1</a>
-                        <a href="page-form-product-2.html">Add product 2</a>
-                        <a href="page-form-product-3.html">Add product 3</a>
-                        <a href="page-form-product-4.html">Add product 4</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Transactions</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-transactions-1.html">Transaction 1</a>
-                        <a href="page-transactions-2.html">Transaction 2</a>
-                    </div>
-                </li>
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-account-login.html">User login</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
-                    </div>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
-                        <span class="text">Brands</span> </a>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
-                    </a>
-                </li>
-            </ul>
-            <hr>
-            <ul class="menu-aside">
-                <li class="menu-item has-submenu">
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
-                    </a>
-                    <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div>
-                </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
-                        <span class="text"> Starter page </span>
-                    </a>
-                </li>
-            </ul>
-            <br>
-            <br>
-        </nav>
-    </aside> -->
+   
     <main class="text-center">
-        <!-- <header class="main-header navbar"> -->
-        <!-- <div class="col-search">
-                <form class="searchform">
-                    <div class="input-group">
-                        <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
-                    <datalist id="search_terms">
-                        <option value="Products">
-                        <option value="New orders">
-                        <option value="Apple iphone">
-                        <option value="Ahmed Hassan">
-                    </datalist>
-                </form>
-            </div>
-            <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/assetsb/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/assetsb/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/assetsb/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/assetsb/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div>
-                    </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/assetsb/imgs/people/avatar2.jpg" alt="User"></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </header> -->
+        
         <section class="content-main">
             <div class="content-header">
                 <div>
@@ -439,7 +283,7 @@
                                             <br>
                                             <%=orders.userId.mobile%>
                                     </p>
-                                    <a href="#">View profile</a>
+                                    
                                 </div>
                             </article>
                         </div> <!-- col// -->
@@ -463,7 +307,7 @@
                                                     <%}%>
 
                                     </p>
-                                    <a href="#">Download info</a>
+                                   
                                 </div>
                             </article>
                         </div>
@@ -488,7 +332,7 @@
                                                 </span>
                                                 <% } %>
                                     </p>
-                                    <a href="#">Download info</a>
+                                   
                                 </div>
                             </article>
                         </div> <!-- col// -->
@@ -505,7 +349,7 @@
                                                 <%=orders.userId.address[orders.addressIndex].state%><br>
                                                     <%=orders.userId.address[orders.addressIndex].pincode%>
                                     </p>
-                                    <a href="#">View profile</a>
+                                    
                                 </div>
                             </article>
                         </div>
@@ -552,7 +396,7 @@
                                                         data-target="#createReviewModal"
                                                         data-product-id="<%= orders.products[i].productId._id %>"
                                                         onclick="setModalProductId('<%= orders.products[i].productId._id %>')">
-                                                        Create Review
+                                                        Add Review
                                                     </a>
                                                     
                                                     </td>
@@ -574,13 +418,13 @@
                                                         </td>
 
                                                         <td>
-                                                            <%=orders.products[i].productId.salePrice%>
+                                                            <%=orders.products[i].productId.salePrice.toFixed(2)%>
                                                         </td>
                                                         <td>
                                                             <%=orders.products[i].quantity%>
                                                         </td>
                                                         <td>
-                                                            <%=(orders.products[i].productId.salePrice)*(orders.products[i].quantity)%>
+                                                            <%=(orders.products[i].productId.salePrice).toFixed(2)*(orders.products[i].quantity).toFixed(2)%>
                                                         </td>
                                                         <!-- <td class="text-end"><button class="btn-primary btn-danger">Cancel</button></td> -->
                                             </tr>
@@ -643,28 +487,6 @@
                                 </table>
                             </div> <!-- table-responsive// -->
                         </div> <!-- col// -->
-
-
-
-
-
-                        <!-- <div class="col-lg-4"> -->
-                        <!-- <div class="box shadow-sm bg-light">
-                                <h6 class="mb-15">Payment info</h6>
-                                <p>
-                                    <img src="/assetsb/imgs/card-brands/2.png" class="border" height="20"> Master Card **** **** 4768 <br>
-                                    Business name: Grand Market LLC <br>
-                                    Phone: +1 (800) 555-154-52
-                                </p>
-                            </div>
-                            <div class="h-25 pt-4">
-                                <div class="mb-3">
-                                    <label>Notes</label>
-                                    <textarea class="form-control" name="notes" id="notes" placeholder="Type some note"></textarea>
-                                </div>
-                                <button class="btn btn-primary">Save note</button>
-                            </div> -->
-                        <!-- </div>  -->
                     </div>
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
@@ -672,11 +494,9 @@
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script data-cfasync="false"
-                        src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
                     <script>
-                        document.write(new Date().getFullYear())
-                    </script> ©, Evara - HTML Ecommerce Template .
+                    document.write(new Date().getFullYear())
+                    </script> ©, Ozora - Watches .
                 </div>
                 <div class="col-sm-6">
                     <div class="text-sm-end">

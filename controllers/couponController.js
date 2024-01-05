@@ -4,8 +4,12 @@ const Category=require('../models/categoryModel')
 
 const loadCouponPage=async(req,res)=>{
     try {
+        let message=''
+        if(req.query.message){
+            message='Coupon code already exists'
+        }
         const coupon=await Coupon.find({})
-        res.render('coupon',{coupon})
+        res.render('coupon',{coupon,message})
     } catch (error) {
         console.log(error.message)
         res.redirect('/500')
@@ -16,16 +20,20 @@ const addCoupon=async(req,res)=>{
     try{
         const {couponCode,discount,minPurchase,expiry}=req.body
         const expirydate=expiry
-        const newCoupon=new Coupon({
-            couponCode:couponCode,
-            discount:discount,
-            minPurchase:minPurchase,
-            expiry:expirydate,
-            is_active:true
-        })
-        await newCoupon.save()
-        res.redirect('/admin/coupon')
-
+        const couponData=await Coupon.findOne({couponCode:couponCode})
+        if(couponData){
+            res.redirect('/admin/coupon?message=alreadyExists')
+        }else{
+            const newCoupon=new Coupon({
+                couponCode:couponCode,
+                discount:discount,
+                minPurchase:minPurchase,
+                expiry:expirydate,
+                is_active:true
+            })
+            await newCoupon.save()
+            res.redirect('/admin/coupon')
+        }
     }catch(error){
         console.log(error.message)
         res.redirect('/500')

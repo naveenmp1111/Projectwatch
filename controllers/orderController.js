@@ -28,8 +28,10 @@ const placeOrder = async (req, res) => {
         // }
 
         for(i=0;i<userData.cart.length;i++){
-            if(userData.cart[i].productId.quantity<userData.cart[i].quantity){
+            if(userData.cart[i].productId.quantity<1){
                 return res.redirect('/cart?message=stockout')
+            }else if(userData.cart[i].productId.quantity<userData.cart[i].quantity){
+                return res.redirect('/cart?message=stocklow')
             }
         }
 
@@ -254,7 +256,18 @@ const onlinePayment = async (req, res) => {
         console.log(couponCode);
         const couponData = await Coupon.findOne({ couponCode: couponCode });
         console.log(couponData);
-        const userData= await User.findOne({email:req.session.email})
+        const userData= await User.findOne({email:req.session.email}).populate('cart.productId')
+        var flag=0
+        const userCart=userData.cart
+        userCart.forEach(item=>{
+            if(item.productId.quantity<1)
+            {
+              flag=1
+              
+            }else if(item.productId.quantity<item.quantity){
+                flag=2
+            }
+        })
 
         let coupon = null
         if(couponData!=null){
@@ -287,24 +300,34 @@ const onlinePayment = async (req, res) => {
         // });
     }
 
-
+    if(flag==0){
+        instance.orders.create(options, async function (err, razorOrder) {
+            if (err) {
+                console.log(err.message);
+                res.status(500).json({ error: "Failed to create order" });
+            } else {
+                // Sending the order details back to the client
+    
+                res.status(200).json({
+                    message: "Order placed successfully.",
+                    razorOrder: razorOrder,
+                    paymentStatus: "Successfull"// You can customize this based on your logic
+                });
+                // }
+            }
+        });
+    }else if(flag==1){
+        res.json({
+            message:'Stock out'
+        })
+    }else if(flag==2){
+        res.json({
+            message:'Stock low'
+        })
+    }
 
     // Creating the Razorpay order
-    instance.orders.create(options, async function (err, razorOrder) {
-        if (err) {
-            console.log(err.message);
-            res.status(500).json({ error: "Failed to create order" });
-        } else {
-            // Sending the order details back to the client
-
-            res.status(200).json({
-                message: "Order placed successfully.",
-                razorOrder: razorOrder,
-                paymentStatus: "Successfull"// You can customize this based on your logic
-            });
-            // }
-        }
-    });
+    
 }
 
 const paymentSuccess = async (req, res) => {
@@ -574,8 +597,22 @@ const createProductReview = async (req, res) => {
                 // Add other fields specific to the first review if needed
             };
 
+
             productData.productReview.push(obj);
             await productData.save();
+
+            let totalRating=0
+            for(item of productData.productReview){
+                totalRating +=  item.rating
+                }
+    const averageRating = totalRating / productData.productReview.length
+                productData.rating=averageRating/5*100
+                await productData.save()
+            // Set up average rating
+            // const averageRatingContainer = document.getElementById('product-rating'); // Make sure you have this element in your HTML
+            // if (averageRatingContainer) {
+            //     averageRatingContainer.style.width = `${(averageRating / 5) * 100}%`;
+
 
             const message = productData.productReview.length > 1 ? 'Review updated successfully' : 'First review created successfully';
 
