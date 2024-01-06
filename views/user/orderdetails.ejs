@@ -362,7 +362,7 @@
                                     <thead>
                                         <tr>
                                             <th width="20%">Product</th>
-                                            <%if(orders.orderstatus=='Delivered' || orders.orderstatus=='Order Placed'
+                                            <%if(orders.orderstatus=='Delivered' 
                                                 ){%>
                                                 <th width="20%">Review</th>
                                                 <%}%>
@@ -388,15 +388,14 @@
                                                         </div>
                                                     </a>
                                                 </td>
-                                                <%if(orders.orderstatus=='Delivered' ||
-                                                    orders.orderstatus=='Order Placed' ){%>
+                                                <%if(orders.orderstatus=='Delivered'  ){%>
                                                     <td>
                                                         <a class="btn btn-secondary create-review-btn"
                                                         data-toggle="modal"
                                                         data-target="#createReviewModal"
                                                         data-product-id="<%= orders.products[i].productId._id %>"
                                                         onclick="setModalProductId('<%= orders.products[i].productId._id %>')">
-                                                        Add Review
+                                                        Write a Review
                                                     </a>
                                                     
                                                     </td>

@@ -118,13 +118,24 @@
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="brandName" value="<%= brand.brandName %>" />
                                 </div>
                                 <div class="mb-4">
-                                    <input class="form-control" id="brandImage" type="file" name="image" accept="image/*" multiple>
+                                    <input class="form-control" id="brandImage" type="file" name="image" accept="image/*" multiple onchange="checkFileCount()">
                                 </div>
                                 <div class="d-grid">
                                     <input type="submit" class="btn btn-primary" value="Update Brand">
                                 </div>
                             </form>
+                            <script>
+                                function checkFileCount() {
+                                  var fileInput = document.getElementById('brandImage');
+                                  var maxFiles = 1; // Set the maximum number of allowed files
                             
+                                  if (fileInput.files.length > maxFiles) {
+                                    alert('You can only select up to ' + maxFiles + ' files.');
+                                    // Clear the selected files to enforce the limit
+                                    fileInput.value = '';
+                                  }
+                                }
+                              </script>
                             <script>
                                 function validateForm() {
                                     // Get the input element for brand name

@@ -210,7 +210,7 @@
 
                                         </div>
                                         <% } %>
-                                            <input accept="image/*" name="image" class="form-control" type="file"
+                                            <input accept="image/*" name="image" class="form-control" type="file" id="fileInput" onchange="checkFileCount()"
                                                 multiple>
                                 </div>
                             </div>
@@ -303,7 +303,18 @@
                 </div>
                 <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
             </form>
-
+            <script>
+                function checkFileCount() {
+                  var fileInput = document.getElementById('fileInput');
+                  var maxFiles = 5; // Set the maximum number of allowed files
+            
+                  if (fileInput.files.length > maxFiles) {
+                    alert('You can only select up to ' + maxFiles + ' files.');
+                    // Clear the selected files to enforce the limit
+                    fileInput.value = '';
+                  }
+                }
+              </script>
         </section>
         <%- include('footer') %>
     </main>

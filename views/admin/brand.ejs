@@ -99,10 +99,7 @@
             <div class="content-header">
                 <div>
                     <h2 class="content-title card-title">Brands </h2>
-                    <p>Add, edit or delete a brand</p>
-                </div>
-                <div>
-                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                    <p>Add or edit a brand</p>
                 </div>
             </div>
             <div class="card">
@@ -118,7 +115,7 @@
                                     <% } %>
                                 </div>
                                 <div class="mb-4">
-                                    <input class="form-control" id="brandImage" type="file" name="image" accept="image/*" multiple required>
+                                    <input class="form-control" id="brandImage" type="file" name="image" accept="image/*" multiple required onchange="checkFileCount()">
                                 </div>
                                 <script>
                                     // Define a JavaScript function called toUpperCaseInput
@@ -151,6 +148,18 @@
                                     <input type="submit" class="btn btn-primary" value="Create category">
                                 </div>
                             </form>
+                            <script>
+                                function checkFileCount() {
+                                  var fileInput = document.getElementById('brandImage');
+                                  var maxFiles = 1; // Set the maximum number of allowed files
+                            
+                                  if (fileInput.files.length > maxFiles) {
+                                    alert('You can only select up to ' + maxFiles + ' files.');
+                                    // Clear the selected files to enforce the limit
+                                    fileInput.value = '';
+                                  }
+                                }
+                              </script>
                             
                         </div>
                         <div class="col-md-9">
@@ -191,7 +200,7 @@
                                                          <%}%>  
                                                          <a class="dropdown-item text-danger" href="/admin/editBrand?id=<%=brand[i]._id%>">Edit</a>
  
-                                                        <a class="dropdown-item text-danger" href="/admin/deleteBrand?id=<%=brand[i]._id%>">Delete</a>
+                                                        <!-- <a class="dropdown-item text-danger" href="/admin/deleteBrand?id=<%=brand[i]._id%>">Delete</a> -->
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>

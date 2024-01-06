@@ -123,8 +123,10 @@
                                     
                                 <tr>
                                     <td>#<%=order[i].orderId%></td>
-                                    <td><b><%=order[i].userId.name%></b></td>
-                                    <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template><%=order[i].userId.email%></td>
+                                    <td><b><%= order[i].userId ? order[i].userId.name : 'N/A' %>
+                                    </b></td>
+                                    <td><%= order[i].userId ? order[i].userId.email : 'N/A' %></td>
+
                                     <td><%=order[i].totalAmount%></td>
                                     <%if(order[i].orderstatus == 'Returned' || order[i].orderstatus == 'Cancelled'){%>
                                     <td><span class="badge rounded-pill alert-danger"><%=order[i].orderstatus%></span></td>

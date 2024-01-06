@@ -38,7 +38,7 @@
                             <div class="row gx-3">
                                 <%if(locals.start && locals.end){%>
                                     <div class="col-lg-2 col-md-3 col-6 ">
-                                        From :<input type="date" name="startDate" value="<%=start%>">
+                                        From :<br><input type="date" name="startDate" value="<%=start%>">
                                     </div>
                                     <div class="col-lg-2 col-md-3 col-6">
                                         To : <br><input type="date" name="endDate" value="<%=end%>">
@@ -78,20 +78,21 @@
                                     <tbody>
                                         <%for(i=0;i<orders.length;i++){%>
 
-                                        <tr>
-                                            <td>ORD#<%=orders[i].orderId%></td>
-                                            <td><b><%=orders[i].userId.name%></b></td>
-                                            <td> ₹<%=orders[i].totalAmount%></td>
-                                            <%if(orders[i].orderstatus == 'Cancelled' || orders[i].orderstatus == 'Returned'){%>
-                                             <td><span class="text-danger"><%=orders[i].orderstatus%></span></td>
-                                             <%}else{%>
-                                                <td><span class="text-success"><%=orders[i].orderstatus%></span></td>
-                                                <%}%>
-                                            <td><%=orders[i].orderDate%></td>
-                                            <td class="text-end">
-                                                <a href="/admin/orderDetails?orderId=<%=orders[i]._id%>" class="btn btn-md rounded font-sm">Detail</a>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td><%= orders[i].orderId ? 'ORD#' + orders[i].orderId : 'N/A' %></td>
+                                                <td><b><%= orders[i].userId && orders[i].userId.name ? orders[i].userId.name : 'N/A' %></b></td>
+                                                <td> ₹<%= orders[i].totalAmount ? orders[i].totalAmount : 'N/A' %></td>
+                                                <% if (orders[i].orderstatus == 'Cancelled' || orders[i].orderstatus == 'Returned') { %>
+                                                    <td><span class="text-danger"><%= orders[i].orderstatus %></span></td>
+                                                <% } else { %>
+                                                    <td><span class="text-success"><%= orders[i].orderstatus %></span></td>
+                                                <% } %>
+                                                <td><%= orders[i].orderDate ? orders[i].orderDate : 'N/A' %></td>
+                                                <td class="text-end">
+                                                    <a href="/admin/orderDetails?orderId=<%= orders[i]._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                                                </td>
+                                            </tr>
+                                            
                                       
                                         <%}%>
 
@@ -140,7 +141,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label for="order_customer_1" class="text-center">Total transaction</label><br><br>
-                                    <h5 class="text-center"> ₹<%=totalTransaction%></h5>
+                                    <h5 class="text-center"> ₹<%=totalTransaction.toFixed(2)%></h5>
                                     <!-- <input type="text" value="<%=totalTransaction%>" class="form-control" id="order_customer_1"> -->
                                 </div>
                             </form>

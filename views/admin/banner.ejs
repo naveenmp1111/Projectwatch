@@ -265,12 +265,24 @@
                             </div>
                             <div class="mb-3">
                                 <input class="form-control" id="editbannerimage" type="file" name="image"
-                                    accept="image/*" multiple required>
+                                    accept="image/*" multiple required onchange="checkFileCount()">
                             </div>
                             <button type="submit"
                                 class="btn btn-primary">Save
                                 Changes</button>
                         </form>
+                        <script>
+                            function checkFileCount() {
+                              var fileInput = document.getElementById('editbannerimage');
+                              var maxFiles = 1; // Set the maximum number of allowed files
+                        
+                              if (fileInput.files.length > maxFiles) {
+                                alert('You can only select up to ' + maxFiles + ' files.');
+                                // Clear the selected files to enforce the limit
+                                fileInput.value = '';
+                              }
+                            }
+                          </script>
                     </div>
                 </div>
             </div>

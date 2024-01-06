@@ -181,7 +181,7 @@
                                 <div class="card-body">
                                     <div class="input-upload">
                                         <img src="/assetsb/imgs/theme/upload.svg" alt="">
-                                        <input class="form-control" type="file" name="image" accept="image/*" multiple required>
+                                        <input class="form-control" type="file" name="image" accept="image/*" multiple  id="fileInput" onchange="checkFileCount()" required >
                                     </div>
                                 </div>
                             </div> <!-- card end// -->
@@ -237,7 +237,18 @@
                 }
             </script>
             
-
+            <script>
+                function checkFileCount() {
+                  var fileInput = document.getElementById('fileInput');
+                  var maxFiles = 5; // Set the maximum number of allowed files
+            
+                  if (fileInput.files.length > maxFiles) {
+                    alert('You can only select up to ' + maxFiles + ' files.');
+                    // Clear the selected files to enforce the limit
+                    fileInput.value = '';
+                  }
+                }
+              </script>
         </section>
         <%- include('footer') %>
     </main>

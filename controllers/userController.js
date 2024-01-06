@@ -407,8 +407,10 @@ const productDetails = async (req, res) => {
         const productData = await Product.findById({ _id: id }).populate('productReview.userId')
         const userData = await User.findOne({ email })
         const categories = await Category.find({ is_active: true })
+        const banner=await Banner.find({is_active:true})
+       
         if (productData) {
-            res.render('productDetails', { product: productData, user: userData, categories })
+            res.render('productDetails', { product: productData, user: userData, categories ,banner})
         } else {
             res.redirect('/home')
 
