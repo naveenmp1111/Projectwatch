@@ -384,7 +384,9 @@ const resetPassword = async (req, res) => {
         const password1 = req.body.password1
         const password2 = req.body.password2
         if (password1 == password2) {
-            const userData = await User.findOneAndUpdate({ email: email }, { $set: { password: password1 } })
+            const salt=await bcrypt.genSalt(10)
+            const hashedPassword=await bcrypt.hash(password1,salt)
+            const userData = await User.findOneAndUpdate({ email: email }, { $set: { password: hashedPassword} })
             if (userData) {
                 res.redirect('/')
             }

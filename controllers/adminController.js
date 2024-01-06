@@ -149,9 +149,9 @@ const loadDashboard = async (req, res) => {
             }
         });
 
+    
 
-
-        // console.log(totalTransaction)
+        // console.log(order[1].userId.name)
         res.render('dashboard', {
             user, order, product, totalTransaction, totalRegisterJson,
             totalOrdersJson, totalProductsJson, categoryNames, orderCounts
