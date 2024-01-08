@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-about.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:21 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+</head>
+
+<body>
+    <%- include('header') %>
+    <main class="main single-page">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Pages
+                    <span></span> About us
+                </div>
+            </div>
+        </div>
+        <section class="section-padding">
+            <div class="container pt-25">
+                <div class="row">
+                    <div class="col-lg-12 align-self-center mb-lg-0 mb-4">
+                        <h6 class="mt-0 mb-15 text-uppercase font-sm text-brand wow fadeIn animated">Our Company</h6>
+                        <h1 class="font-heading mb-40">
+                            We are Building The Destination For Getting Things Done
+                        </h1>
+                        <p>
+                            Welcome to OZORA Watches, an opulent universe where the artistry of horology converges with the pinnacle of sophistication. We invite you 
+                            to explore our exclusive online emporium, meticulously curated to showcase an unparalleled selection of timepieces that transcend the ordinary.
+                             At OZORA Watches, we redefine the essence of luxury watches, presenting an exquisite fusion of timeless design, impeccable craftsmanship, and 
+                             cutting-edge technology. Our extensive collection caters to the discerning tastes of aficionados and enthusiasts alike, offering a diverse array of styles, 
+                             from classic elegance to avant-garde innovation. Each watch in our repertoire is not just a functional accessory but a statement piece, a manifestation of unparalleled precision and 
+                             a testament to the heritage of watchmaking. Immerse yourself in a world where every tick of the clock tells a story—a story of heritage, excellence, and your individual journey. Elevate your 
+                             style, make a lasting impression, and embrace the epitome of timekeeping sophistication with OZORA Watches. Because, at OZORA Watches, time is not just measured; it's celebrated in grandeur and distinction.</p>
+                        <p>Tempus ultricies augue luctus et ut suscipit. Morbi arcu, ultrices purus dolor erat bibendum sapien metus. Sit mi, pharetra, morbi arcu id. Pellentesque dapibus nibh augue senectus. </p>
+                    </div>
+                    <!-- <div class="col-lg-6">
+                        <img src="assets/imgs/page/about-1.png" alt="">
+                    </div> -->
+                </div>
+            </div>
+        </section>
+        <section class="section-padding">
+            <div class="container pb-25">
+                <h3 class="section-title mb-20 wow fadeIn animated text-center"><span>Featured</span> Clients</h3>
+                <div class="carausel-6-columns-cover position-relative wow fadeIn animated">
+                    <div class="carausel-6-columns text-center" id="carausel-6-columns-3">
+                        <%for(i=0;i<brands.length;i++){%>
+                        <div class="brand-logo">
+                            <img class="img-grey-hover" src="/<%=brands[i].brandImage[0]%>" alt="">
+                        </div>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-padding">
+            <div class="container pt-25">
+                <div class="row">
+                    <div class="col-lg-6 align-self-center mb-lg-0 mb-4">
+                        <h6 class="mt-0 mb-15 text-uppercase font-sm text-brand wow fadeIn animated">Our New Ideas</h6>
+                        <h1 class="font-heading mb-40">
+                            We are Doing our Best
+                        </h1>
+                        <p>
+                            Welcome to OZORA Watches, an epitome of horological mastery where time is not just measured but celebrated. 
+                            Our collection of timepieces transcends the conventional, presenting a symphony of elegance, innovation, and heritage. 
+                            Immerse yourself in a journey through meticulously crafted watches that are more than accessories; they are reflections of your style, taste, and individuality. 
+                            At OZORA Watches, each watch narrates a tale of precision, blending contemporary design with timeless allure</p>
+                       
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="assets/imgs/page/about-1.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="team" class="pt-25 wow fadeIn animated">
+            <div class="container">
+                <div class="row mb-50 align-items-center">
+                    <div class="col-md-6">
+                        <h6 class="mt-0 mb-15 text-uppercase font-sm text-brand wow fadeIn animated">Our Team</h6>
+                        <h2 class="mb-15 wow fadeIn animated">Top team of experts</h2>
+                        <p class="text-grey-3 wow fadeIn animated">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione optio perferendis sequi mollitia quis autem ea cupiditate possimus!</p>
+                    </div>
+                    <div class="col-md-6 text-md-end mt-30">
+                        <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand text-hover-white border-radius-5 btn-shadow-brand hover-up">All Members</a>
+                    </div>
+                </div>
+                <div class="position-relative">
+                    <div class="row wow fadeIn animated">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="blog-card border-radius-10 overflow-hidden text-center">
+                                <img src="assets/imgs/page/avatar-1.jpg" alt="" class="border-radius-10 mb-30 hover-up">
+                                <h4 class="fw-500 mb-0">Patric Adams</h4>
+                                <p class="fw-400 text-brand mb-10">CEO & Co-Founder</p>
+                                <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0 animated">
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="blog-card border-radius-10 overflow-hidden text-center">
+                                <img src="assets/imgs/page/avatar-2.jpg" alt="" class="border-radius-10 mb-30 hover-up">
+                                <h4 class="fw-500 mb-0">Dilan Specter</h4>
+                                <p class="fw-400 text-brand mb-10">Head Engineer</p>
+                                <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0 animated">
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="blog-card border-radius-10 overflow-hidden text-center">
+                                <img src="assets/imgs/page/avatar-3.jpg" alt="" class="border-radius-10 mb-30 hover-up">
+                                <h4 class="fw-500 mb-0">Tomas Baker</h4>
+                                <p class="fw-400 text-brand mb-10">Senior Planner</p>
+                                <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0 animated">
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                        <div class="col-lg-3 col-md-6">
+                            <div class="blog-card border-radius-10 overflow-hidden text-center">
+                                <img src="assets/imgs/page/avatar-4.jpg" alt="" class="border-radius-10 mb-30 hover-up">
+                                <h4 class="fw-500 mb-0">Norton Mendos</h4>
+                                <p class="fw-400 text-brand mb-10">Project Manager</p>
+                                <div class="mobile-social-icon wow fadeIn animated mb-sm-5 mb-md-0 animated">
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-instagram.svg" alt=""></a>
+                                    <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--col-->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="work" class="mt-40 pt-50 pb-50 section-border">
+            <div class="container">
+                <div class="row mb-50">
+                    <div class="col-lg-12 col-md-12 text-center">
+                        <h6 class="mt-0 mb-5 text-uppercase  text-brand font-sm wow fadeIn animated">Evara Coporation</h6>
+                        <h2 class="mb-15 text-grey-1 wow fadeIn animated">Our main branches<br> around the world</h2>
+                        <p class="w-50 m-auto text-grey-3 wow fadeIn animated">At vero eos et accusamus et iusto odio dignissimos ducimus quiblanditiis praesentium. ebitis nesciunt voluptatum dicta reprehenderit accusamus</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 text-center mb-md-0 mb-4">
+                        <img class="btn-shadow-brand hover-up border-radius-10 bg-brand-muted wow fadeIn animated" src="assets/imgs/page/company-1.jpg" alt="">
+                        <h4 class="mt-30 mb-15 wow fadeIn animated">New York, USA</h4>
+                        <p class="text-grey-3 wow fadeIn animated">27 Division St, New York<br>NY 10002, USA</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-md-0 mb-4">
+                        <img class="btn-shadow-brand hover-up border-radius-10 bg-brand-muted wow fadeIn animated" src="assets/imgs/page/company-2.jpg" alt="">
+                        <h4 class="mt-30 mb-15 wow fadeIn animated">Paris, France</h4>
+                        <p class="text-grey-3 wow fadeIn animated">22 Rue des Carmes<br> 75005 Paris</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img class="btn-shadow-brand hover-up border-radius-10 bg-brand-muted wow fadeIn animated" src="assets/imgs/page/company-3.jpg" alt="">
+                        <h4 class="mt-30 mb-15 wow fadeIn animated">Jakarta, Indonesia</h4>
+                        <p class="text-grey-3 wow fadeIn animated">2476 Raya Yogyakarta,<br>89090 Indonesia</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="testimonials" class="section-padding">
+            <div class="container pt-25">
+                <div class="row mb-50">
+                    <div class="col-lg-12 col-md-12 text-center">
+                        <h6 class="mt-0 mb-10 text-uppercase  text-brand font-sm wow fadeIn animated">some facts</h6>
+                        <h2 class="mb-15 text-grey-1 wow fadeIn animated">Take a look what<br> our clients say about us</h2>
+                        <p class="w-50 m-auto text-grey-3 wow fadeIn animated">At vero eos et accusamus et iusto odio dignissimos ducimus quiblanditiis praesentium. ebitis nesciunt voluptatum dicta reprehenderit accusamus</p>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up ">
+                                <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="assets/imgs/page/avatar-1.jpg" alt="">
+                            </div>
+                            <div class="pl-30">
+                                <h5 class="mb-5 fw-500">
+                                    J. Bezos
+                                </h5>
+                                <p class="font-sm text-grey-5">Adobe Jsc</p>
+                                <p class="text-grey-3">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis nesciunt voluptatum dicta reprehenderit accusamus voluptatibus voluptas."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up ">
+                                <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="assets/imgs/page/avatar-3.jpg" alt="">
+                            </div>
+                            <div class="pl-30">
+                                <h5 class="mb-5 fw-500">
+                                    B.Gates
+                                </h5>
+                                <p class="font-sm text-grey-5">Adobe Jsc</p>
+                                <p class="text-grey-3">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis nesciunt voluptatum dicta reprehenderit accusamus voluptatibus voluptas."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up ">
+                                <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="assets/imgs/page/avatar-2.jpg" alt="">
+                            </div>
+                            <div class="pl-30">
+                                <h5 class="mb-5 fw-500">
+                                    B. Meyers
+                                </h5>
+                                <p class="font-sm text-grey-5">Adobe Jsc</p>
+                                <p class="text-grey-3">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis nesciunt voluptatum dicta reprehenderit accusamus voluptatibus voluptas."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up ">
+                                <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="assets/imgs/page/avatar-4.jpg" alt="">
+                            </div>
+                            <div class="pl-30">
+                                <h5 class="mb-5 fw-500">
+                                    J. Bezos
+                                </h5>
+                                <p class="font-sm text-grey-5">Adobe Jsc</p>
+                                <p class="text-grey-3">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis nesciunt voluptatum dicta reprehenderit accusamus voluptatibus voluptas."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up ">
+                                <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="assets/imgs/page/avatar-5.jpg" alt="">
+                            </div>
+                            <div class="pl-30">
+                                <h5 class="mb-5 fw-500">
+                                    B.Gates
+                                </h5>
+                                <p class="font-sm text-grey-5">Adobe Jsc</p>
+                                <p class="text-grey-3">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis nesciunt voluptatum dicta reprehenderit accusamus voluptatibus voluptas."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="hero-card box-shadow-outer-6 wow fadeIn animated mb-30 hover-up d-flex">
+                            <div class="hero-card-icon icon-left-2 hover-up ">
+                                <img class="btn-shadow-brand hover-up border-radius-5 bg-brand-muted" src="assets/imgs/page/avatar-1.jpg" alt="">
+                            </div>
+                            <div class="pl-30">
+                                <h5 class="mb-5 fw-500">
+                                    B. Meyers
+                                </h5>
+                                <p class="font-sm text-grey-5">Adobe Jsc</p>
+                                <p class="text-grey-3">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis nesciunt voluptatum dicta reprehenderit accusamus voluptatibus voluptas."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-30">
+                    <div class="col-12 text-center">
+                        <p class="wow fadeIn animated">
+                            <a class="btn btn-brand text-white btn-shadow-brand hover-up btn-lg">View More</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    <%- include('footer') %>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/maind134.js?v=3.4"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-about.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:46 GMT -->
+</html>

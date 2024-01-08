@@ -43,6 +43,9 @@ userRoute.post('/editAddressForm', auth.isLogin, userController.updateAddress)
 userRoute.post('/updateQuantity/:newQuantity/:index', auth.isLogin, userController.updateQuantity)
 userRoute.post('/updateUserDetails', auth.isLogin, userController.checkUniqueEmail2, userController.updateUserDetails)
 userRoute.post('/updatePassword', auth.isBlocked, auth.isLogin, userController.updatePassword)
+userRoute.get('/contact',userController.contact)
+userRoute.post('/contact',userController.saveContactData)
+userRoute.get('/about',userController.about)
 userRoute.get('/logout', auth.isLogin, userController.logout)
 
 //-----------------------------------------------shopController----------------------------------------->

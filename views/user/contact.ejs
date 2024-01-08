@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>Evara - eCommerce HTML Template</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+    <!--leaflet map-->
+    <link rel="stylesheet" href="../../../../unpkg.com/leaflet%401.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="../../../../unpkg.com/leaflet%401.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+</head>
+
+<body>
+    <%- include('header') %>
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Pages
+                    <span></span> Contact us
+                </div>
+            </div>
+        </div>
+        <section class="hero-2 bg-green">
+            <div class="hero-content">
+                <div class="container">
+                    <div class="text-center">
+                        <h4 class="text-brand mb-20">Get in touch</h4>
+                        <h1 class="mb-20 wow fadeIn animated font-xxl fw-900">
+                            Let's Talk About <br>Your <span class="text-style-1">Idea</span>
+                        </h1>
+                        <!-- <p class="w-50 m-auto mb-50 wow fadeIn animated">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quam eius placeat, a quidem mollitia at accusantium reprehenderit pariatur provident nam ratione incidunt magnam sequi.</p> -->
+                        <p class="wow fadeIn animated">
+                            <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up" href="page-about.html">About Us</a>
+                            <!-- <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Support Center</a> -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="pt-50 pb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8 col-lg-10 m-auto">
+                        <div class="contact-from-area padding-20-row-col wow FadeInUp">
+                            <h3 class="mb-10 text-center">Drop Us a Line</h3>
+                            <!-- <p class="text-muted mb-30 text-center font-sm">Lorem ipsum dolor sit amet consectetur.</p> -->
+                            <!-- HTML form with client-side validation -->
+<form class="contact-form-style text-center" id="contact-form" action="" method="post" onsubmit="return validateForm()">
+    <div class="row">
+        <div class="col-lg-6 col-md-6">
+            <div class="input-style mb-20">
+                <input name="name" id="name" placeholder="Name" type="text">
+                <span id="nameError" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="input-style mb-20">
+                <input name="email" id="email" placeholder="Your Email" type="email">
+                <span id="emailError" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="input-style mb-20">
+                <input name="mobile" id="mobile" placeholder="Your Phone" type="tel">
+                <span id="mobileError" class="error text-danger"></span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+            <div class="input-style mb-20">
+                <input name="subject" id="subject" placeholder="Subject" type="text">
+                <span id="subjectError" class="error text-danger" ></span>
+            </div>
+        </div>
+        <div class="col-lg-12 col-md-12">
+            <div class="textarea-style mb-30">
+                <textarea name="message" id="message" placeholder="Message"></textarea>
+                <span id="messageError" class="error text-danger"></span>
+            </div>
+            <button class="submit submit-auto-width" type="submit">Send message</button>
+        </div>
+    </div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    function validateForm() {
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var mobile = document.getElementById('mobile').value;
+        var subject = document.getElementById('subject').value;
+        var message = document.getElementById('message').value;
+
+        // Validate Name
+        if (name.trim() === "") {
+            document.getElementById('nameError').innerText = "Name is required";
+            return false;
+        }
+
+        // Validate Email
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            document.getElementById('emailError').innerText = "Enter a valid email address";
+            return false;
+        }
+
+        // Validate Mobile Number
+        var mobileRegex = /^\d{10}$/;
+        if (!mobileRegex.test(mobile)) {
+            document.getElementById('mobileError').innerText = "Enter a valid 10-digit mobile number";
+            return false;
+        }
+
+        // Validate Subject
+        if (subject.trim() === "") {
+            document.getElementById('subjectError').innerText = "Subject is required";
+            return false;
+        }
+
+        // Validate Message
+        if (message.trim() === "") {
+            document.getElementById('messageError').innerText = "Message cannot be empty";
+            return false;
+        }
+
+        // Clear any previous error messages
+        document.getElementById('nameError').innerText = "";
+        document.getElementById('emailError').innerText = "";
+        document.getElementById('mobileError').innerText = "";
+        document.getElementById('subjectError').innerText = "";
+        document.getElementById('messageError').innerText = "";
+
+        // If all validations pass, submit the form
+         submitForm();
+         // Prevent the form from submitting by default
+    }
+
+    function submitForm() {
+        Swal.fire({
+            title: 'Submitted',
+            text: 'Form submitted successfully.',
+            icon: 'success',
+        }).then(() => {
+            setTimeout(function(){
+                document.getElementById('contact-form').submit();
+            },2000)
+            
+        });
+    }
+</script>
+
+
+
+                            <p class="form-messege"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <%- include('footer') %>
+    <!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="text-center">
+                    <h5 class="mb-5">Now Loading</h5>
+                    <div class="loader">
+                        <div class="bar bar1"></div>
+                        <div class="bar bar2"></div>
+                        <div class="bar bar3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Vendor JS-->
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/plugins/slick.js"></script>
+    <script src="assets/js/plugins/jquery.syotimer.min.js"></script>
+    <script src="assets/js/plugins/wow.js"></script>
+    <script src="assets/js/plugins/jquery-ui.js"></script>
+    <script src="assets/js/plugins/perfect-scrollbar.js"></script>
+    <script src="assets/js/plugins/magnific-popup.js"></script>
+    <script src="assets/js/plugins/select2.min.js"></script>
+    <script src="assets/js/plugins/waypoints.js"></script>
+    <script src="assets/js/plugins/counterup.js"></script>
+    <script src="assets/js/plugins/jquery.countdown.min.js"></script>
+    <script src="assets/js/plugins/images-loaded.js"></script>
+    <script src="assets/js/plugins/isotope.js"></script>
+    <script src="assets/js/plugins/scrollup.js"></script>
+    <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="assets/js/plugins/leaflet.js"></script>
+    <!-- Template  JS -->
+    <script src="assets/js/maind134.js?v=3.4"></script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+</html>

@@ -6,6 +6,7 @@ const Category = require('../models/categoryModel')
 const Brand = require('../models/brandModel')
 const Coupon = require('../models/couponModel')
 const Banner = require('../models/bannerModel')
+const Contact = require('../models/contactModel')
 const RandomString = require('randomstring')
 const Wishlist = require('../models/wishlistModel')
 const userAuth = require('../middlewares/userAuth')
@@ -395,7 +396,7 @@ const productDetails = async (req, res) => {
     try {
         const id = req.query.id
         const email = req.session.email
-        const productData = await Product.findById({ _id: id }).populate('productReview.userId')
+        const productData = await Product.findById({ _id: id }).populate('productReview.userId').populate('brandId')
         const userData = await User.findOne({ email })
         const categories = await Category.find({ is_active: true })
         const banner=await Banner.find({is_active:true})
@@ -599,6 +600,7 @@ const deleteFromCart = async (req, res) => {
 const showCheckOut = async (req, res) => {
     try {
         const email = req.session.email
+        const brands = await Brand.find({is_active:true})
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const coupon = await Coupon.find({ is_active: true, "redeemedUsers.userId": { $ne: userData._id } });
         const categories = await Category.find({ is_active: true })
@@ -617,7 +619,7 @@ const showCheckOut = async (req, res) => {
         }
 
         if (userData.cart.length > 0) {
-            res.render('checkout', { user: userData, coupon ,categories})
+            res.render('checkout', { user: userData, coupon ,categories,brands})
         } else {
             res.redirect('/cart')
         }
@@ -850,6 +852,46 @@ const updatePassword = async (req, res) => {
     }
 }
 
+const contact=async(req,res)=>{
+    try {
+        const email = req.session.email
+        const userData = await User.findOne({ email: email })
+        const categoryData = await Category.find({ is_active: true })
+        const brandData = await Brand.find({ is_active: true })
+        res.render('contact', {  user: userData, categories: categoryData, brands: brandData })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const saveContactData = async(req,res)=>{
+    try {
+        const { name, email, mobile, subject, message } = req.body;
+        const contactData=new Contact({
+            name:name,
+            email:email,
+            mobile:mobile,
+            subject:subject,
+            message:message
+        })
+        await contactData.save()
+        res.redirect('/contact')
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+const about=async(req,res)=>{
+    try {
+        const email = req.session.email
+        const userData = await User.findOne({ email: email })
+        const categoryData = await Category.find({ is_active: true })
+        const brandData = await Brand.find({ is_active: true })
+         res.render('about', {  user: userData, categories: categoryData, brands: brandData })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
 
 const logout = async (req, res) => {
     try {
@@ -900,6 +942,9 @@ module.exports = {
     updateQuantity,
     updateUserDetails,
     updatePassword,
+    contact,
+    saveContactData,
+    about,
     logout,
     error500
 }

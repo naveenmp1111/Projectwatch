@@ -23,22 +23,27 @@
                 <div class="col-lg-3 col-md-4">
                     <h5 class="widget-title wow fadeIn animated">About</h5>
                     <ul class="footer-list wow fadeIn animated mb-sm-5 mb-md-0">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Delivery Information</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms &amp; Conditions</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Support Center</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/contact">Contact Us</a></li>
+                       
                     </ul>
                 </div>
                 <div class="col-lg-3  col-md-4">
                     <h5 class="widget-title wow fadeIn animated">My Account</h5>
                     <ul class="footer-list wow fadeIn animated">
+                        <%if(user){%>
                         <li><a href="/login">Sign In</a></li>
                         <li><a href="/register">Sign Up</a></li>
                         <li><a href="/userAccount">UserAccount</a></li>
                         <li><a href="/cart">View Cart</a></li>
                         <li><a href="/wishlist">My Wishlist</a></li>
+                        <%}else{%>
+                        <li><a href="/login">Sign In</a></li>
+                        <li><a href="/register">Sign Up</a></li>
+                        <li><a href="/login">UserAccount</a></li>
+                        <li><a href="/login">View Cart</a></li>
+                        <li><a href="/login">My Wishlist</a></li>
+                        <%}%>
                     </ul>
                 </div>
             </div>

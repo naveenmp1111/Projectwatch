@@ -60,6 +60,7 @@ adminRoute.post('/addBanner',upload.array('image',5),adminController.addBanner)
 adminRoute.post('/editBanner',upload.array('image',5),adminController.editBanner)
 adminRoute.get('/blockBanner',adminController.blockBanner)
 adminRoute.get('/unblockBanner',adminController.unblockBanner)
+adminRoute.get('/contact',adminController.contactData)
 adminRoute.get('/logout',auth.isLogin,adminController.logout)
 
 const offerController=require('../controllers/offerController')

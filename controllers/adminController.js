@@ -4,6 +4,7 @@ const Category = require('../models/categoryModel')
 const Order = require('../models/orderModel')
 const Brand = require('../models/brandModel')
 const Banner =require('../models/bannerModel')
+const Contact=require('../models/contactModel')
 const sharp = require('sharp')
 const fs = require('fs')
 const path = require('path')
@@ -951,6 +952,15 @@ const editBanner=async(req,res)=>{
     }
 }
 
+const contactData=async(req,res)=>{
+    try {
+        const contactData=await Contact.find({})
+        res.render('contact',{contactData})
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 const logout = async (req, res) => {
     try {
         delete req.session.adminId
@@ -1004,5 +1014,6 @@ module.exports = {
     blockBanner,
     unblockBanner,
     editBanner,
+    contactData,
     logout
 }
