@@ -116,6 +116,7 @@ const checkReferral = async (req, res) => {
 const sendOtp = async (req, res) => {
     // req.session.otpIsVerified = true
     try {
+        const { email } = req.session.data
         const randomotp = Math.floor(1000 + Math.random() * 9000);
         console.log(randomotp)
         const transporter = nodemailer.createTransport({
@@ -129,7 +130,7 @@ const sendOtp = async (req, res) => {
 
         const mailOptions = {
             from: 'naveenapk048@gmail.com',
-            to: 'apkcity369@gmail.com',
+            to: email,
             subject: 'Hello, Nodemailer!',
             text: `Your verification OTP is ${randomotp}`
         };
