@@ -315,7 +315,7 @@ const generatePasswordOtp = async (req, res) => {
 
         const mailOptions = {
             from: 'naveenapk048@gmail.com',
-            to: 'apkcity369@gmail.com',
+            to: req.session.forgotPasswordEmail,
             subject: 'Hello, Nodemailer!',
             text: `Your verification OTP is ${randomotp}`
         };
