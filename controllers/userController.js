@@ -12,7 +12,7 @@ const userAuth = require('../middlewares/userAuth')
 const { ConversationListInstance } = require('twilio/lib/rest/conversations/v1/conversation')
 const { json } = require('express')
 const cron = require('node-cron');
-const bcrypt=require('bcrypt')
+const bcrypt=require('bcryptjs')
 
 
 

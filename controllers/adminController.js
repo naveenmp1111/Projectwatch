@@ -4,10 +4,10 @@ const Category = require('../models/categoryModel')
 const Order = require('../models/orderModel')
 const Brand = require('../models/brandModel')
 const Banner =require('../models/bannerModel')
-const sharp = require('sharp')
+
 const fs = require('fs')
 const path = require('path')
-const bcrypt=require('bcrypt')
+const bcrypt=require('bcryptjs')
 
 
 const loadLogin = async (req, res) => {
