@@ -140,7 +140,7 @@ const orderDetails = async (req, res) => {
         const userData = await User.findOne({ email: email }).populate('cart.productId')
         const orderData = await Order.findById({ _id: orderId }).populate('products.productId').populate('userId')
         // console.log(orderData.userId);
-        res.render('orderDetails', { orders: orderData })
+        res.render('orderdetails', { orders: orderData })
     } catch (error) {
         console.log(error.message)
         res.redirect('/500')
