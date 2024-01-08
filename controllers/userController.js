@@ -388,7 +388,7 @@ const resetPassword = async (req, res) => {
             const hashedPassword=await bcrypt.hash(password1,salt)
             const userData = await User.findOneAndUpdate({ email: email }, { $set: { password: hashedPassword} })
             if (userData) {
-                res.redirect('/')
+                res.redirect('/login')
             }
         } else {
             res.render('newPassword', { email, message: "Password dont match" })
@@ -408,9 +408,11 @@ const productDetails = async (req, res) => {
         const userData = await User.findOne({ email })
         const categories = await Category.find({ is_active: true })
         const banner=await Banner.find({is_active:true})
-       
+        const categoryId=productData.categoryId
+        console.log(categoryId)
+        const relatedProducts= await Product.find({categoryId:categoryId,is_active:true}).limit(4)
         if (productData) {
-            res.render('productDetails', { product: productData, user: userData, categories ,banner})
+            res.render('productDetails', { product: productData, user: userData, categories ,banner,relatedProducts})
         } else {
             res.redirect('/home')
 
