@@ -12,23 +12,13 @@ const userAuth = require('../middlewares/userAuth')
 const { ConversationListInstance } = require('twilio/lib/rest/conversations/v1/conversation')
 const { json } = require('express')
 const cron = require('node-cron');
-const bcrypt=require('bcryptjs')
+const bcrypt=require('bcrypt')
 
 
 
 const loadHome = async (req, res) => {
     try {
-        // const testData=await User.findOne({email:'fffa@gmail.com'})
-        // console.log(testData)
-        // const updateDocuments = await Product.updateMany(
-        //     {},
-        //     {
-        //       $rename: {
-        //          'catOfferStatus':'catStatus'
-        //       }
-        //     }
-        //   );
-        //   console.log(updateDocuments)
+        
         
         const email = req.session.email
         const userData = await User.findOne({ email: email })
