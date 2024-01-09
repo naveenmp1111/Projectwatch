@@ -500,7 +500,7 @@ const addressForm = async (req, res) => {
         const user = await User.findOne({ email: email });
         const checkout = req.query.checkout
         // console.log(checkout)
-        res.render('addressForm', { checkout, user, categories, brands })
+        res.render('addressform', { checkout, user, categories, brands })
     } catch (error) {
         console.log(error.message)
         res.redirect('/500')

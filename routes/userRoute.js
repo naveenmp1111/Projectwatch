@@ -43,9 +43,9 @@ userRoute.post('/editAddressForm', auth.isLogin, userController.updateAddress)
 userRoute.post('/updateQuantity/:newQuantity/:index', auth.isLogin, userController.updateQuantity)
 userRoute.post('/updateUserDetails', auth.isLogin, userController.checkUniqueEmail2, userController.updateUserDetails)
 userRoute.post('/updatePassword', auth.isBlocked, auth.isLogin, userController.updatePassword)
-userRoute.get('/contact',userController.contact)
-userRoute.post('/contact',userController.saveContactData)
-userRoute.get('/about',userController.about)
+userRoute.get('/contact', userController.contact)
+userRoute.post('/contact', userController.saveContactData)
+userRoute.get('/about', userController.about)
 userRoute.get('/logout', auth.isLogin, userController.logout)
 
 //-----------------------------------------------shopController----------------------------------------->
@@ -59,14 +59,14 @@ userRoute.get('/homeDeepSort', shopController.homeDeepSort)
 
 const orderController = require('../controllers/orderController')
 userRoute.post('/placeOrder', auth.isBlocked, orderController.placeOrder)
-userRoute.get('/orderDetails', orderController.orderDetails)
+userRoute.get('/orderDetails', auth.isBlocked, orderController.orderDetails)
 userRoute.get('/cancelOrder', orderController.cancelOrder)
 userRoute.get('/returnOrder', orderController.returnOrder)
 userRoute.post('/onlinepayment', orderController.onlinePayment)
 userRoute.get('/onlinepayment', orderController.paymentSuccess)
 userRoute.get('/checkWallet', orderController.checkWallet)
 userRoute.get('/walletpayment', orderController.walletPayment)
-userRoute.post('/createProductReview',orderController.createProductReview)
+userRoute.post('/createProductReview', orderController.createProductReview)
 
 
 
@@ -78,7 +78,7 @@ userRoute.get('/wishlist', auth.isBlocked, wishlistController.showWishlist)
 userRoute.get('/addToCart', auth.isBlocked, wishlistController.addToCart)
 userRoute.get('/deleteFromWishlist', wishlistController.deleteFromWishlist)
 
-userRoute.get('/500',userController.error500)
+userRoute.get('/500', userController.error500)
 
 
 module.exports = userRoute

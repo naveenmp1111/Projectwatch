@@ -133,6 +133,9 @@
                                                 <div class="product-price">
                                                     <span>र<%=products[i].salePrice.toFixed(2)%></span>
                                                     <span class="old-price">र<%=products[i].regularPrice.toFixed(2)%></span>
+                                                    <%if(products[i].bestDiscount>0){%>
+                                                    <span class="text-muted"><%=products[i].bestDiscount.toFixed(0)%> % OFF</span>
+                                                    <%}%>
                                                 </div>
                                                 <!-- <div class="product-action-1 show">
                                                     <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
