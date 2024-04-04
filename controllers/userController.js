@@ -14,6 +14,7 @@ const { ConversationListInstance } = require('twilio/lib/rest/conversations/v1/c
 const { json } = require('express')
 const cron = require('node-cron');
 const bcrypt=require('bcryptjs')
+require('dotenv').config()
 
 
 
@@ -124,7 +125,7 @@ const sendOtp = async (req, res) => {
             service: 'Gmail',
             auth: {
                 user: 'naveenapk048@gmail.com',
-                pass: 'ujdt ygiw aozy lgsv'
+                pass: process.env.NODEMAILER_PASS_KEY
             }
         });
 
@@ -309,7 +310,7 @@ const generatePasswordOtp = async (req, res) => {
             service: 'Gmail',
             auth: {
                 user: 'naveenapk048@gmail.com',
-                pass: 'ujdt ygiw aozy lgsv'
+                pass:  process.env.NODEMAILER_PASS_KEY
             }
         });
 
@@ -796,12 +797,12 @@ const checkUniqueEmail2 = async (req, res, next) => {
             });
 
             if (existingUser) {
-                console.log('peaceout');
+               
                 res.write('email already exists')
                 res.end()
 
             } else {
-                // console.log('chillpeace');
+                
                 next();
             }
         }
